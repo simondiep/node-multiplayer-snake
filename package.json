@@ -1,0 +1,21 @@
+{
+  "name": "node-multiplayer-snake",
+  "version": "1.0.0",
+  "description": "A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and RequireJs.",
+  "scripts": {
+    "start": "node app.js",
+    "pretest": "jshint .",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "requirejs": "^2.1.22",
+    "socket.io": "^1.4.5"
+  }
+}

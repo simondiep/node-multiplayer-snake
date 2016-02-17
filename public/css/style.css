@@ -1,0 +1,82 @@
+body {
+    padding: 5px;
+    background-color: black;
+    color: white;
+    font-family: consolas
+}
+.header {
+    height: 50px;
+}
+.mainContainer {
+    overflow: hidden
+}
+.leftContent {
+    float: left;
+}
+.rightContent {
+    float: left;
+    width: 400px;
+    height: 500px;
+    background-color: black
+}
+#scoreBoard {
+    height: 250px;
+    border-width: 7px 7px 7px 0;
+    border-style: solid;
+    border-color: grey;
+    box-sizing: border-box;
+    padding: 5px;
+}
+#notifications {
+    height: 250px;
+    border-width: 0 7px 7px 0;
+    border-style: solid;
+    border-color: grey;
+    box-sizing: border-box;
+    padding: 5px;
+    overflow: auto;
+}
+.playerInfo {
+    width: 100%;
+    font-size: 32px;
+    font-weight: bold;
+}
+#playerName {
+    width: 300px;
+    border: 1px solid grey;
+    font-size: 32px;
+    font-weight: bold;
+    padding-left: 5px;
+    ;
+    background-color: gray;
+}
+#playerName:read-only {
+    border: 1px solid rgba(0, 0, 0, 0);
+    background-color: black;
+    color: white;
+}
+#invalidPlayerNameLabel {
+    color: red;
+    display: none
+}
+.timelabel {
+    color: gray
+}
+#changePlayerNameButton {
+    -webkit-border-radius: 10;
+    -moz-border-radius: 10;
+    border-radius: 5px;
+    border-color: transparent;
+    color: #ffffff;
+    font-size: 32px;
+    background: #383838;
+    text-decoration: none;
+    width: 270px;
+}
+#changePlayerNameButton:hover {
+    background: #808080;
+    text-decoration: none;
+}
+*:focus {
+    outline: none;
+}
