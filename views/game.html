@@ -3,27 +3,29 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
-        <div class="header">
-            <div class="playerInfo">
-                <label>You are </label>
-                <input id="playerName" readonly="readonly"></input>
-                <button id="changePlayerNameButton">Change Name</button>
-                <label id="invalidPlayerNameLabel">Please Enter a Valid Name (10 Characters Max)</label>
-            </div>
-        </div>
-        <div class="mainContainer">
-            <div class="leftContent">
-                <div id="gameBoard"></div>
-                <p> <b>Instructions:</b> Collect the food as it appears.
-                    <br/> WASD or arrow keys to move.
-                    <br/> Don't touch the edge of the screen or run into others.  
-                </p>
-            </div>
-            <div class="rightContent">
-                <div id="scoreBoard">
-                    Score Board
+        <div id="cover">
+            <div class="header">
+                <div class="playerInfo">
+                    <label>You are </label>
+                    <input id="playerName" readonly="readonly"></input>
+                    <button id="changePlayerNameButton">Change Name</button>
+                    <label id="invalidPlayerNameLabel">Please Enter a Valid Name (10 Characters Max)</label>
                 </div>
-                <div id="notifications">
+            </div>
+            <div class="mainContainer">
+                <div class="leftContent">
+                    <div id="gameBoard"></div>
+                    <p> <b>Instructions:</b> Collect the food as it appears.
+                        <br/> WASD or arrow keys to move.
+                        <br/> Don't touch the edge of the screen or run into others.  
+                    </p>
+                </div>
+                <div class="rightContent">
+                    <div id="scoreBoard">
+                        Score Board
+                    </div>
+                    <div id="notifications">
+                    </div>
                 </div>
             </div>
         </div>

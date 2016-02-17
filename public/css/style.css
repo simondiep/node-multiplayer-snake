@@ -77,6 +77,11 @@ body {
     background: #808080;
     text-decoration: none;
 }
+
+#cover {
+    visibility: hidden;
+}
+
 *:focus {
     outline: none;
 }

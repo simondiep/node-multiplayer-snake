@@ -56,6 +56,7 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
         _createBoard(board) {
             this.boardView = BoardViewFactory.createBoardView(board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES);
             this.boardView.clear();
+            this.gameView.ready();
             this.renderGame();
         }
         

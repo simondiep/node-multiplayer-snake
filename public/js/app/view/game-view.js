@@ -23,6 +23,11 @@ function (ClientConfig) {
             this._getPlayerNameElement().style.color = playerColor;
         }
         
+        ready() {
+            // Show everything when ready
+            document.getElementById("cover").style.visibility = "visible";
+        }
+        
         _getChangeNameButton() {
             return document.getElementById("changePlayerNameButton");
         }
