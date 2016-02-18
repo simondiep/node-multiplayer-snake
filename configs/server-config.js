@@ -1,12 +1,15 @@
 "use strict";
 
 let ServerConfig = {
-    FOOD_AMOUNT : 3,
+    DEFAULT_FOOD_AMOUNT : 3,
     FOOD_COLOR : "lightgreen",
-    FPS: 8,
+    DEFAULT_FPS: 8,
+    MAX_FPS: 60,
     IO: {
         DEFAULT_CONNECTION: "connection",
         INCOMING: {
+            FOOD_CHANGE: "food change",
+            SPEED_CHANGE: "speed change",
             NEW_PLAYER: "new player",
             NAME_CHANGE: "player changed name",
             KEY_DOWN: "key down",
@@ -18,6 +21,16 @@ let ServerConfig = {
             BOARD_INFO: "board info",
             NOTIFICATION: "server notification"
         }
+    },
+    FOOD_CHANGE: {
+        INCREASE: "increase",
+        DECREASE: "decrease",
+        RESET: "reset"
+    },
+    SPEED_CHANGE: {
+        INCREASE: "increase",
+        DECREASE: "decrease",
+        RESET: "reset"
     }
     
 };

@@ -19,5 +19,6 @@ Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
  - Increase game speed based on different conditions (faster if 1v1) or random
  - Chat
  - Bots
- - Power-ups (speed, invulnerable, double-size, swap positions, random)
+ - Power-ups or Game Modes
+    - (speed, invulnerable, double-size, swap positions, reverse controls, be able to draw on canvas, fog of war, random)
  - Choice of power-up to start with

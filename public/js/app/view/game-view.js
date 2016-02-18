@@ -10,11 +10,19 @@ function (ClientConfig) {
     
     class GameView {
         
-        constructor(keyDownCallback, playerNameUpdatedCallback) {
+        constructor(keyDownCallback, playerNameUpdatedCallback, speedChangeCallback, foodChangeCallback) {
             this.keyDownCallback = keyDownCallback;
             this.playerNameUpdatedCallback = playerNameUpdatedCallback;
+            this.speedChangeCallback = speedChangeCallback;
+            this.foodChangeCallback = foodChangeCallback;
             this.isChangingName = false;
-            this._getChangeNameButton().addEventListener('click', this._handleChangeNameButtonClick.bind(this), false);
+            this._getChangeNameButton().addEventListener("click", this._handleChangeNameButtonClick.bind(this), false);
+            this._getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
+            this._getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
+            this._getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
+            this._getIncreaseFoodButton().addEventListener("click", this._handleIncreaseFoodButtonClick.bind(this), false);
+            this._getDecreaseFoodButton().addEventListener("click", this._handleDecreaseFoodButtonClick.bind(this), false);
+            this._getResetFoodButton().addEventListener("click", this._handleResetFoodButtonClick.bind(this), false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
         
@@ -27,9 +35,33 @@ function (ClientConfig) {
             // Show everything when ready
             document.getElementById("cover").style.visibility = "visible";
         }
+
+        showFoodAmount(foodAmount) {
+            document.getElementById("currentFoodAmount").innerHTML = foodAmount;
+        }
+        
+        showSpeed(speed) {
+            document.getElementById("currentSpeed").innerHTML = speed;
+        }
         
         _getChangeNameButton() {
             return document.getElementById("changePlayerNameButton");
+        }
+        
+        _getDecreaseFoodButton() {
+            return document.getElementById("decreaseFoodButton");
+        }
+        
+        _getDecreaseSpeedButton() {
+            return document.getElementById("decreaseSpeedButton");
+        }
+        
+        _getIncreaseFoodButton() {
+            return document.getElementById("increaseFoodButton");
+        }
+        
+        _getIncreaseSpeedButton() {
+            return document.getElementById("increaseSpeedButton");
         }
         
         _getInvalidPlayerNameLabel() {
@@ -40,7 +72,15 @@ function (ClientConfig) {
             return document.getElementById("playerName");
         }
         
-        _handleChangeNameButtonClick(button) {
+        _getResetFoodButton() {
+            return document.getElementById("resetFoodButton");
+        }
+        
+        _getResetSpeedButton() {
+            return document.getElementById("resetSpeedButton");
+        }
+        
+        _handleChangeNameButtonClick() {
             if(this.isChangingName) {
                 this._saveNewPlayerName();
             } else {
@@ -67,6 +107,30 @@ function (ClientConfig) {
             if(!this.isChangingName) {
                 this.keyDownCallback(e.keyCode);
             }
+        }
+        
+        _handleDecreaseSpeedButtonClick() {
+            this.speedChangeCallback(ClientConfig.SPEED_CHANGE.DECREASE);
+        }
+        
+        _handleIncreaseSpeedButtonClick() {
+            this.speedChangeCallback(ClientConfig.SPEED_CHANGE.INCREASE);
+        }
+        
+        _handleResetSpeedButtonClick() {
+            this.speedChangeCallback(ClientConfig.SPEED_CHANGE.RESET);
+        }
+        
+        _handleDecreaseFoodButtonClick() {
+            this.foodChangeCallback(ClientConfig.FOOD_CHANGE.DECREASE);
+        }
+        
+        _handleIncreaseFoodButtonClick() {
+            this.foodChangeCallback(ClientConfig.FOOD_CHANGE.INCREASE);
+        }
+        
+        _handleResetFoodButtonClick() {
+            this.foodChangeCallback(ClientConfig.FOOD_CHANGE.RESET);
         }
         
         _saveNewPlayerName() {

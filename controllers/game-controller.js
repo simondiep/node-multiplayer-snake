@@ -13,9 +13,10 @@ let ScoreBoard = require("../models/score-board");
 
 class GameController {
     constructor(io) {
+        this.currentFPS = ServerConfig.DEFAULT_FPS;
         this.players = {};
         this.food = [];
-        for(let i = 0; i < ServerConfig.FOOD_AMOUNT; i++) {
+        for(let i = 0; i < ServerConfig.DEFAULT_FOOD_AMOUNT; i++) {
             this.generateFood();
         }
         this.colorService = new ColorService();
@@ -28,6 +29,8 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER, self._addPlayer.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.NAME_CHANGE, self._changePlayerName.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
         });
     }
@@ -76,11 +79,12 @@ class GameController {
         let gameData = {
             players: this.players,
             food: this.food,
-            scoreBoard: this.scoreBoard
+            scoreBoard: this.scoreBoard,
+            speed: this.currentFPS
         };
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameData );
         
-        setTimeout(this.runGameCycle.bind(this), 1000/ServerConfig.FPS);
+        setTimeout(this.runGameCycle.bind(this), 1000/this.currentFPS);
     }
     
     generateFood() {
@@ -124,13 +128,57 @@ class GameController {
         let oldPlayerName = player.name;
         if(this.nameService.doesPlayerNameExist(newPlayerName)) {
             socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, oldPlayerName, player.color);
-            // TODO display player name is already in use
+            this.sendNotificationToPlayers(player.name + " couldn't claim the name " + newPlayerName);
         } else {
             this.sendNotificationToPlayers(oldPlayerName + " is now known as " + newPlayerName);
             player.name = newPlayerName;
             this.nameService.usePlayerName(newPlayerName);
             this.scoreBoard.changePlayerName(player.id, newPlayerName);
         }
+    }
+    
+    _changeFood(socket, foodOption) {
+        let notification = this.players[socket.id].name;
+        if(foodOption === ServerConfig.FOOD_CHANGE.INCREASE) {
+            this.generateFood();
+            notification += " has added some food.";
+        } else if(foodOption === ServerConfig.FOOD_CHANGE.DECREASE) {
+            if(this.food.length > 0) {
+                this.food.pop();
+                notification += " has removed some food.";
+            } else {
+                notification += " couldn't remove food.";
+            }
+        } else if(foodOption === ServerConfig.FOOD_CHANGE.RESET) {
+            while(this.food.length > ServerConfig.DEFAULT_FOOD_AMOUNT) {
+                this.food.pop();
+            }
+            notification += " has reset the food.";
+        }
+        this.sendNotificationToPlayers(notification);
+    }
+    
+    _changeSpeed(socket, speedOption) {
+        let notification = this.players[socket.id].name;
+        if(speedOption === ServerConfig.SPEED_CHANGE.INCREASE) {
+            if(this.currentFPS < ServerConfig.MAX_FPS) {
+                notification += " has raised the game speed.";
+                this.currentFPS++;
+            } else {
+                notification += " tried to raised the game speed past the limit.";
+            }
+        } else if(speedOption === ServerConfig.SPEED_CHANGE.DECREASE) {
+            if(this.currentFPS > ServerConfig.DEFAULT_FPS) {
+                notification += " has lowered the game speed.";
+                this.currentFPS--;
+            } else {
+                notification += " tried to lower the game speed past the limit.";
+            }
+        } else if(speedOption === ServerConfig.SPEED_CHANGE.RESET) {
+            notification += " has reset the game speed.";
+            this.currentFPS = ServerConfig.DEFAULT_FPS;
+        }
+        this.sendNotificationToPlayers(notification);
     }
     
     _disconnect(socket) {

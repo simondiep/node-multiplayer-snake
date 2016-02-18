@@ -7,6 +7,10 @@ body {
 .header {
     height: 50px;
 }
+.footer {
+    height: 50px;
+    padding-top: 5px;
+}
 .mainContainer {
     overflow: hidden
 }
@@ -15,9 +19,45 @@ body {
 }
 .rightContent {
     float: left;
-    width: 400px;
+    width: 500px;
     height: 500px;
     background-color: black
+}
+.playerInfo {
+    width: 100%;
+    font-size: 32px;
+    font-weight: bold;
+}
+.optionsButton {
+    vertical-align: middle;
+}
+.optionsControls {
+    font-size: 32px;
+    padding: 5px;
+}
+.timelabel {
+    color: gray
+}
+button {
+    -webkit-border-radius: 10;
+    -moz-border-radius: 10;
+    border-radius: 5px;
+    border-color: transparent;
+    color: #ffffff;
+    background: #383838;
+    text-decoration: none;
+}
+button:hover {
+    background: #808080;
+    text-decoration: none;
+}
+#currentFoodAmount {
+    display: inline-block;
+    width: 68px;
+}
+#currentSpeed {
+    display: inline-block;
+    width: 50px;
 }
 #scoreBoard {
     height: 250px;
@@ -36,18 +76,12 @@ body {
     padding: 5px;
     overflow: auto;
 }
-.playerInfo {
-    width: 100%;
-    font-size: 32px;
-    font-weight: bold;
-}
 #playerName {
     width: 300px;
     border: 1px solid grey;
     font-size: 32px;
     font-weight: bold;
     padding-left: 5px;
-    ;
     background-color: gray;
 }
 #playerName:read-only {
@@ -59,25 +93,10 @@ body {
     color: red;
     display: none
 }
-.timelabel {
-    color: gray
-}
 #changePlayerNameButton {
-    -webkit-border-radius: 10;
-    -moz-border-radius: 10;
-    border-radius: 5px;
-    border-color: transparent;
-    color: #ffffff;
     font-size: 32px;
-    background: #383838;
-    text-decoration: none;
     width: 270px;
 }
-#changePlayerNameButton:hover {
-    background: #808080;
-    text-decoration: none;
-}
-
 #cover {
     visibility: hidden;
 }

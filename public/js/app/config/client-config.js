@@ -11,12 +11,24 @@ define(function () {
                 NOTIFICATION: "server notification"
             },
             OUTGOING: {
+                FOOD_CHANGE: "food change",
+                SPEED_CHANGE: "speed change",
                 NEW_PLAYER: "new player",
                 NAME_CHANGE: "player changed name",
                 KEY_DOWN: "key down"
             }
         },
-        MAX_NAME_LENGTH: 10
+        MAX_NAME_LENGTH: 10,
+        FOOD_CHANGE: {
+            INCREASE: "increase",
+            DECREASE: "decrease",
+            RESET: "reset"
+        },
+        SPEED_CHANGE: {
+            INCREASE: "increase",
+            DECREASE: "decrease",
+            RESET: "reset"
+        }
     };
 
     return ClientConfig;

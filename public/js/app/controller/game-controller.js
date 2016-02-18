@@ -11,12 +11,12 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
     class GameController {
 
         constructor() {
-            this.gameView = new GameView(this.keyDownCallback.bind(this), this.playerNameUpdatedCallback.bind(this));
+            this.gameView = new GameView(this.keyDownCallback.bind(this), this.playerNameUpdatedCallback.bind(this), this.speedChangeCallback.bind(this), this.foodChangeCallback.bind(this));
             this.players = {};
             this.food = {};
             this.socket = io();
             this._initializeSocketIoHandlers();
-            this.socket.emit(ClientConfig.IO.OUTGOING.NEW_PLAYER, "");
+            this.socket.emit(ClientConfig.IO.OUTGOING.NEW_PLAYER);
         }
        
         renderGame() {
@@ -41,12 +41,20 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
          *  View Callbacks *
          *******************/
         
+        foodChangeCallback(option) {
+            this.socket.emit(ClientConfig.IO.OUTGOING.FOOD_CHANGE, option);
+        }
+        
         keyDownCallback(keyCode) {
             this.socket.emit(ClientConfig.IO.OUTGOING.KEY_DOWN, keyCode);
         }
         
         playerNameUpdatedCallback(name) {
             this.socket.emit(ClientConfig.IO.OUTGOING.NAME_CHANGE, name);
+        }
+        
+        speedChangeCallback(option) {
+            this.socket.emit(ClientConfig.IO.OUTGOING.SPEED_CHANGE, option);
         }
         
         /*******************************
@@ -63,11 +71,14 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
         _handleNewGameData(gameData) {
             this.players = gameData.players;
             this.food = gameData.food;
+            this.gameView.showFoodAmount(gameData.food.length);
+            this.gameView.showSpeed(gameData.speed);
             
             // Display scores
             let formattedScores = "";
             for( let playerStat of gameData.scoreBoard) {
-                formattedScores+= '<span style="color:'+playerStat.color+'">' + playerStat.name + "</span> Score: " + playerStat.score + "&nbsp;&nbsp; High: " + playerStat.highScore + "<br/>";
+                formattedScores+= "<span style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
+                                  " Score: " + playerStat.score + "&nbsp;&nbsp; High: " + playerStat.highScore + "<br/>";
             }
             let scoreBoardElement = document.getElementById("scoreBoard");
             scoreBoardElement.innerHTML = formattedScores;

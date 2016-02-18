@@ -16,7 +16,7 @@ define(function () {
             this.context.fillRect(0, 0, this.width, this.height);
             
             this.context.lineWidth = this.squareSizeInPixels;
-            this.context.strokeStyle = 'gray';
+            this.context.strokeStyle = "gray";
             this.context.strokeRect(0, 0, this.width, this.height);
         }
         
