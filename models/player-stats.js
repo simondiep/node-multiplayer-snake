@@ -12,6 +12,10 @@ class PlayerStats {
         //this.maxLength = 0;
     }
     
+    changeColor(newColor) {
+        this.color = newColor;
+    }
+    
     changeName(newName) {
         this.name = newName;
     }

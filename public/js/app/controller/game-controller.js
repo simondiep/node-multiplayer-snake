@@ -11,7 +11,12 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
     class GameController {
 
         constructor() {
-            this.gameView = new GameView(this.keyDownCallback.bind(this), this.playerNameUpdatedCallback.bind(this), this.speedChangeCallback.bind(this), this.foodChangeCallback.bind(this));
+            this.gameView = new GameView(this.foodChangeCallback.bind(this),
+                                         this.keyDownCallback.bind(this),
+                                         this.playerColorChangeCallback.bind(this),
+                                         this.playerNameUpdatedCallback.bind(this),
+                                         this.speedChangeCallback.bind(this)
+                                         );
             this.players = {};
             this.food = {};
             this.socket = io();
@@ -49,6 +54,10 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
             this.socket.emit(ClientConfig.IO.OUTGOING.KEY_DOWN, keyCode);
         }
         
+        playerColorChangeCallback() {
+            this.socket.emit(ClientConfig.IO.OUTGOING.COLOR_CHANGE);
+        }
+        
         playerNameUpdatedCallback(name) {
             this.socket.emit(ClientConfig.IO.OUTGOING.NAME_CHANGE, name);
         }
@@ -73,21 +82,11 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
             this.food = gameData.food;
             this.gameView.showFoodAmount(gameData.food.length);
             this.gameView.showSpeed(gameData.speed);
-            
-            // Display scores
-            let formattedScores = "";
-            for( let playerStat of gameData.scoreBoard) {
-                formattedScores+= "<span style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
-                                  " Score: " + playerStat.score + "&nbsp;&nbsp; High: " + playerStat.highScore + "<br/>";
-            }
-            let scoreBoardElement = document.getElementById("scoreBoard");
-            scoreBoardElement.innerHTML = formattedScores;
+            this.gameView.showPlayerStats(gameData.playerStats);
         }
         
-        _handleNotification(notification) {
-            let notificationElement = document.getElementById("notifications");
-            let formattedNotification = "<span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> " + notification + "<br/>";
-            notificationElement.innerHTML = formattedNotification + notificationElement.innerHTML;
+        _handleNotification(notification, playerColor) {
+            this.gameView.showNotification(notification, playerColor);
         }
         
         _updatePlayerName(playerName, playerColor) {

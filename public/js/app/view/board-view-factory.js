@@ -1,19 +1,20 @@
 define([
-    "view/board-view"
+    "view/board-view",
+    "view/dom-helper"
 ],
 
-function (BoardView) {
+function (BoardView, DomHelper) {
     "use strict";
     
     class BoardViewFactory {
         
         static createBoardView(squareSizeInPixels, horizontalSquares, verticalSquares) {
-            let canvas = document.createElement("canvas");
+            let canvas = DomHelper.createElement("canvas");
             canvas.width = horizontalSquares * squareSizeInPixels;
             canvas.height = verticalSquares * squareSizeInPixels;
             canvas.style.width = canvas.width + "px";
             canvas.style.height = canvas.height + "px";
-            document.getElementById("gameBoard").appendChild(canvas);
+            DomHelper.getGameBoardDiv().appendChild(canvas);
             return new BoardView(canvas, squareSizeInPixels);
         }
     }

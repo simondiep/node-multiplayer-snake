@@ -20,5 +20,5 @@ Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
  - Chat
  - Bots
  - Power-ups or Game Modes
-    - (speed, invulnerable, double-size, swap positions, reverse controls, be able to draw on canvas, fog of war, random)
+    - speed, invulnerable, double-size, swap positions, reverse controls, be able to draw on canvas, fog of war, random walls
  - Choice of power-up to start with

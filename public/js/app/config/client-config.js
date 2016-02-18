@@ -11,6 +11,7 @@ define(function () {
                 NOTIFICATION: "server notification"
             },
             OUTGOING: {
+                COLOR_CHANGE: "player changed color",
                 FOOD_CHANGE: "food change",
                 SPEED_CHANGE: "speed change",
                 NEW_PLAYER: "new player",

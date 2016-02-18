@@ -9,7 +9,7 @@ let NameService = require("../services/name-service");
 
 let Food = require("../models/food");
 let Player = require("../models/player");
-let ScoreBoard = require("../models/score-board");
+let PlayerStatBoard = require("../models/player-stat-board");
 
 class GameController {
     constructor(io) {
@@ -21,13 +21,14 @@ class GameController {
         }
         this.colorService = new ColorService();
         this.nameService = new NameService();
-        this.scoreBoard = new ScoreBoard();
+        this.playerStatBoard = new PlayerStatBoard();
         
         this.io = io;
         let self = this;
         this.io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, function (socket) {
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER, self._addPlayer.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.NAME_CHANGE, self._changePlayerName.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.COLOR_CHANGE, self._changeColor.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
@@ -65,7 +66,7 @@ class GameController {
             
             if(playerAteFood){
                 player.growNextTurn();
-                this.scoreBoard.increaseScore(player.id);
+                this.playerStatBoard.increaseScore(player.id);
                 this.generateFood();
                 break;
             }
@@ -73,13 +74,13 @@ class GameController {
         
         for(let lostPlayer of losingPlayers) {
             lostPlayer.reset();
-            this.scoreBoard.resetScore(lostPlayer.id);
+            this.playerStatBoard.resetScore(lostPlayer.id);
         }
     
         let gameData = {
             players: this.players,
             food: this.food,
-            scoreBoard: this.scoreBoard,
+            playerStats: this.playerStatBoard,
             speed: this.currentFPS
         };
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameData );
@@ -98,9 +99,9 @@ class GameController {
                CoordinateService.hasPlayerCollidedWithAnotherPlayer(player, this.players);
     }
     
-    sendNotificationToPlayers(notification) {
+    sendNotificationToPlayers(notification, playerColor) {
         console.log(notification);
-        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION, notification );
+        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION, notification, playerColor );
     }
     
     /*******************************
@@ -112,10 +113,10 @@ class GameController {
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
         this.players[socket.id] = newPlayer;
-        this.scoreBoard.addPlayer(newPlayer.id, playerName, playerColor);
+        this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.BOARD_INFO, Board);
-        this.sendNotificationToPlayers(playerName + " has joined!");
+        this.sendNotificationToPlayers(playerName + " has joined!", playerColor);
         // Start game if the first player has joined
         if(Object.keys(this.players).length === 1) {
             console.log("Game Started");
@@ -123,22 +124,36 @@ class GameController {
         }
     }
     
+    _changeColor(socket, newPlayerName) {
+        let player = this.players[socket.id];
+        let newColor = this.colorService.getColor();
+        this.colorService.returnColor(player.color);
+        player.color = newColor;
+        this.playerStatBoard.changePlayerColor(player.id, newColor);
+        socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, player.name, newColor);
+        this.sendNotificationToPlayers(player.name + " has changed colors.", newColor);
+    }
+    
     _changePlayerName(socket, newPlayerName) {
         let player = this.players[socket.id];
         let oldPlayerName = player.name;
+        if(oldPlayerName === newPlayerName) {
+            return;
+        }
         if(this.nameService.doesPlayerNameExist(newPlayerName)) {
             socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, oldPlayerName, player.color);
-            this.sendNotificationToPlayers(player.name + " couldn't claim the name " + newPlayerName);
+            this.sendNotificationToPlayers(player.name + " couldn't claim the name " + newPlayerName, player.color);
         } else {
-            this.sendNotificationToPlayers(oldPlayerName + " is now known as " + newPlayerName);
+            this.sendNotificationToPlayers(oldPlayerName + " is now known as " + newPlayerName, player.color);
             player.name = newPlayerName;
             this.nameService.usePlayerName(newPlayerName);
-            this.scoreBoard.changePlayerName(player.id, newPlayerName);
+            this.playerStatBoard.changePlayerName(player.id, newPlayerName);
         }
     }
     
     _changeFood(socket, foodOption) {
-        let notification = this.players[socket.id].name;
+        let player = this.players[socket.id];
+        let notification = player.name;
         if(foodOption === ServerConfig.FOOD_CHANGE.INCREASE) {
             this.generateFood();
             notification += " has added some food.";
@@ -155,11 +170,12 @@ class GameController {
             }
             notification += " has reset the food.";
         }
-        this.sendNotificationToPlayers(notification);
+        this.sendNotificationToPlayers(notification, player.color);
     }
     
     _changeSpeed(socket, speedOption) {
-        let notification = this.players[socket.id].name;
+        let player = this.players[socket.id];
+        let notification = player.name;
         if(speedOption === ServerConfig.SPEED_CHANGE.INCREASE) {
             if(this.currentFPS < ServerConfig.MAX_FPS) {
                 notification += " has raised the game speed.";
@@ -178,7 +194,7 @@ class GameController {
             notification += " has reset the game speed.";
             this.currentFPS = ServerConfig.DEFAULT_FPS;
         }
-        this.sendNotificationToPlayers(notification);
+        this.sendNotificationToPlayers(notification, player.color);
     }
     
     _disconnect(socket) {
@@ -186,10 +202,10 @@ class GameController {
         if(!player) {
             return;
         }
-        this.sendNotificationToPlayers(this.players[socket.id].name + " has left.");
+        this.sendNotificationToPlayers(player.name + " has left.", player.color);
         this.colorService.returnColor(player.color);
         this.nameService.returnPlayerName(player.name);
-        this.scoreBoard.removePlayer(player.id);
+        this.playerStatBoard.removePlayer(player.id);
         delete this.players[socket.id];
     }
     

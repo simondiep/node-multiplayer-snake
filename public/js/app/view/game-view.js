@@ -1,8 +1,9 @@
 define([
-    "config/client-config"
+    "config/client-config",
+    "view/dom-helper"
 ],
 
-function (ClientConfig) {
+function (ClientConfig, DomHelper) {
     "use strict";
     
     const ENTER_KEYCODE = 13;
@@ -10,97 +11,78 @@ function (ClientConfig) {
     
     class GameView {
         
-        constructor(keyDownCallback, playerNameUpdatedCallback, speedChangeCallback, foodChangeCallback) {
+        constructor(foodChangeCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback) {
+            this.isChangingName = false;
+            this.foodChangeCallback = foodChangeCallback;
             this.keyDownCallback = keyDownCallback;
+            this.playerColorChangeCallback = playerColorChangeCallback;
             this.playerNameUpdatedCallback = playerNameUpdatedCallback;
             this.speedChangeCallback = speedChangeCallback;
-            this.foodChangeCallback = foodChangeCallback;
-            this.isChangingName = false;
-            this._getChangeNameButton().addEventListener("click", this._handleChangeNameButtonClick.bind(this), false);
-            this._getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
-            this._getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
-            this._getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
-            this._getIncreaseFoodButton().addEventListener("click", this._handleIncreaseFoodButtonClick.bind(this), false);
-            this._getDecreaseFoodButton().addEventListener("click", this._handleDecreaseFoodButtonClick.bind(this), false);
-            this._getResetFoodButton().addEventListener("click", this._handleResetFoodButtonClick.bind(this), false);
-            window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
-        }
-        
-        updatePlayerName(playerName, playerColor) {
-            this._getPlayerNameElement().value = playerName;
-            this._getPlayerNameElement().style.color = playerColor;
+            this._setUpEventHandling();
         }
         
         ready() {
             // Show everything when ready
-            document.getElementById("cover").style.visibility = "visible";
+            DomHelper.getCoverDiv().style.visibility = "visible";
         }
 
         showFoodAmount(foodAmount) {
-            document.getElementById("currentFoodAmount").innerHTML = foodAmount;
+            DomHelper.getCurrentFoodAmountLabel().innerHTML = foodAmount;
+        }
+        
+        showNotification(notification, playerColor) {
+            let notificationDiv = DomHelper.getNotificationsDiv();
+            let formattedNotification = "<div><span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> <span style='color:" + playerColor + "'>" + notification + "<span/></div>";
+            notificationDiv.innerHTML = formattedNotification + notificationDiv.innerHTML;
+        }
+        
+        showPlayerStats(playerStats) {
+            let formattedScores = "<div class='playerStats'><span>Name</span><span>Score</span><span>High</span>";
+            for( let playerStat of playerStats) {
+                formattedScores+= "<div class='playerStats'><span style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
+                                  "<span>" + playerStat.score + "</span><span>" + playerStat.highScore + "</span></div>";
+            }
+            DomHelper.getPlayerStatsDiv().innerHTML = formattedScores;
         }
         
         showSpeed(speed) {
-            document.getElementById("currentSpeed").innerHTML = speed;
+            DomHelper.getCurrentSpeedLabel().innerHTML = speed;
         }
         
-        _getChangeNameButton() {
-            return document.getElementById("changePlayerNameButton");
+        updatePlayerName(playerName, playerColor) {
+            DomHelper.getPlayerNameElement().value = playerName;
+            DomHelper.getPlayerNameElement().style.color = playerColor;
         }
         
-        _getDecreaseFoodButton() {
-            return document.getElementById("decreaseFoodButton");
-        }
+        /*******************
+         *  Event handling *
+         *******************/
         
-        _getDecreaseSpeedButton() {
-            return document.getElementById("decreaseSpeedButton");
-        }
-        
-        _getIncreaseFoodButton() {
-            return document.getElementById("increaseFoodButton");
-        }
-        
-        _getIncreaseSpeedButton() {
-            return document.getElementById("increaseSpeedButton");
-        }
-        
-        _getInvalidPlayerNameLabel() {
-            return document.getElementById("invalidPlayerNameLabel");
-        }
-        
-        _getPlayerNameElement() {
-            return document.getElementById("playerName");
-        }
-        
-        _getResetFoodButton() {
-            return document.getElementById("resetFoodButton");
-        }
-        
-        _getResetSpeedButton() {
-            return document.getElementById("resetSpeedButton");
+        _handleChangeColorButtonClick() {
+            this.playerColorChangeCallback();
         }
         
         _handleChangeNameButtonClick() {
             if(this.isChangingName) {
                 this._saveNewPlayerName();
             } else {
-                this._getChangeNameButton().innerHTML = "Save";
-                this._getPlayerNameElement().readOnly = false;
-                this._getPlayerNameElement().select();
+                DomHelper.getChangeNameButton().innerHTML = "Save";
+                DomHelper.getPlayerNameElement().readOnly = false;
+                DomHelper.getPlayerNameElement().select();
                 this.isChangingName = true;
             }
         }
         
         _handleKeyDown(e) {
             // Prevent space bar scrolling default behavior
-            if (e.keyCode === SPACE_BAR_KEYCODE && e.target == document.body) {
+            if (e.keyCode === SPACE_BAR_KEYCODE && e.target == DomHelper.getBody()) {
                 e.preventDefault();
             }
             
             // When changing names, save new name on enter
             if(e.keyCode === ENTER_KEYCODE && this.isChangingName) {
                 this._saveNewPlayerName();
-                document.activeElement.blur();
+                DomHelper.blurActiveElement();
                 return;
             }
         
@@ -134,16 +116,28 @@ function (ClientConfig) {
         }
         
         _saveNewPlayerName() {
-            let playerName = this._getPlayerNameElement().value;
+            let playerName = DomHelper.getPlayerNameElement().value;
             if(playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
                 this.playerNameUpdatedCallback(playerName);
-                this._getChangeNameButton().innerHTML = "Change Name";
-                this._getPlayerNameElement().readOnly = true;
+                DomHelper.getChangeNameButton().innerHTML = "Change Name";
+                DomHelper.getPlayerNameElement().readOnly = true;
                 this.isChangingName = false;
-                this._getInvalidPlayerNameLabel().style.display = "none";
+                DomHelper.getInvalidPlayerNameLabel().style.display = "none";
             } else {
-                this._getInvalidPlayerNameLabel().style.display = "inline";
+                DomHelper.getInvalidPlayerNameLabel().style.display = "inline";
             }
+        }
+        
+        _setUpEventHandling() {
+            DomHelper.getChangeColorButton().addEventListener("click", this._handleChangeColorButtonClick.bind(this), false);
+            DomHelper.getChangeNameButton().addEventListener("click", this._handleChangeNameButtonClick.bind(this), false);
+            DomHelper.getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
+            DomHelper.getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
+            DomHelper.getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
+            DomHelper.getIncreaseFoodButton().addEventListener("click", this._handleIncreaseFoodButtonClick.bind(this), false);
+            DomHelper.getDecreaseFoodButton().addEventListener("click", this._handleDecreaseFoodButtonClick.bind(this), false);
+            DomHelper.getResetFoodButton().addEventListener("click", this._handleResetFoodButtonClick.bind(this), false);
+            window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }
 

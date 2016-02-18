@@ -38,6 +38,10 @@ body {
 .timelabel {
     color: gray
 }
+.playerStats span{
+    font-size: 22px;
+    display:inline-block; width:160px;
+}
 button {
     -webkit-border-radius: 10;
     -moz-border-radius: 10;
@@ -59,7 +63,7 @@ button:hover {
     display: inline-block;
     width: 50px;
 }
-#scoreBoard {
+#playerStats {
     height: 250px;
     border-width: 7px 7px 7px 0;
     border-style: solid;
@@ -94,6 +98,10 @@ button:hover {
     display: none
 }
 #changePlayerNameButton {
+    font-size: 32px;
+    width: 270px;
+}
+#changePlayerColorButton {
     font-size: 32px;
     width: 270px;
 }

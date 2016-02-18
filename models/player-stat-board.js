@@ -1,35 +1,39 @@
 "use strict";
 let PlayerStats = require("./player-stats");
 
-class ScoreBoard {
+class PlayerStatBoard {
 
     constructor() {
-        this.scoreBoard = new Map();
+        this.statBoard = new Map();
     }
     
     addPlayer(playerId, playerName, playerColor) {
-        this.scoreBoard.set(playerId, new PlayerStats(playerName, playerColor));
+        this.statBoard.set(playerId, new PlayerStats(playerName, playerColor));
+    }
+    
+    changePlayerColor(playerId, newColor) {
+        this.statBoard.get(playerId).changeColor(newColor);
     }
     
     changePlayerName(playerId, newName) {
-        this.scoreBoard.get(playerId).changeName(newName);
+        this.statBoard.get(playerId).changeName(newName);
     }
     
     increaseScore(playerId) {
-        this.scoreBoard.get(playerId).increaseScore();
+        this.statBoard.get(playerId).increaseScore();
     }
     
     resetScore(playerId) {
-        this.scoreBoard.get(playerId).resetScore();
+        this.statBoard.get(playerId).resetScore();
     }
     
     removePlayer(playerId) {
-        this.scoreBoard.delete(playerId);
+        this.statBoard.delete(playerId);
     }
     
     toJSON() {
         let response = [];
-        this.scoreBoard.forEach(function(value, key, map) {
+        this.statBoard.forEach(function(value, key, map) {
             response.push(value); 
         });
         // Sort by score (highest first)
@@ -40,4 +44,4 @@ class ScoreBoard {
     }
 }
 
-module.exports = ScoreBoard;     
+module.exports = PlayerStatBoard;     
