@@ -1,8 +1,16 @@
+@font-face {
+   font-family: PressStart2P; 
+   src: url('../fonts/PressStart2P.ttf');
+} 
+#cover {
+    display: table;
+    margin: 0 auto; 
+}
 body {
     padding: 5px;
     background-color: black;
     color: white;
-    font-family: consolas
+    font-family: PressStart2P;
 }
 .header {
     height: 50px;
@@ -19,28 +27,28 @@ body {
 }
 .rightContent {
     float: left;
-    width: 500px;
+    width: 700px;
     height: 500px;
     background-color: black
 }
 .playerInfo {
     width: 100%;
-    font-size: 32px;
-    font-weight: bold;
-}
-.optionsButton {
-    vertical-align: middle;
+    font-size: 24px;
 }
 .optionsControls {
-    font-size: 32px;
+    font-size: 24px;
     padding: 5px;
+}
+.optionsControls label{
+    display:inline-block;
+    width:140px;
 }
 .timelabel {
     color: gray
 }
 .playerStats span{
-    font-size: 22px;
-    display:inline-block; width:160px;
+    font-size: 18px;
+    display:inline-block; width:200px;
 }
 button {
     -webkit-border-radius: 10;
@@ -50,18 +58,11 @@ button {
     color: #ffffff;
     background: #383838;
     text-decoration: none;
+    font-family: PressStart2P;
 }
 button:hover {
     background: #808080;
     text-decoration: none;
-}
-#currentFoodAmount {
-    display: inline-block;
-    width: 68px;
-}
-#currentSpeed {
-    display: inline-block;
-    width: 50px;
 }
 #playerStats {
     height: 250px;
@@ -71,20 +72,27 @@ button:hover {
     box-sizing: border-box;
     padding: 5px;
 }
+#playerStats div {
+    padding-bottom: 8px;
+}
 #notifications {
     height: 250px;
     border-width: 0 7px 7px 0;
     border-style: solid;
     border-color: grey;
     box-sizing: border-box;
+    font-size: 12px;
     padding: 5px;
     overflow: auto;
+}
+#notifications div {
+    padding-bottom: 8px;
 }
 #playerName {
     width: 300px;
     border: 1px solid grey;
-    font-size: 32px;
-    font-weight: bold;
+    font-family: PressStart2P;
+    font-size: 24px;
     padding-left: 5px;
     background-color: gray;
 }
@@ -98,11 +106,13 @@ button:hover {
     display: none
 }
 #changePlayerNameButton {
-    font-size: 32px;
+    font-size: 20px;
+    padding: 10px;
     width: 270px;
 }
 #changePlayerColorButton {
-    font-size: 32px;
+    font-size: 20px;
+    padding: 10px;
     width: 270px;
 }
 #cover {

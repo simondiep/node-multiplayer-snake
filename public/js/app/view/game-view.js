@@ -37,7 +37,7 @@ function (ClientConfig, DomHelper) {
         }
         
         showPlayerStats(playerStats) {
-            let formattedScores = "<div class='playerStats'><span>Name</span><span>Score</span><span>High</span>";
+            let formattedScores = "<div class='playerStats'><span>Name</span><span>Score</span><span>High</span></div>";
             for( let playerStat of playerStats) {
                 formattedScores+= "<div class='playerStats'><span style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
                                   "<span>" + playerStat.score + "</span><span>" + playerStat.highScore + "</span></div>";
