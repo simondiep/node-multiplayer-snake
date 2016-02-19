@@ -10,17 +10,17 @@ class CoordinateService {
         return Direction[keys[ keys.length * Math.random() << 0]];
     }
     
-    static isOutOfBoundsAfterFiveMoves(location, direction){
-        return this.isOutOfBounds(new Coordinate(location.x + (direction.x * 5),
-                                                 location.y + (direction.y * 5)));
+    static isOutOfBoundsAfterNMoves(location, n, direction){
+        return this.isOutOfBounds(new Coordinate(location.x + (direction.x * n),
+                                                 location.y + (direction.y * n)));
     }
 
-    static setStartingLocationAndDirection(player, playerLength, existingFood, existingPlayers) {
+    static setStartingLocationAndDirection(player, playerLength, turnLeeway, existingFood, existingPlayers) {
         let newDirection = this.getRandomDirection();
         let proposedHeadLocation, proposedFutureLocation;
         do {
             proposedHeadLocation = this.getUnoccupiedCoordinate(existingFood, existingPlayers);
-        } while( this.isOutOfBoundsAfterFiveMoves(proposedHeadLocation, newDirection) ) ; 
+        } while( this.isOutOfBoundsAfterNMoves(proposedHeadLocation, turnLeeway, newDirection) ) ; 
         
         let playerSegments = [];
         for( let i = 0; i < playerLength; i++) {

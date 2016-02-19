@@ -55,7 +55,7 @@ class GameController {
                     newDirection = CoordinateService.getRandomDirection();
                     numberOfRetries++;
                     isInvalidDirection = GameControlsService.isInvalidDirection(bot, newDirection);
-                    willGoOutOfBounds = CoordinateService.isOutOfBoundsAfterFiveMoves(bot.getHeadLocation(), newDirection);
+                    willGoOutOfBounds = CoordinateService.isOutOfBoundsAfterNMoves(bot.getHeadLocation(), ServerConfig.BOT_CHANGE_DIRECTION_INTERVAL, newDirection);
                 } while (numberOfRetries < 10 && (isInvalidDirection || willGoOutOfBounds));
                 bot.changeDirection(newDirection);
             }
@@ -91,7 +91,7 @@ class GameController {
         }
         
         for(let lostPlayer of losingPlayers) {
-            CoordinateService.setStartingLocationAndDirection(lostPlayer, ServerConfig.PLAYER_STARTING_LENGTH, this.food, this.players);
+            CoordinateService.setStartingLocationAndDirection(lostPlayer, ServerConfig.PLAYER_STARTING_LENGTH, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
             this.playerStatBoard.resetScore(lostPlayer.id);
             this.playerStatBoard.addDeath(lostPlayer.id);
         }
@@ -135,7 +135,7 @@ class GameController {
         let newBotName = this.nameService.getBotName();
         let botColor = this.colorService.getColor();
         let newBot = new Player(newBotName, newBotName, botColor);
-        CoordinateService.setStartingLocationAndDirection(newBot, ServerConfig.PLAYER_STARTING_LENGTH, this.food, this.players);
+        CoordinateService.setStartingLocationAndDirection(newBot, ServerConfig.PLAYER_STARTING_LENGTH, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
         this.players[newBotName] = newBot;
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
         this.sendNotificationToPlayers(newBotName + " has joined!", botColor);
@@ -146,7 +146,7 @@ class GameController {
         let playerName = this.nameService.getPlayerName();
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
-        CoordinateService.setStartingLocationAndDirection(newPlayer, ServerConfig.PLAYER_STARTING_LENGTH, this.food, this.players);
+        CoordinateService.setStartingLocationAndDirection(newPlayer, ServerConfig.PLAYER_STARTING_LENGTH, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);

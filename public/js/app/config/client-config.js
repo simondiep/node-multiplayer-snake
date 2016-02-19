@@ -3,6 +3,7 @@ define(function () {
 
     let ClientConfig = {
         FPS: 60,
+        TURNS_TO_FLASH_AFTER_SPAWN: 10,
         IO: {
             INCOMING: {
                 NEW_STATE: "game update",

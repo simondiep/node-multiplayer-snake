@@ -34,7 +34,7 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
             for(let playerId in this.players) {
                 let player = this.players[playerId];
                 // Flash around where you have just spawned
-                if("/#"+this.socket.id === playerId && player.moveCounter <= 5 && player.moveCounter%2 === 0) {
+                if("/#"+this.socket.id === playerId && player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN && player.moveCounter%2 === 0) {
                     this.boardView.drawSquareAround(player.segments[0], "white");
                 }
                 this.boardView.drawSquares(player.segments, player.color);
