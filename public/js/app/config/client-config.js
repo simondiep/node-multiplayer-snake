@@ -4,6 +4,7 @@ define(function () {
     let ClientConfig = {
         FPS: 60,
         TURNS_TO_FLASH_AFTER_SPAWN: 10,
+        SPAWN_FLASH_COLOR: "white",
         IO: {
             INCOMING: {
                 NEW_STATE: "game update",

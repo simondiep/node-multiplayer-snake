@@ -63,14 +63,14 @@ body {
     display:inline-block;
     width:120px;
 }
-.playerStats {
+.playerStatsContent {
     font-size: 18px;
 }
-.playerStats .name {
+.playerStatsContent .name {
     display:inline-block;
     width:200px;
 }
-.playerStats .stat {
+.playerStatsContent .stat {
     display:inline-block;
     width:120px;
 }

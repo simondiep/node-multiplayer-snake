@@ -2,7 +2,7 @@
 
 let ServerConfig = {
     DEFAULT_FOOD_AMOUNT : 3,
-    FOOD_COLOR : "lightgreen",
+    FOOD_COLOR : "red",
     DEFAULT_FPS: 8,
     MAX_FPS: 60,
     PLAYER_STARTING_LENGTH: 5,

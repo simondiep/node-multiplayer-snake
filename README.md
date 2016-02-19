@@ -1,12 +1,22 @@
+![Alt](http://simondiep.github.io/img/snake.gif)
 [![Build Status](https://travis-ci.org/simondiep/node-multiplayer-snake.svg?branch=master)](https://travis-ci.org/simondiep/node-multiplayer-snake)
 [![Dependency Status](https://david-dm.org/simondiep/node-multiplayer-snake/status.svg?style=flat)](https://david-dm.org/simondiep/node-multiplayer-snake)  
 
 A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and RequireJs.  
 Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
-### Potential Features To Implement
+### Game Features
+ - Quick join and play (no sign-ups)
+ - Ability to change colors
+ - Ability to change names
+ - Ability to change game speed
+ - Ability to change amount of food
+ - Player statistics
+ - Game notifications
+ - Bots
+ - Random, safe spawns
 
- - Choose your own color
+### Potential Features To Implement
  - Snake and Food images
  - More stats (max length, kills)
  - Save name (if customized) and high score in local storage
