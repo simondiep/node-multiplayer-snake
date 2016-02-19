@@ -75,6 +75,7 @@ class GameController {
         for(let lostPlayer of losingPlayers) {
             lostPlayer.reset();
             this.playerStatBoard.resetScore(lostPlayer.id);
+            this.playerStatBoard.addDeath(lostPlayer.id);
         }
     
         let gameData = {

@@ -27,28 +27,88 @@ body {
 }
 .rightContent {
     float: left;
-    width: 700px;
+    width: 600px;
     height: 500px;
     background-color: black
 }
 .playerInfo {
     width: 100%;
     font-size: 24px;
+    cursor: default;
 }
 .optionsControls {
     font-size: 24px;
     padding: 5px;
+    cursor: default;
 }
-.optionsControls label{
+.optionsLabel{
     display:inline-block;
     width:140px;
+    padding-top: 9px;
+}
+.optionsValue {
+    display:inline-block;
+    width:70px;
+    padding-top: 9px;
 }
 .timelabel {
     color: gray
 }
-.playerStats span{
+.playerStatsHeader {
     font-size: 18px;
-    display:inline-block; width:200px;
+    color: gray;
+}
+.playerStatsHeader .name {
+    display:inline-block;
+    width:200px;
+}
+.playerStatsHeader .stat {
+    display:inline-block;
+    width:120px;
+}
+.playerStats {
+    font-size: 18px;
+}
+.playerStats .name {
+    display:inline-block;
+    width:200px;
+}
+.playerStats .stat {
+    display:inline-block;
+    width:120px;
+}
+.minusButton {
+    background: url(../assets/minus-icon.png)  no-repeat; border: none;
+    height: 36px;
+    width: 36px;
+    vertical-align: top;
+    text-indent:-9999px;
+}
+.minusButton:hover {
+    background: url(../assets/minus-icon-hover.png)  no-repeat; border: none;
+    cursor: pointer;
+}
+.plusButton {
+    background: url(../assets/plus-icon.png)  no-repeat; border: none;
+    height: 36px;
+    width: 36px;
+    vertical-align: top;
+    text-indent:-9999px;
+}
+.plusButton:hover {
+    background: url(../assets/plus-icon-hover.png)  no-repeat; border: none;
+    cursor: pointer;
+}
+.resetButton {
+    background: url(../assets/reset-icon.png)  no-repeat; border: none;
+    height: 36px;
+    width: 36px;
+    vertical-align: top;
+    text-indent:-9999px;
+}
+.resetButton:hover {
+    background: url(../assets/reset-icon-hover.png)  no-repeat; border: none;
+    cursor: pointer;
 }
 button {
     -webkit-border-radius: 10;
@@ -63,6 +123,7 @@ button {
 button:hover {
     background: #808080;
     text-decoration: none;
+    cursor: pointer;
 }
 #playerStats {
     height: 250px;

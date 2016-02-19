@@ -7,6 +7,10 @@ class PlayerStatBoard {
         this.statBoard = new Map();
     }
     
+    addDeath(playerId) {
+        this.statBoard.get(playerId).addDeath();
+    }
+    
     addPlayer(playerId, playerName, playerColor) {
         this.statBoard.set(playerId, new PlayerStats(playerName, playerColor));
     }

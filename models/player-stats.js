@@ -7,8 +7,8 @@ class PlayerStats {
         this.color = color;
         this.score = 0;
         this.highScore = 0;
+        this.deaths = 0;
         //this.kills = 0;
-        //this.deaths = 0;
         //this.maxLength = 0;
     }
     
@@ -20,7 +20,11 @@ class PlayerStats {
         this.name = newName;
     }
     
-    increaseScore(playerId) {
+    addDeath() {
+        this.deaths++;
+    }
+    
+    increaseScore() {
         this.score++;
         if(this.score > this.highScore) {
             this.highScore = this.score;
@@ -36,7 +40,8 @@ class PlayerStats {
             name: this.name,
             color: this.color,
             score: this.score,
-            highScore: this.highScore
+            highScore: this.highScore,
+            deaths: this.deaths
         };
     }
 }

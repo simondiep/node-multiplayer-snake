@@ -37,10 +37,10 @@ function (ClientConfig, DomHelper) {
         }
         
         showPlayerStats(playerStats) {
-            let formattedScores = "<div class='playerStats'><span>Name</span><span>Score</span><span>High</span></div>";
+            let formattedScores = "<div class='playerStatsHeader'><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Deaths</span></div>";
             for( let playerStat of playerStats) {
-                formattedScores+= "<div class='playerStats'><span style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
-                                  "<span>" + playerStat.score + "</span><span>" + playerStat.highScore + "</span></div>";
+                formattedScores+= "<div class='playerStats'><span  class='name' style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
+                                  "<span class='stat'>" + playerStat.score + "</span><span class='stat'>" + playerStat.highScore + "</span><span class='stat'>"+ playerStat.deaths +"</span></div>";
             }
             DomHelper.getPlayerStatsDiv().innerHTML = formattedScores;
         }
