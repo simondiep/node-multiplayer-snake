@@ -39,9 +39,12 @@ class GameController {
     }
     
     runGameCycle() {
-        // Pause the game if there aren't any players
-        if(Object.keys(this.players).length === 0){
+        // Pause and reset the game if there aren't any players
+        if(Object.keys(this.players).length - this.botNames.length === 0){
             console.log("Game Paused");
+            this._resetBots();
+            this._resetFood();
+            this._resetSpeed();
             return;
         }
         
@@ -166,9 +169,7 @@ class GameController {
         } else if(botOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             this._removeBot(player);
         } else if(botOption === ServerConfig.INCREMENT_CHANGE.RESET) {
-            while(this.botNames.length > ServerConfig.DEFAULT_STARTING_BOTS) {
-                this._removeBot(player);
-            }
+            this._resetBots(player);
         }
     }
     
@@ -180,6 +181,26 @@ class GameController {
         this.playerStatBoard.changePlayerColor(player.id, newColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, player.name, newColor);
         this.sendNotificationToPlayers(player.name + " has changed colors.", newColor);
+    }
+    
+    _changeFood(socket, foodOption) {
+        let player = this.players[socket.id];
+        let notification = player.name;
+        if(foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
+            this.generateFood();
+            notification += " has added some food.";
+        } else if(foodOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
+            if(this.food.length > 0) {
+                this.food.pop();
+                notification += " has removed some food.";
+            } else {
+                notification += " couldn't remove food.";
+            }
+        } else if(foodOption === ServerConfig.INCREMENT_CHANGE.RESET) {
+            this._resetFood();
+            notification += " has reset the food.";
+        }
+        this.sendNotificationToPlayers(notification, player.color);
     }
     
     _changePlayerName(socket, newPlayerName) {
@@ -197,28 +218,6 @@ class GameController {
             this.nameService.usePlayerName(newPlayerName);
             this.playerStatBoard.changePlayerName(player.id, newPlayerName);
         }
-    }
-    
-    _changeFood(socket, foodOption) {
-        let player = this.players[socket.id];
-        let notification = player.name;
-        if(foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
-            this.generateFood();
-            notification += " has added some food.";
-        } else if(foodOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
-            if(this.food.length > 0) {
-                this.food.pop();
-                notification += " has removed some food.";
-            } else {
-                notification += " couldn't remove food.";
-            }
-        } else if(foodOption === ServerConfig.INCREMENT_CHANGE.RESET) {
-            while(this.food.length > ServerConfig.DEFAULT_FOOD_AMOUNT) {
-                this.food.pop();
-            }
-            notification += " has reset the food.";
-        }
-        this.sendNotificationToPlayers(notification, player.color);
     }
     
     _changeSpeed(socket, speedOption) {
@@ -239,8 +238,8 @@ class GameController {
                 notification += " tried to lower the game speed past the limit.";
             }
         } else if(speedOption === ServerConfig.INCREMENT_CHANGE.RESET) {
+            this._resetSpeed();
             notification += " has reset the game speed.";
-            this.currentFPS = ServerConfig.DEFAULT_FPS;
         }
         this.sendNotificationToPlayers(notification, player.color);
     }
@@ -272,6 +271,24 @@ class GameController {
             this.sendNotificationToPlayers(playerRequestingRemoval.name + " tried to remove a bot that doesn't exist.", playerRequestingRemoval.color);
         }
     }
+    
+    _resetBots(player) {
+        while(this.botNames.length > ServerConfig.DEFAULT_STARTING_BOTS) {
+            this._removeBot(player);
+        }
+    }
+    
+    _resetFood() {
+        while(this.food.length > ServerConfig.DEFAULT_FOOD_AMOUNT) {
+            this.food.pop();
+        }
+    }
+    
+    _resetSpeed() {
+        this.currentFPS = ServerConfig.DEFAULT_FPS;
+    }
+    
+    
 }
 
 module.exports = GameController;
