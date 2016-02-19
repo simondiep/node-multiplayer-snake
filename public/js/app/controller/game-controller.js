@@ -11,7 +11,8 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
     class GameController {
 
         constructor() {
-            this.gameView = new GameView(this.foodChangeCallback.bind(this),
+            this.gameView = new GameView(this.botChangeCallback.bind(this),
+                                         this.foodChangeCallback.bind(this),
                                          this.keyDownCallback.bind(this),
                                          this.playerColorChangeCallback.bind(this),
                                          this.playerNameUpdatedCallback.bind(this),
@@ -50,6 +51,10 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
          *  View Callbacks *
          *******************/
         
+        botChangeCallback(option) {
+            this.socket.emit(ClientConfig.IO.OUTGOING.BOT_CHANGE, option);
+        }
+        
         foodChangeCallback(option) {
             this.socket.emit(ClientConfig.IO.OUTGOING.FOOD_CHANGE, option);
         }
@@ -86,6 +91,7 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
             this.food = gameData.food;
             this.gameView.showFoodAmount(gameData.food.length);
             this.gameView.showSpeed(gameData.speed);
+            this.gameView.showNumberOfBots(gameData.numberOfBots);
             this.gameView.showPlayerStats(gameData.playerStats);
         }
         

@@ -16,13 +16,13 @@ class GameControlsService {
 
     static handleKeyDown(player, keyCode) {
         let newDirection = KEYCODE_TO_DIRECTION[keyCode];
-        if(!this._isInvalidDirection(player, newDirection)) {
+        if(!this.isInvalidDirection(player, newDirection)) {
             player.changeDirection(newDirection); 
         }
     }
 
     // Check if a new direction is going backwards
-    static _isInvalidDirection(player, newDirection) {
+    static isInvalidDirection(player, newDirection) {
         return (!newDirection) ||
             (newDirection == player.direction) ||
             (newDirection == Direction.UP && player.directionBeforeMove == Direction.DOWN) ||

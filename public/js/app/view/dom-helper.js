@@ -23,6 +23,10 @@ define(function () {
             return document.getElementById("currentFoodAmount");
         }
         
+        static getCurrentNumberOfBotsLabel() {
+            return document.getElementById("currentNumberOfBots");
+        }
+        
         static getCurrentSpeedLabel() {
             return document.getElementById("currentSpeed");
         }
@@ -35,6 +39,10 @@ define(function () {
             return document.getElementById("changePlayerNameButton");
         }
         
+        static getDecreaseBotsButton() {
+            return document.getElementById("decreaseBotsButton");
+        }
+        
         static getDecreaseFoodButton() {
             return document.getElementById("decreaseFoodButton");
         }
@@ -45,6 +53,10 @@ define(function () {
         
         static getGameBoardDiv() {
             return document.getElementById("gameBoard");
+        }
+        
+        static getIncreaseBotsButton() {
+            return document.getElementById("increaseBotsButton");
         }
         
         static getIncreaseFoodButton() {
@@ -69,6 +81,10 @@ define(function () {
         
         static getPlayerStatsDiv() {
             return document.getElementById("playerStats");
+        }
+        
+        static getResetBotsButton() {
+            return document.getElementById("resetBotsButton");
         }
         
         static getResetFoodButton() {

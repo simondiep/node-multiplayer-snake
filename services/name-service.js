@@ -10,6 +10,15 @@ class NameService {
         return this.usedPlayerNames.has(name);
     }
     
+    getBotName() {
+        let newBotName;
+        do {
+            newBotName = this._generateBotName();
+        } while (this.usedPlayerNames.has(newBotName));
+        this.usedPlayerNames.add(newBotName);
+        return newBotName;
+    }
+    
     getPlayerName() {
         let newPlayerName;
         do {
@@ -25,6 +34,10 @@ class NameService {
     
     usePlayerName(name) {
         this.usedPlayerNames.add(name);
+    }
+    
+    _generateBotName() {
+        return "Bot " + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber();
     }
     
     _generatePlayerName() {

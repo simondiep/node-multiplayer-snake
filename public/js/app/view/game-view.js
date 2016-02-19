@@ -11,8 +11,9 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(foodChangeCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback) {
+        constructor(botChangeCallback, foodChangeCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback) {
             this.isChangingName = false;
+            this.botChangeCallback = botChangeCallback;
             this.foodChangeCallback = foodChangeCallback;
             this.keyDownCallback = keyDownCallback;
             this.playerColorChangeCallback = playerColorChangeCallback;
@@ -34,6 +35,10 @@ function (ClientConfig, DomHelper) {
             let notificationDiv = DomHelper.getNotificationsDiv();
             let formattedNotification = "<div><span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> <span style='color:" + playerColor + "'>" + notification + "<span/></div>";
             notificationDiv.innerHTML = formattedNotification + notificationDiv.innerHTML;
+        }
+        
+        showNumberOfBots(numberOfBots) {
+            DomHelper.getCurrentNumberOfBotsLabel().innerHTML = numberOfBots;
         }
         
         showPlayerStats(playerStats) {
@@ -91,28 +96,40 @@ function (ClientConfig, DomHelper) {
             }
         }
         
-        _handleDecreaseSpeedButtonClick() {
-            this.speedChangeCallback(ClientConfig.SPEED_CHANGE.DECREASE);
+        _handleDecreaseBotsButtonClick() {
+            this.botChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
         }
         
-        _handleIncreaseSpeedButtonClick() {
-            this.speedChangeCallback(ClientConfig.SPEED_CHANGE.INCREASE);
+        _handleIncreaseBotsButtonClick() {
+            this.botChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
         }
         
-        _handleResetSpeedButtonClick() {
-            this.speedChangeCallback(ClientConfig.SPEED_CHANGE.RESET);
+        _handleResetBotsButtonClick() {
+            this.botChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
         }
         
         _handleDecreaseFoodButtonClick() {
-            this.foodChangeCallback(ClientConfig.FOOD_CHANGE.DECREASE);
+            this.foodChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
         }
         
         _handleIncreaseFoodButtonClick() {
-            this.foodChangeCallback(ClientConfig.FOOD_CHANGE.INCREASE);
+            this.foodChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
         }
         
         _handleResetFoodButtonClick() {
-            this.foodChangeCallback(ClientConfig.FOOD_CHANGE.RESET);
+            this.foodChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
+        }
+        
+        _handleDecreaseSpeedButtonClick() {
+            this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
+        }
+        
+        _handleIncreaseSpeedButtonClick() {
+            this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
+        }
+        
+        _handleResetSpeedButtonClick() {
+            this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
         }
         
         _saveNewPlayerName() {
@@ -131,12 +148,15 @@ function (ClientConfig, DomHelper) {
         _setUpEventHandling() {
             DomHelper.getChangeColorButton().addEventListener("click", this._handleChangeColorButtonClick.bind(this), false);
             DomHelper.getChangeNameButton().addEventListener("click", this._handleChangeNameButtonClick.bind(this), false);
-            DomHelper.getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
+            DomHelper.getIncreaseBotsButton().addEventListener("click", this._handleIncreaseBotsButtonClick.bind(this), false);
+            DomHelper.getDecreaseBotsButton().addEventListener("click", this._handleDecreaseBotsButtonClick.bind(this), false);
+            DomHelper.getResetBotsButton().addEventListener("click", this._handleResetBotsButtonClick.bind(this), false);
             DomHelper.getIncreaseFoodButton().addEventListener("click", this._handleIncreaseFoodButtonClick.bind(this), false);
             DomHelper.getDecreaseFoodButton().addEventListener("click", this._handleDecreaseFoodButtonClick.bind(this), false);
             DomHelper.getResetFoodButton().addEventListener("click", this._handleResetFoodButtonClick.bind(this), false);
+            DomHelper.getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
+            DomHelper.getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
+            DomHelper.getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }

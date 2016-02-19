@@ -5,15 +5,22 @@ let Direction = require("../models/direction");
 
 class CoordinateService {
 
+    static getRandomDirection() {
+        let keys = Object.keys(Direction);
+        return Direction[keys[ keys.length * Math.random() << 0]];
+    }
+    
+    static isOutOfBoundsAfterFiveMoves(location, direction){
+        return this.isOutOfBounds(new Coordinate(location.x + (direction.x * 5),
+                                                 location.y + (direction.y * 5)));
+    }
+
     static setStartingLocationAndDirection(player, playerLength, existingFood, existingPlayers) {
-        let newDirection = this._getRandomDirection();
+        let newDirection = this.getRandomDirection();
         let proposedHeadLocation, proposedFutureLocation;
         do {
             proposedHeadLocation = this.getUnoccupiedCoordinate(existingFood, existingPlayers);
-            // Safety buffer of 5 spaces
-            proposedFutureLocation = new Coordinate(proposedHeadLocation.x + (newDirection.x * 5),
-                                                  proposedHeadLocation.y + (newDirection.y * 5));
-        } while( this.isOutOfBounds(proposedFutureLocation) ) ; 
+        } while( this.isOutOfBoundsAfterFiveMoves(proposedHeadLocation, newDirection) ) ; 
         
         let playerSegments = [];
         for( let i = 0; i < playerLength; i++) {
@@ -79,11 +86,6 @@ class CoordinateService {
     
     static _getNextPlayerTailSegment(location, direction) {
         return new Coordinate(location.x + (direction.x * -1),location.y + (direction.y * -1));
-    }
-    
-    static _getRandomDirection() {
-        let keys = Object.keys(Direction);
-        return Direction[keys[ keys.length * Math.random() << 0]];
     }
     
     static _getRandomIntegerInRange(min, max) {

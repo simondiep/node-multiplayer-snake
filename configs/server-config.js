@@ -6,9 +6,13 @@ let ServerConfig = {
     DEFAULT_FPS: 8,
     MAX_FPS: 60,
     PLAYER_STARTING_LENGTH: 5,
+    DEFAULT_STARTING_BOTS: 0,
+    MAX_BOTS: 20,
+    BOT_CHANGE_DIRECTION_INTERVAL: 5,
     IO: {
         DEFAULT_CONNECTION: "connection",
         INCOMING: {
+            BOT_CHANGE: "bot change",
             COLOR_CHANGE: "player changed color",
             FOOD_CHANGE: "food change",
             SPEED_CHANGE: "speed change",
@@ -24,12 +28,7 @@ let ServerConfig = {
             NOTIFICATION: "server notification"
         }
     },
-    FOOD_CHANGE: {
-        INCREASE: "increase",
-        DECREASE: "decrease",
-        RESET: "reset"
-    },
-    SPEED_CHANGE: {
+    INCREMENT_CHANGE: {
         INCREASE: "increase",
         DECREASE: "decrease",
         RESET: "reset"

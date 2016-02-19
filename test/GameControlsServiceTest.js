@@ -10,15 +10,15 @@ describe("GameControlsService", function() {
         let player = new Player();
         player.direction = Direction.RIGHT;
         player.directionBeforeMove = Direction.RIGHT;
-        assert.isTrue(GameControlsService._isInvalidDirection(player, Direction.RIGHT));
-        assert.isTrue(GameControlsService._isInvalidDirection(player, Direction.LEFT));
-        assert.isFalse(GameControlsService._isInvalidDirection(player, Direction.UP));
+        assert.isTrue(GameControlsService.isInvalidDirection(player, Direction.RIGHT));
+        assert.isTrue(GameControlsService.isInvalidDirection(player, Direction.LEFT));
+        assert.isFalse(GameControlsService.isInvalidDirection(player, Direction.UP));
         
         player.direction = Direction.UP;
         player.directionBeforeMove = Direction.RIGHT;
-        assert.isTrue(GameControlsService._isInvalidDirection(player, Direction.UP));
-        assert.isTrue(GameControlsService._isInvalidDirection(player, Direction.LEFT));
-        assert.isFalse(GameControlsService._isInvalidDirection(player, Direction.RIGHT));
+        assert.isTrue(GameControlsService.isInvalidDirection(player, Direction.UP));
+        assert.isTrue(GameControlsService.isInvalidDirection(player, Direction.LEFT));
+        assert.isFalse(GameControlsService.isInvalidDirection(player, Direction.RIGHT));
         
         done();
     });

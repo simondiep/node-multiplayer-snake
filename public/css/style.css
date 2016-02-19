@@ -19,9 +19,6 @@ body {
     height: 50px;
     padding-top: 5px;
 }
-.mainContainer {
-    overflow: hidden
-}
 .leftContent {
     float: left;
 }
@@ -132,6 +129,7 @@ button:hover {
     border-color: grey;
     box-sizing: border-box;
     padding: 5px;
+    overflow: auto;
 }
 #playerStats div {
     padding-bottom: 8px;

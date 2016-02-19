@@ -11,6 +11,7 @@ define(function () {
                 NOTIFICATION: "server notification"
             },
             OUTGOING: {
+                BOT_CHANGE: "bot change",
                 COLOR_CHANGE: "player changed color",
                 FOOD_CHANGE: "food change",
                 SPEED_CHANGE: "speed change",
@@ -20,12 +21,7 @@ define(function () {
             }
         },
         MAX_NAME_LENGTH: 10,
-        FOOD_CHANGE: {
-            INCREASE: "increase",
-            DECREASE: "decrease",
-            RESET: "reset"
-        },
-        SPEED_CHANGE: {
+        INCREMENT_CHANGE: {
             INCREASE: "increase",
             DECREASE: "decrease",
             RESET: "reset"

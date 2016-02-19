@@ -15,6 +15,7 @@ class GameController {
     constructor(io) {
         this.currentFPS = ServerConfig.DEFAULT_FPS;
         this.players = {};
+        this.botNames = [];
         this.food = [];
         for(let i = 0; i < ServerConfig.DEFAULT_FOOD_AMOUNT; i++) {
             this.generateFood();
@@ -30,6 +31,7 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.NAME_CHANGE, self._changePlayerName.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.COLOR_CHANGE, self._changeColor.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE, self._changeBots.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
@@ -41,6 +43,22 @@ class GameController {
         if(Object.keys(this.players).length === 0){
             console.log("Game Paused");
             return;
+        }
+        
+        // Change bot direction at intervals
+        for(let botName of this.botNames) {
+            let bot = this.players[botName];
+            if(bot.moveCounter%ServerConfig.BOT_CHANGE_DIRECTION_INTERVAL === 0) {
+                let newDirection, isInvalidDirection, willGoOutOfBounds;
+                let numberOfRetries = 0;
+                do {
+                    newDirection = CoordinateService.getRandomDirection();
+                    numberOfRetries++;
+                    isInvalidDirection = GameControlsService.isInvalidDirection(bot, newDirection);
+                    willGoOutOfBounds = CoordinateService.isOutOfBoundsAfterFiveMoves(bot.getHeadLocation(), newDirection);
+                } while (numberOfRetries < 10 && (isInvalidDirection || willGoOutOfBounds));
+                bot.changeDirection(newDirection);
+            }
         }
         
         for(let playerId in this.players) {
@@ -82,7 +100,8 @@ class GameController {
             players: this.players,
             food: this.food,
             playerStats: this.playerStatBoard,
-            speed: this.currentFPS
+            speed: this.currentFPS,
+            numberOfBots: this.botNames.length
         };
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameData );
         
@@ -108,6 +127,20 @@ class GameController {
     /*******************************
      *  socket.io handling methods *
      *******************************/
+    _addBot(playerRequestingAddition) {
+        if(this.botNames.length >= ServerConfig.MAX_BOTS) {
+            this.sendNotificationToPlayers(playerRequestingAddition.name + " tried to add a bot past the limit.", playerRequestingAddition.color);
+            return;
+        }
+        let newBotName = this.nameService.getBotName();
+        let botColor = this.colorService.getColor();
+        let newBot = new Player(newBotName, newBotName, botColor);
+        CoordinateService.setStartingLocationAndDirection(newBot, ServerConfig.PLAYER_STARTING_LENGTH, this.food, this.players);
+        this.players[newBotName] = newBot;
+        this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
+        this.sendNotificationToPlayers(newBotName + " has joined!", botColor);
+        this.botNames.push(newBotName);
+    }
     
     _addPlayer(socket) {
         let playerName = this.nameService.getPlayerName();
@@ -123,6 +156,19 @@ class GameController {
         if(Object.keys(this.players).length === 1) {
             console.log("Game Started");
             this.runGameCycle();
+        }
+    }
+    
+    _changeBots(socket, botOption) {
+        let player = this.players[socket.id];
+        if(botOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
+            this._addBot(player);
+        } else if(botOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
+            this._removeBot(player);
+        } else if(botOption === ServerConfig.INCREMENT_CHANGE.RESET) {
+            while(this.botNames.length > ServerConfig.DEFAULT_STARTING_BOTS) {
+                this._removeBot(player);
+            }
         }
     }
     
@@ -156,17 +202,17 @@ class GameController {
     _changeFood(socket, foodOption) {
         let player = this.players[socket.id];
         let notification = player.name;
-        if(foodOption === ServerConfig.FOOD_CHANGE.INCREASE) {
+        if(foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this.generateFood();
             notification += " has added some food.";
-        } else if(foodOption === ServerConfig.FOOD_CHANGE.DECREASE) {
+        } else if(foodOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             if(this.food.length > 0) {
                 this.food.pop();
                 notification += " has removed some food.";
             } else {
                 notification += " couldn't remove food.";
             }
-        } else if(foodOption === ServerConfig.FOOD_CHANGE.RESET) {
+        } else if(foodOption === ServerConfig.INCREMENT_CHANGE.RESET) {
             while(this.food.length > ServerConfig.DEFAULT_FOOD_AMOUNT) {
                 this.food.pop();
             }
@@ -178,21 +224,21 @@ class GameController {
     _changeSpeed(socket, speedOption) {
         let player = this.players[socket.id];
         let notification = player.name;
-        if(speedOption === ServerConfig.SPEED_CHANGE.INCREASE) {
+        if(speedOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             if(this.currentFPS < ServerConfig.MAX_FPS) {
                 notification += " has raised the game speed.";
                 this.currentFPS++;
             } else {
                 notification += " tried to raised the game speed past the limit.";
             }
-        } else if(speedOption === ServerConfig.SPEED_CHANGE.DECREASE) {
+        } else if(speedOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             if(this.currentFPS > ServerConfig.DEFAULT_FPS) {
                 notification += " has lowered the game speed.";
                 this.currentFPS--;
             } else {
                 notification += " tried to lower the game speed past the limit.";
             }
-        } else if(speedOption === ServerConfig.SPEED_CHANGE.RESET) {
+        } else if(speedOption === ServerConfig.INCREMENT_CHANGE.RESET) {
             notification += " has reset the game speed.";
             this.currentFPS = ServerConfig.DEFAULT_FPS;
         }
@@ -200,7 +246,11 @@ class GameController {
     }
     
     _disconnect(socket) {
-        let player = this.players[socket.id];
+        this._disconnectPlayer(socket.id);
+    }
+    
+    _disconnectPlayer(playerId) {
+        let player = this.players[playerId];
         if(!player) {
             return;
         }
@@ -208,11 +258,19 @@ class GameController {
         this.colorService.returnColor(player.color);
         this.nameService.returnPlayerName(player.name);
         this.playerStatBoard.removePlayer(player.id);
-        delete this.players[socket.id];
+        delete this.players[playerId];
     }
     
     _keyDown(socket, keyCode) {
         GameControlsService.handleKeyDown(this.players[socket.id], keyCode);
+    }
+    
+    _removeBot(playerRequestingRemoval) {
+        if(this.botNames.length > 0) {
+            this._disconnectPlayer(this.botNames.pop());
+        } else {
+            this.sendNotificationToPlayers(playerRequestingRemoval.name + " tried to remove a bot that doesn't exist.", playerRequestingRemoval.color);
+        }
     }
 }
 
