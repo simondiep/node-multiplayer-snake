@@ -38,6 +38,20 @@ define(function () {
             this.context.closePath();
             this.context.fill();
         }
+        
+        drawSquareAround(coordinate, color) {
+            let x = coordinate.x * this.squareSizeInPixels;
+            let y = coordinate.y * this.squareSizeInPixels;
+            this.context.fillStyle = color;
+            this.context.beginPath();
+            let lengthAroundSquare = this.squareSizeInPixels;
+            this.context.moveTo(x - lengthAroundSquare, y - lengthAroundSquare);
+            this.context.lineTo(x + lengthAroundSquare, y - lengthAroundSquare);
+            this.context.lineTo(x + lengthAroundSquare, y + lengthAroundSquare);
+            this.context.lineTo(x - lengthAroundSquare, y + lengthAroundSquare);
+            this.context.closePath();
+            this.context.fill();
+        }
     }
 
     return BoardView;

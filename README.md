@@ -8,17 +8,17 @@ Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
  - Choose your own color
  - Snake and Food images
- - More stats (max length, kills, deaths)
+ - More stats (max length, kills)
  - Save name (if customized) and high score in local storage
  - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
  - Add score for kills
  - Incremental death (head no longer moves, but tail does)
  - Randomize board to contain walls
  - Allow players to skip across the screen if they visit an edge without a wall
- - Randomize spawn locations, but still allow player to find themselves
  - Increase game speed based on different conditions (faster if 1v1) or random
  - Chat
  - Bots
  - Power-ups or Game Modes
-    - speed, invulnerable, double-size, swap positions, reverse controls, be able to draw on canvas, fog of war, random walls
+    - speed, invulnerable, length increase, width increase, swap positions, reverse controls,
+    - be able to draw on canvas, fog of war, random walls, elimination
  - Choice of power-up to start with

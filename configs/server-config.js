@@ -5,6 +5,7 @@ let ServerConfig = {
     FOOD_COLOR : "lightgreen",
     DEFAULT_FPS: 8,
     MAX_FPS: 60,
+    PLAYER_STARTING_LENGTH: 5,
     IO: {
         DEFAULT_CONNECTION: "connection",
         INCOMING: {

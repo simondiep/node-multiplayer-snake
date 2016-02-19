@@ -27,7 +27,6 @@ describe("Client Connection",function(){
         });
         
         player1Socket.on(ServerConfig.IO.OUTGOING.NEW_STATE,function(gameData){
-            console.log("gameData: " + gameData);
             assert.isObject(gameData);
             if(boardInfoReceived) {
                 player1Socket.disconnect();

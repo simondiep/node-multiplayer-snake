@@ -44,7 +44,7 @@ class GameController {
         }
         
         for(let playerId in this.players) {
-            this.players[playerId].move();
+            CoordinateService.movePlayer(this.players[playerId]);
         }
         
         let losingPlayers = [];
@@ -73,7 +73,7 @@ class GameController {
         }
         
         for(let lostPlayer of losingPlayers) {
-            lostPlayer.reset();
+            CoordinateService.setStartingLocationAndDirection(lostPlayer, ServerConfig.PLAYER_STARTING_LENGTH, this.food, this.players);
             this.playerStatBoard.resetScore(lostPlayer.id);
             this.playerStatBoard.addDeath(lostPlayer.id);
         }
@@ -113,6 +113,7 @@ class GameController {
         let playerName = this.nameService.getPlayerName();
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
+        CoordinateService.setStartingLocationAndDirection(newPlayer, ServerConfig.PLAYER_STARTING_LENGTH, this.food, this.players);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);

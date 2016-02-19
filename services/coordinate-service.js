@@ -1,13 +1,37 @@
 "use strict";
 let Board = require("../configs/board");
 let Coordinate = require("../models/coordinate");
+let Direction = require("../models/direction");
 
 class CoordinateService {
+
+    static setStartingLocationAndDirection(player, playerLength, existingFood, existingPlayers) {
+        let newDirection = this._getRandomDirection();
+        let proposedHeadLocation, proposedFutureLocation;
+        do {
+            proposedHeadLocation = this.getUnoccupiedCoordinate(existingFood, existingPlayers);
+            // Safety buffer of 5 spaces
+            proposedFutureLocation = new Coordinate(proposedHeadLocation.x + (newDirection.x * 5),
+                                                  proposedHeadLocation.y + (newDirection.y * 5));
+        } while( this.isOutOfBounds(proposedFutureLocation) ) ; 
+        
+        let playerSegments = [];
+        for( let i = 0; i < playerLength; i++) {
+            playerSegments.push(this._getNextPlayerTailSegment(proposedHeadLocation, newDirection));
+        }
+        
+        player.setDirectionAndStartingLocation(newDirection,playerSegments);
+    }
+    
+    static movePlayer(player) {
+        player.move(new Coordinate(player.getHeadLocation().x + player.direction.x, 
+                                   player.getHeadLocation().y + player.direction.y));
+    }
 
     static getUnoccupiedCoordinate(existingFood, existingPlayers) {
         let maxX = Board.HORIZONTAL_SQUARES - 1;
         let maxY = Board.VERTICAL_SQUARES - 1;
-        let isValidCoordinate, coordinate;
+        let coordinate;
         do {
             coordinate = new Coordinate(this._getRandomIntegerInRange(1, maxX ),
                                         this._getRandomIntegerInRange(1, maxY ));
@@ -51,6 +75,15 @@ class CoordinateService {
         return this._getAllPlayerLocations(existingPlayers).filter(function(somePlayerLocation) {
             return somePlayerLocation.equals(location);
         }).length > 0;
+    }
+    
+    static _getNextPlayerTailSegment(location, direction) {
+        return new Coordinate(location.x + (direction.x * -1),location.y + (direction.y * -1));
+    }
+    
+    static _getRandomDirection() {
+        let keys = Object.keys(Direction);
+        return Direction[keys[ keys.length * Math.random() << 0]];
     }
     
     static _getRandomIntegerInRange(min, max) {
