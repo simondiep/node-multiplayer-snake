@@ -17,6 +17,7 @@ define(function () {
                 COLOR_CHANGE: "player changed color",
                 FOOD_CHANGE: "food change",
                 SPEED_CHANGE: "speed change",
+                START_LENGTH_CHANGE: "start length change",
                 NEW_PLAYER: "new player",
                 NAME_CHANGE: "player changed name",
                 KEY_DOWN: "key down"

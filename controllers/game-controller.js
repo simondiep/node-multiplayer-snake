@@ -17,6 +17,7 @@ class GameController {
         this.players = {};
         this.botNames = [];
         this.food = [];
+        this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
         for(let i = 0; i < ServerConfig.DEFAULT_FOOD_AMOUNT; i++) {
             this.generateFood();
         }
@@ -34,6 +35,7 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE, self._changeBots.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, self._changeStartLength.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
         });
     }
@@ -94,7 +96,7 @@ class GameController {
         }
         
         for(let lostPlayer of losingPlayers) {
-            CoordinateService.setStartingLocationAndDirection(lostPlayer, ServerConfig.PLAYER_STARTING_LENGTH, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
+            CoordinateService.setStartingLocationAndDirection(lostPlayer, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
             this.playerStatBoard.resetScore(lostPlayer.id);
             this.playerStatBoard.addDeath(lostPlayer.id);
         }
@@ -104,7 +106,8 @@ class GameController {
             food: this.food,
             playerStats: this.playerStatBoard,
             speed: this.currentFPS,
-            numberOfBots: this.botNames.length
+            numberOfBots: this.botNames.length,
+            startLength: this.playerStartLength
         };
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameData );
         
@@ -138,7 +141,7 @@ class GameController {
         let newBotName = this.nameService.getBotName();
         let botColor = this.colorService.getColor();
         let newBot = new Player(newBotName, newBotName, botColor);
-        CoordinateService.setStartingLocationAndDirection(newBot, ServerConfig.PLAYER_STARTING_LENGTH, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
+        CoordinateService.setStartingLocationAndDirection(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
         this.players[newBotName] = newBot;
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
         this.sendNotificationToPlayers(newBotName + " has joined!", botColor);
@@ -149,7 +152,7 @@ class GameController {
         let playerName = this.nameService.getPlayerName();
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
-        CoordinateService.setStartingLocationAndDirection(newPlayer, ServerConfig.PLAYER_STARTING_LENGTH, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
+        CoordinateService.setStartingLocationAndDirection(newPlayer, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY, this.food, this.players);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
@@ -240,6 +243,26 @@ class GameController {
         } else if(speedOption === ServerConfig.INCREMENT_CHANGE.RESET) {
             this._resetSpeed();
             notification += " has reset the game speed.";
+        }
+        this.sendNotificationToPlayers(notification, player.color);
+    }
+    
+    _changeStartLength(socket, lengthOption) {
+        let player = this.players[socket.id];
+        let notification = player.name;
+        if(lengthOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
+            notification += " has increased the player start length.";
+            this.playerStartLength++;
+        } else if(lengthOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
+            if(this.playerStartLength > 1) {
+                notification += " has decreased the player start length.";
+                this.playerStartLength--;
+            } else {
+                notification += " tried to lower the player start length past the limit.";
+            }
+        } else if(lengthOption === ServerConfig.INCREMENT_CHANGE.RESET) {
+            this._resetSpeed();
+            notification += " has reset the player start length.";
         }
         this.sendNotificationToPlayers(notification, player.color);
     }

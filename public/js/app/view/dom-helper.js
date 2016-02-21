@@ -31,6 +31,11 @@ define(function () {
             return document.getElementById("currentSpeed");
         }
         
+        
+        static getCurrentStartLengthLabel() {
+            return document.getElementById("currentStartLength");
+        }
+        
         static getChangeColorButton() {
             return document.getElementById("changePlayerColorButton");
         }
@@ -51,6 +56,10 @@ define(function () {
             return document.getElementById("decreaseSpeedButton");
         }
         
+        static getDecreaseStartLengthButton() {
+            return document.getElementById("decreaseStartLengthButton");
+        }
+        
         static getGameBoardDiv() {
             return document.getElementById("gameBoard");
         }
@@ -65,6 +74,10 @@ define(function () {
         
         static getIncreaseSpeedButton() {
             return document.getElementById("increaseSpeedButton");
+        }
+        
+        static getIncreaseStartLengthButton() {
+            return document.getElementById("increaseStartLengthButton");
         }
         
         static getInvalidPlayerNameLabel() {
@@ -93,6 +106,10 @@ define(function () {
         
         static getResetSpeedButton() {
             return document.getElementById("resetSpeedButton");
+        }
+        
+        static getResetStartLengthButton() {
+            return document.getElementById("resetStartLengthButton");
         }
     }
 

@@ -5,12 +5,36 @@
 A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and RequireJs.  
 Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
+### Getting Started
+
+Install [Node.js](http://nodejs.org)
+
+`git clone https://github.com/simondiep/node-multiplayer-snake.git`
+
+`cd node-multiplayer-snake`
+
+`npm install`
+
+`node app`
+
+Open your web browser to `localhost:3000`
+
+### Contributing
+
+1. Fork the code base
+2. Create a new git branch
+3. Start making changes
+4. Run tests `npm test`
+5. Rebase your changes
+6. Submit a pull request
+
 ### Game Features
  - Quick join and play (no sign-ups)
  - Ability to change colors
  - Ability to change names
  - Ability to change game speed
  - Ability to change amount of food
+ - Ability to change player starting length
  - Player statistics
  - Game notifications
  - Bots

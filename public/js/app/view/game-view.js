@@ -11,7 +11,7 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(botChangeCallback, foodChangeCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback) {
+        constructor(botChangeCallback, foodChangeCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback, startLengthChangeCallback) {
             this.isChangingName = false;
             this.botChangeCallback = botChangeCallback;
             this.foodChangeCallback = foodChangeCallback;
@@ -19,6 +19,7 @@ function (ClientConfig, DomHelper) {
             this.playerColorChangeCallback = playerColorChangeCallback;
             this.playerNameUpdatedCallback = playerNameUpdatedCallback;
             this.speedChangeCallback = speedChangeCallback;
+            this.startLengthChangeCallback = startLengthChangeCallback;
             this._setUpEventHandling();
         }
         
@@ -52,6 +53,10 @@ function (ClientConfig, DomHelper) {
         
         showSpeed(speed) {
             DomHelper.getCurrentSpeedLabel().innerHTML = speed;
+        }
+        
+        showStartLength(startLength) {
+            DomHelper.getCurrentStartLengthLabel().innerHTML = startLength;
         }
         
         updatePlayerName(playerName, playerColor) {
@@ -132,6 +137,18 @@ function (ClientConfig, DomHelper) {
             this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
         }
         
+        _handleDecreaseStartLengthButtonClick() {
+            this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
+        }
+        
+        _handleIncreaseStartLengthButtonClick() {
+            this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
+        }
+        
+        _handleResetStartLengthButtonClick() {
+            this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
+        }
+        
         _saveNewPlayerName() {
             let playerName = DomHelper.getPlayerNameElement().value;
             if(playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
@@ -157,6 +174,9 @@ function (ClientConfig, DomHelper) {
             DomHelper.getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
             DomHelper.getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
             DomHelper.getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
+            DomHelper.getIncreaseStartLengthButton().addEventListener("click", this._handleIncreaseStartLengthButtonClick.bind(this), false);
+            DomHelper.getDecreaseStartLengthButton().addEventListener("click", this._handleDecreaseStartLengthButtonClick.bind(this), false);
+            DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }
