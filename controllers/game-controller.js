@@ -262,7 +262,7 @@ class GameController {
                 notification += " tried to lower the player start length past the limit.";
             }
         } else if(lengthOption === ServerConfig.INCREMENT_CHANGE.RESET) {
-            this._resetSpeed();
+            this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
             notification += " has reset the player start length.";
         }
         this.sendNotificationToPlayers(notification, player.color);
