@@ -20,6 +20,20 @@ define(function () {
             this.context.strokeRect(0, 0, this.width, this.height);
         }
         
+        drawImages(coordinates, base64Image) {
+            for(let coordinate of coordinates) {
+                this.drawImage(coordinate, base64Image);
+            }
+        }
+        
+        drawImage(coordinate, base64Image) {
+            let x = coordinate.x * this.squareSizeInPixels;
+            let y = coordinate.y * this.squareSizeInPixels;
+            let image = new Image();
+            image.src = base64Image;
+            this.context.drawImage(image, x - (this.squareSizeInPixels / 2), y - (this.squareSizeInPixels / 2), this.squareSizeInPixels, this.squareSizeInPixels);
+        }
+        
         drawSquares(coordinates, color) {
             for(let coordinate of coordinates) {
                 this.drawSquare(coordinate, color);

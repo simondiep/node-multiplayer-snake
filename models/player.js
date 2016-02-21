@@ -51,6 +51,10 @@ class Player {
         this.moveCounter = 0;
     }
     
+    setBase64Image(base64Image) {
+        this.base64Image = base64Image;
+    }
+    
     toJSON() {
         return {
             id: this.id,
@@ -58,7 +62,8 @@ class Player {
             direction: this.direction,
             segments: this.segments,
             color: this.color,
-            moveCounter: this.moveCounter
+            moveCounter: this.moveCounter,
+            base64Image: this.base64Image
         };
     }
 }

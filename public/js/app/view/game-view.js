@@ -11,10 +11,11 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(botChangeCallback, foodChangeCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback, startLengthChangeCallback) {
+        constructor(botChangeCallback, foodChangeCallback, imageUploadCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback, startLengthChangeCallback) {
             this.isChangingName = false;
             this.botChangeCallback = botChangeCallback;
             this.foodChangeCallback = foodChangeCallback;
+            this.imageUploadCallback = imageUploadCallback;
             this.keyDownCallback = keyDownCallback;
             this.playerColorChangeCallback = playerColorChangeCallback;
             this.playerNameUpdatedCallback = playerNameUpdatedCallback;
@@ -42,10 +43,14 @@ function (ClientConfig, DomHelper) {
             DomHelper.getCurrentNumberOfBotsLabel().innerHTML = numberOfBots;
         }
         
-        showPlayerStats(playerStats) {
-            let formattedScores = "<div class='playerStatsHeader'><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Deaths</span></div>";
+        showPlayerStats(playerStats) {        
+            let formattedScores = "<div class='playerStatsHeader'><span class='image'></span><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Deaths</span></div>";
             for( let playerStat of playerStats) {
-                formattedScores+= "<div class='playerStatsContent'><span  class='name' style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
+                let playerImageElement = "";
+                if(playerStat.base64Image) {
+                    playerImageElement = "<img src=" + playerStat.base64Image + " class='playerStatsImage'></img>" ;
+                }
+                formattedScores+= "<div class='playerStatsContent'><span class='image'>" + playerImageElement + "</span><span class='name' style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
                                   "<span class='stat'>" + playerStat.score + "</span><span class='stat'>" + playerStat.highScore + "</span><span class='stat'>"+ playerStat.deaths +"</span></div>";
             }
             DomHelper.getPlayerStatsDiv().innerHTML = formattedScores;
@@ -149,6 +154,14 @@ function (ClientConfig, DomHelper) {
             this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
         }
         
+        _handleImageUpload() {
+            let uploadedImage = DomHelper.getImageUploadElement().files[0];
+            if(uploadedImage) {
+                // TODO Resize image to be 12x12 to save space
+                this.imageUploadCallback(uploadedImage);
+            }
+        }
+        
         _saveNewPlayerName() {
             let playerName = DomHelper.getPlayerNameElement().value;
             if(playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
@@ -177,6 +190,7 @@ function (ClientConfig, DomHelper) {
             DomHelper.getIncreaseStartLengthButton().addEventListener("click", this._handleIncreaseStartLengthButtonClick.bind(this), false);
             DomHelper.getDecreaseStartLengthButton().addEventListener("click", this._handleDecreaseStartLengthButtonClick.bind(this), false);
             DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
+            DomHelper.getImageUploadElement().addEventListener("change", this._handleImageUpload.bind(this));
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }

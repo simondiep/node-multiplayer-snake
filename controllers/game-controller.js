@@ -36,6 +36,7 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, self._changeStartLength.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD, self._updatePlayerImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
         });
     }
@@ -311,6 +312,12 @@ class GameController {
         this.currentFPS = ServerConfig.DEFAULT_FPS;
     }
     
+    _updatePlayerImage(socket, base64Image) {
+        let player = this.players[socket.id];
+        player.setBase64Image(base64Image);
+        this.playerStatBoard.setBase64Image(player.id, base64Image);
+        this.sendNotificationToPlayers(player.name + " has uploaded a new image.", player.color);
+    }
     
 }
 

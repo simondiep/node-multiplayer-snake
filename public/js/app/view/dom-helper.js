@@ -64,6 +64,10 @@ define(function () {
             return document.getElementById("gameBoard");
         }
         
+        static getImageUploadElement() {
+            return document.getElementById("imageUpload");
+        }
+        
         static getIncreaseBotsButton() {
             return document.getElementById("increaseBotsButton");
         }

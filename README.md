@@ -30,18 +30,19 @@ Open your web browser to `localhost:3000`
 
 ### Game Features
  - Quick join and play (no sign-ups)
- - Ability to change colors
- - Ability to change names
- - Ability to change game speed
- - Ability to change amount of food
- - Ability to change player starting length
+ - Change colors
+ - Change names
+ - Change game speed
+ - Change amount of food
+ - Change player starting length
+ - Upload your own snake image
  - Player statistics
  - Game notifications
  - Bots
  - Random, safe spawns
 
 ### Potential Features To Implement
- - Snake and Food images
+ - Food image
  - More stats (max length, kills)
  - Save name (if customized) and high score in local storage
  - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]

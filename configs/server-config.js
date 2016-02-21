@@ -18,6 +18,7 @@ let ServerConfig = {
             FOOD_CHANGE: "food change",
             SPEED_CHANGE: "speed change",
             START_LENGTH_CHANGE: "start length change",
+            IMAGE_UPLOAD: "image upload",
             NEW_PLAYER: "new player",
             NAME_CHANGE: "player changed name",
             KEY_DOWN: "key down",

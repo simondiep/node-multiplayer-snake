@@ -35,13 +35,18 @@ class PlayerStats {
         this.score = 0;
     }
     
+    setBase64Image(base64Image) {
+        this.base64Image = base64Image;
+    }
+    
     toJSON() {
         return {
             name: this.name,
             color: this.color,
             score: this.score,
             highScore: this.highScore,
-            deaths: this.deaths
+            deaths: this.deaths,
+            base64Image: this.base64Image
         };
     }
 }

@@ -35,6 +35,10 @@ class PlayerStatBoard {
         this.statBoard.delete(playerId);
     }
     
+    setBase64Image(playerId, base64Image) {
+        this.statBoard.get(playerId).setBase64Image(base64Image);
+    }
+    
     toJSON() {
         let response = [];
         this.statBoard.forEach(function(value, key, map) {

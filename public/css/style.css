@@ -19,6 +19,9 @@ body {
     height: 50px;
     padding-top: 5px;
 }
+.mainContainer {
+    height: 500px;
+}
 .leftContent {
     float: left;
 }
@@ -55,6 +58,10 @@ body {
     font-size: 18px;
     color: gray;
 }
+.playerStatsHeader .image {
+    display:inline-block;
+    width:20px;
+}
 .playerStatsHeader .name {
     display:inline-block;
     width:200px;
@@ -66,6 +73,10 @@ body {
 .playerStatsContent {
     font-size: 18px;
 }
+.playerStatsContent .image {
+    display:inline-block;
+    width:20px;
+}
 .playerStatsContent .name {
     display:inline-block;
     width:200px;
@@ -73,6 +84,11 @@ body {
 .playerStatsContent .stat {
     display:inline-block;
     width:120px;
+}
+.playerStatsImage {
+    width: 12px;
+    height: 12px;
+    padding-bottom: 3px;
 }
 .minusButton {
     background: url(../assets/minus-icon.png)  no-repeat; border: none;
@@ -106,6 +122,25 @@ body {
 .resetButton:hover {
     background: url(../assets/reset-icon-hover.png)  no-repeat; border: none;
     cursor: pointer;
+}
+.imageUploadLabel {
+    cursor: pointer;
+    -webkit-border-radius: 10;
+    -moz-border-radius: 10;
+    border-radius: 5px;
+    border-color: transparent;
+    color: #ffffff;
+    background: #383838;
+    font-size: 20px;
+    padding: 12px;
+}
+.imageUploadLabel:hover {
+    background: #808080;
+    text-decoration: none;
+    cursor: pointer;
+}
+#imageUpload {
+    display: none;
 }
 button {
     -webkit-border-radius: 10;

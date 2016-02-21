@@ -13,6 +13,7 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
         constructor() {
             this.gameView = new GameView(this.botChangeCallback.bind(this),
                                          this.foodChangeCallback.bind(this),
+                                         this.imageUploadCallback.bind(this),
                                          this.keyDownCallback.bind(this),
                                          this.playerColorChangeCallback.bind(this),
                                          this.playerNameUpdatedCallback.bind(this),
@@ -38,7 +39,13 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
                 if("/#"+this.socket.id === playerId && player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN && player.moveCounter%2 === 0) {
                     this.boardView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
                 }
-                this.boardView.drawSquares(player.segments, player.color);
+                
+                
+                if(player.base64Image) {
+                    this.boardView.drawImages(player.segments, player.base64Image);
+                } else {
+                    this.boardView.drawSquares(player.segments, player.color);
+                }
             }
             
             let self = this;
@@ -58,6 +65,24 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
         
         foodChangeCallback(option) {
             this.socket.emit(ClientConfig.IO.OUTGOING.FOOD_CHANGE, option);
+        }
+        
+        imageUploadCallback(image) {
+            if(image.size > ClientConfig.MAX_IMAGE_SIZE_BYTES) {
+                alert("Image must be " + ClientConfig.MAX_IMAGE_SIZE_BYTES + " bytes or smaller.");
+                return;
+            }
+             let reader  = new FileReader();
+             reader.onerror = function() {
+                console.log('An error occurred while reading a file.');
+                console.log(reader.error);
+            };
+            let self = this;
+            reader.onload = function(e) {
+               let encodedString = reader.result;
+               self.socket.emit(ClientConfig.IO.OUTGOING.IMAGE_UPLOAD, encodedString);
+            };
+             reader.readAsDataURL(image);
         }
         
         keyDownCallback(keyCode) {

@@ -3,6 +3,7 @@ define(function () {
 
     let ClientConfig = {
         FPS: 60,
+        MAX_IMAGE_SIZE_BYTES : 100000,
         TURNS_TO_FLASH_AFTER_SPAWN: 10,
         SPAWN_FLASH_COLOR: "white",
         IO: {
@@ -18,6 +19,7 @@ define(function () {
                 FOOD_CHANGE: "food change",
                 SPEED_CHANGE: "speed change",
                 START_LENGTH_CHANGE: "start length change",
+                IMAGE_UPLOAD: "image upload",
                 NEW_PLAYER: "new player",
                 NAME_CHANGE: "player changed name",
                 KEY_DOWN: "key down"
