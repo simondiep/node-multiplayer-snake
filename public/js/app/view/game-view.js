@@ -161,7 +161,7 @@ function (ClientConfig, DomHelper) {
                 let image = new Image();
                 let self = this;
                 image.onload = function() {
-                    self.imageUploadCallback(image);
+                    self.imageUploadCallback(image, uploadedImageAsFile.type);
                 };
                 image.src = URL.createObjectURL(uploadedImageAsFile);
             }

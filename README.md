@@ -52,9 +52,15 @@ Open your web browser to `localhost:3000`
  - Toggle view of admin options as a menu item
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
  - Add a report bug menu item
+ - Possible bug of player moving through another player if there are a lot of players?
 
 ### Potential Features To Implement
+ - Global high score
+ - Spectate/Join
  - Multiple rooms
+ - Support animated gifs (snake and apple)
+ - Custom sort stat board
+ - Head is slightly bigger than body
  - Food image
  - More stats (max length, kills)
  - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
@@ -66,6 +72,6 @@ Open your web browser to `localhost:3000`
  - Choose your own color
  - Chat
  - Power-ups or Game Modes
-    - speed, invulnerable, length increase, width increase, swap positions, reverse controls,
+    - speed (2 or more steps for a player), invulnerable, length increase (super food), width increase, swap positions, reverse controls,
     - be able to draw on canvas, fog of war, random walls, elimination, maze
  - Choice of power-up to start with

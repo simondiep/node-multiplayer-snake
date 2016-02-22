@@ -68,7 +68,7 @@ define(function () {
             this.context.stroke();
         }
         
-        resizeUploadedImageAndBase64(image){
+        resizeUploadedImageAndBase64(image, imageType){
             let maxImageWidth = this.imageUploadCanvas.width;
             let maxImageHeight = this.imageUploadCanvas.height;
             if(image.width > maxImageWidth ) {
@@ -78,9 +78,13 @@ define(function () {
                 image.height = maxImageHeight;
             }
             let imageUploadCanvasContext = this.imageUploadCanvas.getContext("2d");
+            // clear canvas for next image
+            imageUploadCanvasContext.fillStyle = "black";
+            imageUploadCanvasContext.fillRect(0, 0, maxImageWidth, maxImageHeight);
+            
             imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
 
-            return this.imageUploadCanvas.toDataURL();
+            return this.imageUploadCanvas.toDataURL(imageType);
         }
     }
 

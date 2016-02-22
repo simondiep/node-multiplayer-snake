@@ -67,8 +67,8 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.socket.emit(ClientConfig.IO.OUTGOING.FOOD_CHANGE, option);
         }
         
-        imageUploadCallback(image) {
-            let resizedBase64Image = this.canvasView.resizeUploadedImageAndBase64(image);
+        imageUploadCallback(image, imageType) {
+            let resizedBase64Image = this.canvasView.resizeUploadedImageAndBase64(image,imageType);
             this.socket.emit(ClientConfig.IO.OUTGOING.IMAGE_UPLOAD, resizedBase64Image);
         }
         
