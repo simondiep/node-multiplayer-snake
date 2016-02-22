@@ -55,7 +55,7 @@ body {
     color: gray
 }
 .playerStatsHeader {
-    font-size: 18px;
+    font-size: 14px;
     color: gray;
 }
 .playerStatsHeader .image {
@@ -64,14 +64,14 @@ body {
 }
 .playerStatsHeader .name {
     display:inline-block;
-    width:200px;
+    width:160px;
 }
 .playerStatsHeader .stat {
     display:inline-block;
-    width:120px;
+    width:90px;
 }
 .playerStatsContent {
-    font-size: 18px;
+    font-size: 14px;
 }
 .playerStatsContent .image {
     display:inline-block;
@@ -79,11 +79,11 @@ body {
 }
 .playerStatsContent .name {
     display:inline-block;
-    width:200px;
+    width:160px;
 }
 .playerStatsContent .stat {
     display:inline-block;
-    width:120px;
+    width:90px;
 }
 .playerStatsImage {
     width: 12px;

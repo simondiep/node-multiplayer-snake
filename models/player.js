@@ -13,6 +13,10 @@ class Player {
         this.direction = newDirection;
     }
     
+    clearAllSegments() {
+        this.segments = [];
+    }
+    
     getHeadLocation() {
         return this.segments[0];
     }
@@ -20,14 +24,6 @@ class Player {
     // Growing is not done immediately, but on the next turn
     growNextTurn() {
         this.growQueued = true;
-    }
-    
-    hasCollidedWithSelf() {
-        let headSegment = this.getHeadLocation();
-        return (this.segments.slice(1).filter(
-            function(segment) {
-                return segment.equals(headSegment);
-            }).length > 0);
     }
     
     move(newHeadLocation) {

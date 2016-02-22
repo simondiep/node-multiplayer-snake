@@ -15,11 +15,11 @@ class CoordinateService {
                                                  location.y + (direction.y * n)));
     }
 
-    static setStartingLocationAndDirection(player, playerLength, turnLeeway, existingFood, existingPlayers) {
+    static setStartingLocationAndDirection(player, playerLength, turnLeeway, occupiedCoordinates) {
         let newDirection = this.getRandomDirection();
         let proposedHeadLocation, proposedFutureLocation;
         do {
-            proposedHeadLocation = this.getUnoccupiedCoordinate(existingFood, existingPlayers);
+            proposedHeadLocation = this.getUnoccupiedCoordinate(occupiedCoordinates);
         } while( this.isOutOfBoundsAfterNMoves(proposedHeadLocation, turnLeeway, newDirection) ) ; 
         
         let playerSegments = [];
@@ -35,22 +35,23 @@ class CoordinateService {
                                    player.getHeadLocation().y + player.direction.y));
     }
 
-    static getUnoccupiedCoordinate(existingFood, existingPlayers) {
+    static getUnoccupiedCoordinate(occupiedCoordinates) {
         let maxX = Board.HORIZONTAL_SQUARES - 1;
         let maxY = Board.VERTICAL_SQUARES - 1;
-        let coordinate;
+        let coordinate, matches;
         do {
             coordinate = new Coordinate(this._getRandomIntegerInRange(1, maxX ),
                                         this._getRandomIntegerInRange(1, maxY ));
-        } while (this._isLocationOccupied(coordinate, existingFood, existingPlayers));
+            matches = false;
+            for(let occupiedCoordinate of occupiedCoordinates) {
+                if(coordinate.equals(occupiedCoordinate)) {
+                    matches = true;
+                    break;
+                }
+            }
+        } while (matches);
         
         return coordinate; 
-    }
-
-    static hasPlayerCollidedWithAnotherPlayer(player, existingPlayers) {
-        return this._getAllPlayerLocations(existingPlayers, player).filter(function(otherPlayerLocation) {
-            return otherPlayerLocation.equals(player.getHeadLocation());
-        }).length > 0;
     }
     
     static isOutOfBounds(coordinate) {
@@ -58,30 +59,6 @@ class CoordinateService {
                (coordinate.y <= 0) ||
                (coordinate.x >= Board.HORIZONTAL_SQUARES) ||
                (coordinate.y >= Board.VERTICAL_SQUARES);
-    }
-    
-    // Optional excludedPlayer arg
-    static _getAllPlayerLocations(existingPlayers, excludedPlayer) {
-        let playerLocations = Object.keys(existingPlayers).reduce(function(collection, key) {
-            let somePlayer = existingPlayers[key];
-            if(!excludedPlayer || somePlayer.id !== excludedPlayer.id) {
-                return collection.concat(somePlayer.segments);
-            }
-            return collection;
-        }, []);
-        return playerLocations;
-    }
-    
-    static _isLocationOccupied(location, existingFood, existingPlayers) {
-        let foodOccupied = existingFood.filter(function(food) {
-            return food.location.equals(location);
-        }).length > 0;
-        if(foodOccupied) {
-            return true;
-        }
-        return this._getAllPlayerLocations(existingPlayers).filter(function(somePlayerLocation) {
-            return somePlayerLocation.equals(location);
-        }).length > 0;
     }
     
     static _getNextPlayerTailSegment(location, direction) {

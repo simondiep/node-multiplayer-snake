@@ -44,14 +44,18 @@ function (ClientConfig, DomHelper) {
         }
         
         showPlayerStats(playerStats) {        
-            let formattedScores = "<div class='playerStatsHeader'><span class='image'></span><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Deaths</span></div>";
+            let formattedScores = "<div class='playerStatsHeader'><span class='image'></span><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Kills</span><span class='stat'>Deaths</span></div>";
             for( let playerStat of playerStats) {
                 let playerImageElement = "";
                 if(playerStat.base64Image) {
                     playerImageElement = "<img src=" + playerStat.base64Image + " class='playerStatsImage'></img>" ;
                 }
-                formattedScores+= "<div class='playerStatsContent'><span class='image'>" + playerImageElement + "</span><span class='name' style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
-                                  "<span class='stat'>" + playerStat.score + "</span><span class='stat'>" + playerStat.highScore + "</span><span class='stat'>"+ playerStat.deaths +"</span></div>";
+                formattedScores+= "<div class='playerStatsContent'><span class='image'>" + playerImageElement + "</span>" + 
+                    "<span class='name' style='color:"+playerStat.color+"'>" + playerStat.name + "</span>" +
+                    "<span class='stat'>" + playerStat.score + "</span>" + 
+                    "<span class='stat'>" + playerStat.highScore + "</span>" + 
+                    "<span class='stat'>"+ playerStat.kills +"</span>" + 
+                    "<span class='stat'>"+ playerStat.deaths +"</span></div>";
             }
             DomHelper.getPlayerStatsDiv().innerHTML = formattedScores;
         }

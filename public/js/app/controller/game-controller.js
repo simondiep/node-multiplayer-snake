@@ -106,7 +106,7 @@ function (ClientConfig, CanvasFactory, GameView, io) {
         _handleNewGameData(gameData) {
             this.players = gameData.players;
             this.food = gameData.food;
-            this.gameView.showFoodAmount(gameData.food.length);
+            this.gameView.showFoodAmount(Object.keys(gameData.food).length);
             this.gameView.showSpeed(gameData.speed);
             this.gameView.showStartLength(gameData.startLength);
             this.gameView.showNumberOfBots(gameData.numberOfBots);

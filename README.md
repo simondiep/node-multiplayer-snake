@@ -28,7 +28,7 @@ Open your web browser to `localhost:3000`
  - Change amount of food
  - Change player starting length
  - Upload your own snake image
- - Player statistics
+ - Player statistics including kills/deaths
  - Game notifications
  - Bots
  - Random, safe spawns
@@ -52,6 +52,8 @@ Open your web browser to `localhost:3000`
  - Toggle view of admin options as a menu item
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
  - Add a report bug menu item
+ - More consistent names: pick either location or coordinate and stick with it
+ - Handle case where entire board is filled
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
@@ -71,7 +73,7 @@ Open your web browser to `localhost:3000`
  - Stats
     - Global high score
     - Custom sort stat board
-    - More stats (max length, kills)
+    - More stats (max length)
     - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
     - Add score for kills
  - Power-ups or Game Modes

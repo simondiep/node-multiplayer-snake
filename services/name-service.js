@@ -4,6 +4,7 @@ class NameService {
 
     constructor() {
         this.usedPlayerNames = new Set();
+        this.usedFoodIds = new Set();
     }
     
     doesPlayerNameExist(name) {
@@ -19,6 +20,15 @@ class NameService {
         return newBotName;
     }
     
+    getFoodId() {
+        let foodId;
+        do {
+            foodId = this._generateFoodId();
+        } while (this.usedFoodIds.has(foodId));
+        this.usedFoodIds.add(foodId);
+        return foodId;
+    }
+    
     getPlayerName() {
         let newPlayerName;
         do {
@@ -26,6 +36,10 @@ class NameService {
         } while (this.usedPlayerNames.has(newPlayerName));
         this.usedPlayerNames.add(newPlayerName);
         return newPlayerName;
+    }
+    
+    returnFoodId(foodId) {
+        this.usedFoodIds.delete(foodId);
     }
     
     returnPlayerName(name) {
@@ -38,6 +52,10 @@ class NameService {
     
     _generateBotName() {
         return "Bot " + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber();
+    }
+    
+    _generateFoodId() {
+        return "Food " + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber();
     }
     
     _generatePlayerName() {

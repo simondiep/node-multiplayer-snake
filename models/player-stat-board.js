@@ -11,6 +11,10 @@ class PlayerStatBoard {
         this.statBoard.get(playerId).addDeath();
     }
     
+    addKill(playerId) {
+        this.statBoard.get(playerId).addKill();
+    }
+    
     addPlayer(playerId, playerName, playerColor) {
         this.statBoard.set(playerId, new PlayerStats(playerName, playerColor));
     }

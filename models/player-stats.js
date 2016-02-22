@@ -8,8 +8,7 @@ class PlayerStats {
         this.score = 0;
         this.highScore = 0;
         this.deaths = 0;
-        //this.kills = 0;
-        //this.maxLength = 0;
+        this.kills = 0;
     }
     
     changeColor(newColor) {
@@ -22,6 +21,10 @@ class PlayerStats {
     
     addDeath() {
         this.deaths++;
+    }
+    
+    addKill() {
+        this.kills++;
     }
     
     increaseScore() {
@@ -46,6 +49,7 @@ class PlayerStats {
             score: this.score,
             highScore: this.highScore,
             deaths: this.deaths,
+            kills: this.kills,
             base64Image: this.base64Image
         };
     }

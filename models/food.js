@@ -1,7 +1,8 @@
 "use strict";
 
 class Food {
-    constructor(coordinate, color) {
+    constructor(id, coordinate, color) {
+        this.id = id;
         this.location = coordinate;
         this.color = color;
     }
