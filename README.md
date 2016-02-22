@@ -19,14 +19,6 @@ Install [Node.js](http://nodejs.org)
 
 Open your web browser to `localhost:3000`
 
-### Contributing
-
-1. Fork the code base
-2. Create a new git branch
-3. Start making changes
-4. Run tests `npm test`
-5. Rebase your changes
-6. Submit a pull request
 
 ### Game Features
  - Quick join and play (no sign-ups)
@@ -41,18 +33,37 @@ Open your web browser to `localhost:3000`
  - Bots
  - Random, safe spawns
 
+### Contributing
+
+1. Fork the code base
+2. Create a new git branch
+3. Start making changes
+4. Run tests `npm test`
+5. Rebase your changes
+6. Submit a pull request
+
+### Tech Debt
+ - Additional Client-side validation to reduce unnecessary emits to server
+ - Additional Server-side optimization to reduce unnecessary emits to client
+ - Server-side validation of inputs
+ - Create a single menu button, Edit Player Profile, that contains all existing buttons as menu items
+ - Save all Player Profile settings to Local Storage, and load them on subsequent plays (also high score?)
+ - Add a description for what 'Upload Image' does and any restrictions
+ - Toggle view of admin options as a menu item
+ - Resize uploaded images on client to 12x12
+ - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
+
 ### Potential Features To Implement
  - Food image
  - More stats (max length, kills)
- - Save name (if customized) and high score in local storage
  - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
  - Add score for kills
  - Incremental death (head no longer moves, but tail does)
  - Randomize board to contain walls
  - Allow players to skip across the screen if they visit an edge without a wall
  - Increase game speed based on different conditions (faster if 1v1) or random
+ - Choose your own color
  - Chat
- - Bots
  - Power-ups or Game Modes
     - speed, invulnerable, length increase, width increase, swap positions, reverse controls,
     - be able to draw on canvas, fog of war, random walls, elimination
