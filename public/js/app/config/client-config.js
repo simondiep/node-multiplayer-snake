@@ -3,7 +3,6 @@ define(function () {
 
     let ClientConfig = {
         FPS: 60,
-        MAX_IMAGE_SIZE_BYTES : 100000,
         TURNS_TO_FLASH_AFTER_SPAWN: 10,
         SPAWN_FLASH_COLOR: "white",
         IO: {

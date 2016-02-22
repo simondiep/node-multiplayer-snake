@@ -155,10 +155,15 @@ function (ClientConfig, DomHelper) {
         }
         
         _handleImageUpload() {
-            let uploadedImage = DomHelper.getImageUploadElement().files[0];
-            if(uploadedImage) {
-                // TODO Resize image to be 12x12 to save space
-                this.imageUploadCallback(uploadedImage);
+            let uploadedImageAsFile = DomHelper.getImageUploadElement().files[0];
+            if(uploadedImageAsFile) {
+                // Convert file to image
+                let image = new Image();
+                let self = this;
+                image.onload = function() {
+                    self.imageUploadCallback(image);
+                };
+                image.src = URL.createObjectURL(uploadedImageAsFile);
             }
         }
         

@@ -1,11 +1,11 @@
 define([
     "config/client-config",
-    "view/board-view-factory",
+    "view/canvas-factory",
     "view/game-view",
     "socketio"
 ],
 
-function (ClientConfig, BoardViewFactory, GameView, io) {
+function (ClientConfig, CanvasFactory, GameView, io) {
     "use strict";
     
     class GameController {
@@ -28,23 +28,23 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
         }
        
         renderGame() {
-            this.boardView.clear();
+            this.canvasView.clear();
             for(let foodId in this.food) {
                 let food = this.food[foodId];
-                this.boardView.drawSquare(food.location, food.color);
+                this.canvasView.drawSquare(food.location, food.color);
             }
             for(let playerId in this.players) {
                 let player = this.players[playerId];
                 // Flash around where you have just spawned
                 if("/#"+this.socket.id === playerId && player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN && player.moveCounter%2 === 0) {
-                    this.boardView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
+                    this.canvasView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
                 }
                 
                 
                 if(player.base64Image) {
-                    this.boardView.drawImages(player.segments, player.base64Image);
+                    this.canvasView.drawImages(player.segments, player.base64Image);
                 } else {
-                    this.boardView.drawSquares(player.segments, player.color);
+                    this.canvasView.drawSquares(player.segments, player.color);
                 }
             }
             
@@ -68,21 +68,8 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
         }
         
         imageUploadCallback(image) {
-            if(image.size > ClientConfig.MAX_IMAGE_SIZE_BYTES) {
-                alert("Image must be " + ClientConfig.MAX_IMAGE_SIZE_BYTES + " bytes or smaller.");
-                return;
-            }
-             let reader  = new FileReader();
-             reader.onerror = function() {
-                console.log('An error occurred while reading a file.');
-                console.log(reader.error);
-            };
-            let self = this;
-            reader.onload = function(e) {
-               let encodedString = reader.result;
-               self.socket.emit(ClientConfig.IO.OUTGOING.IMAGE_UPLOAD, encodedString);
-            };
-             reader.readAsDataURL(image);
+            let resizedBase64Image = this.canvasView.resizeUploadedImageAndBase64(image);
+            this.socket.emit(ClientConfig.IO.OUTGOING.IMAGE_UPLOAD, resizedBase64Image);
         }
         
         keyDownCallback(keyCode) {
@@ -110,8 +97,8 @@ function (ClientConfig, BoardViewFactory, GameView, io) {
          *******************************/
         
         _createBoard(board) {
-            this.boardView = BoardViewFactory.createBoardView(board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES);
-            this.boardView.clear();
+            this.canvasView = CanvasFactory.createCanvasView(board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES);
+            this.canvasView.clear();
             this.gameView.ready();
             this.renderGame();
         }

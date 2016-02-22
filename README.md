@@ -50,10 +50,11 @@ Open your web browser to `localhost:3000`
  - Save all Player Profile settings to Local Storage, and load them on subsequent plays (also high score?)
  - Add a description for what 'Upload Image' does and any restrictions
  - Toggle view of admin options as a menu item
- - Resize uploaded images on client to 12x12
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
+ - Add a report bug menu item
 
 ### Potential Features To Implement
+ - Multiple rooms
  - Food image
  - More stats (max length, kills)
  - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
@@ -66,5 +67,5 @@ Open your web browser to `localhost:3000`
  - Chat
  - Power-ups or Game Modes
     - speed, invulnerable, length increase, width increase, swap positions, reverse controls,
-    - be able to draw on canvas, fog of war, random walls, elimination
+    - be able to draw on canvas, fog of war, random walls, elimination, maze
  - Choice of power-up to start with

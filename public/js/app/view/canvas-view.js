@@ -1,13 +1,14 @@
 define(function () {
     "use strict";
     
-    class BoardView {
+    class CanvasView {
         
-        constructor(canvas, squareSizeInPixels) {
+        constructor(canvas, squareSizeInPixels, imageUploadCanvas) {
             this.height = canvas.height;
             this.width = canvas.width;
             this.context = canvas.getContext("2d");
             this.squareSizeInPixels = squareSizeInPixels;
+            this.imageUploadCanvas = imageUploadCanvas;
         }
         
         clear() {
@@ -66,8 +67,23 @@ define(function () {
             this.context.closePath();
             this.context.stroke();
         }
+        
+        resizeUploadedImageAndBase64(image){
+            let maxImageWidth = this.imageUploadCanvas.width;
+            let maxImageHeight = this.imageUploadCanvas.height;
+            if(image.width > maxImageWidth ) {
+                image.width = maxImageWidth;
+            }
+            if(image.height > maxImageHeight ) {
+                image.height = maxImageHeight;
+            }
+            let imageUploadCanvasContext = this.imageUploadCanvas.getContext("2d");
+            imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
+
+            return this.imageUploadCanvas.toDataURL();
+        }
     }
 
-    return BoardView;
+    return CanvasView;
 
 });     
