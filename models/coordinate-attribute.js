@@ -20,6 +20,10 @@ class CoordinateAttribute {
         return this.playerIdsWithHead.length >= 2 || (this.playerIdsWithHead.length === 1 && this.playerIdWithTail);
     }
     
+    isSafe() {
+        return !this.wall && !this.playerIdWithTail && this.playerIdsWithHead.length === 0;
+    }
+    
     isWall() {
         return this.wall;
     }

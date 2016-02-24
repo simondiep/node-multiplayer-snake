@@ -341,8 +341,8 @@ class GameController {
         if(isOutOfBounds) {
             return true;
         }
-        let isOccupied = this.boardOccupancyService.isOccupied(nextCoordinate) || this.boardOccupancyService.isOccupied(nextSecondCoordinate);
-        return isOccupied;
+        let isSafe = this.boardOccupancyService.isSafe(nextCoordinate) || this.boardOccupancyService.isSafe(nextSecondCoordinate);
+        return !isSafe;
     }
     
     _keyDown(socket, keyCode) {

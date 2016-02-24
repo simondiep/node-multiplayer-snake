@@ -233,13 +233,13 @@ class BoardOccupancyService {
         return [];
     }
     
-    isOccupied(coordinate) {
-        let coordinateAttribute = this.board[coordinate.x][coordinate.y];
-        return coordinateAttribute.isOccupied();
-    }
-    
     isOutOfBounds(coordinate) {
         return coordinate.x < 0 || coordinate.x > this.maxColumn || coordinate.y < 0 || coordinate.y > this.maxRow;
+    }
+        
+    isSafe(coordinate) {
+        let coordinateAttribute = this.board[coordinate.x][coordinate.y];
+        return coordinateAttribute.isSafe();
     }
     
     isWall(coordinate) {

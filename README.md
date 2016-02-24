@@ -65,6 +65,7 @@ Open your web browser to `localhost:3000`
  - Choose your own color
  - Chat
  - Support resolutions lower than 1225x550
+ - Smarter bots (go after food, don't run into themselves)
  - Images
     - Food image
     - Support animated gifs (snake and food)
