@@ -53,8 +53,6 @@ Open your web browser to `localhost:3000`
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
- - Handle case where entire board is filled
- - Make spawn locations more random, as opposed to closest to top left
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement

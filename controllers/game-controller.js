@@ -7,8 +7,8 @@ let ColorService = require("../services/color-service");
 let GameControlsService = require("../services/game-controls-service");
 let CoordinateService = require("../services/coordinate-service");
 let NameService = require("../services/name-service");
+let PlayerSpawnService = require("../services/player-spawn-service");
 
-let Direction = require("../models/direction");
 let Food = require("../models/food");
 let Player = require("../models/player");
 let PlayerStatBoard = require("../models/player-stat-board");
@@ -21,6 +21,7 @@ class GameController {
         this.botNames = [];
         this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
         this.boardOccupancyService = new BoardOccupancyService();
+        this.playerSpawnService = new PlayerSpawnService(this.boardOccupancyService);
         this.colorService = new ColorService();
         this.nameService = new NameService();
         this.playerStatBoard = new PlayerStatBoard();
@@ -143,14 +144,19 @@ class GameController {
     }
     
     generateFood() {
+        let randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
+        if(!randomUnoccupiedCoordinate) {
+            this.sendNotificationToPlayers("Could not add more food.  No room left.", "white");
+            return;
+        }
         let foodId = this.nameService.getFoodId();
-        let food = new Food(foodId, this.boardOccupancyService.getRandomUnoccupiedCoordinate(), ServerConfig.FOOD_COLOR);
+        let food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD_COLOR);
         this.food[foodId] = food;
         this.boardOccupancyService.addFoodOccupancy(food.id, food.location);
     }
     
     respawnPlayer(player) {
-        this._setupNewSpawn(player);
+        this.playerSpawnService.setupNewSpawn(player, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
         this.playerStatBoard.resetScore(player.id);
         this.playerStatBoard.addDeath(player.id);
     }
@@ -171,7 +177,7 @@ class GameController {
         let newBotName = this.nameService.getBotName();
         let botColor = this.colorService.getColor();
         let newBot = new Player(newBotName, newBotName, botColor);
-        this._setupNewSpawn(newBot);
+        this.playerSpawnService.setupNewSpawn(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
         this.players[newBotName] = newBot;
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
         this.sendNotificationToPlayers(newBotName + " has joined!", botColor);
@@ -182,7 +188,7 @@ class GameController {
         let playerName = this.nameService.getPlayerName();
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
-        this._setupNewSpawn(newPlayer);
+        this.playerSpawnService.setupNewSpawn(newPlayer, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
@@ -312,38 +318,6 @@ class GameController {
         this.playerStatBoard.removePlayer(player.id);
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         delete this.players[playerId];
-    }
-    
-    // Try to spawn the player in a safe area with enough time to react.  Otherwise don't spawn player if no safe areas
-    _setupNewSpawn(player) {
-        let spawnCoordinate, newDirection;
-        if(Math.random() < 0.5) {
-            let possibleSpawnCoordinates = this.boardOccupancyService.getUnoccupiedHorizontalCoordinates(ServerConfig.SPAWN_TURN_LEEWAY);
-            if(possibleSpawnCoordinates.length === 0) {
-                return;
-            }
-            if(Math.random() < 0.5) {
-                newDirection = Direction.LEFT;
-                spawnCoordinate = possibleSpawnCoordinates[possibleSpawnCoordinates.length-1];
-            } else {
-                newDirection = Direction.RIGHT;
-                spawnCoordinate = possibleSpawnCoordinates[0];
-            }
-        } else {
-            let possibleSpawnCoordinates = this.boardOccupancyService.getUnoccupiedVerticalCoordinates(ServerConfig.SPAWN_TURN_LEEWAY);
-            if(possibleSpawnCoordinates.length === 0) {
-                return;
-            }
-            if(Math.random() < 0.5) {
-                newDirection = Direction.UP;
-                spawnCoordinate = possibleSpawnCoordinates[possibleSpawnCoordinates.length-1];
-            } else {
-                newDirection = Direction.DOWN;
-                spawnCoordinate = possibleSpawnCoordinates[0];
-            }
-        }
-        let playerStartingCoordinates = new Array(this.playerStartLength).fill(spawnCoordinate);
-        player.setDirectionAndStartingLocation(newDirection, playerStartingCoordinates);
     }
     
     _isBotInDanger(currentCoordinate, direction) {

@@ -19,6 +19,20 @@ define(function () {
             this.context.lineWidth = this.squareSizeInPixels;
             this.context.strokeStyle = "gray";
             this.context.strokeRect(0, 0, this.width, this.height);
+            
+            /* Gridlines
+            this.context.strokeStyle = "hsla(0, 0%, 40%, .5)";
+            this.context.lineWidth = 0.5;
+            for(let i = this.squareSizeInPixels/2; i < this.width || i < this.height; i += this.squareSizeInPixels) {
+                // draw horizontal lines
+                this.context.moveTo( i, 0 );
+                this.context.lineTo( i, this.height);
+                // draw vertical lines
+                this.context.moveTo( 0, i );
+                this.context.lineTo( this.width, i);
+            }
+            this.context.stroke();
+            */
         }
         
         drawImages(coordinates, base64Image) {

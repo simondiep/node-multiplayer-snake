@@ -31,6 +31,9 @@ class GameControlsService {
 
     static handleKeyDown(player, keyCode) {
         let newDirection = KEYCODE_TO_DIRECTION[keyCode];
+        if(!newDirection) {
+            return;
+        }
         let validNextDirections = this.getValidNextMove(player.directionBeforeMove);
         for (let validNextDirection of validNextDirections) {
             if(newDirection === validNextDirection) {
