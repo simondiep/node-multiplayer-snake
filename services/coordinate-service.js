@@ -23,9 +23,11 @@ class CoordinateService {
     static setStartingLocationAndDirection(player, playerLength, turnLeeway, occupiedCoordinates) {
         let newDirection = this.getRandomDirection();
         let proposedHeadLocation, proposedFutureLocation;
+        let attempts = 0;
         do {
             proposedHeadLocation = this.getUnoccupiedCoordinate(occupiedCoordinates);
-        } while( this.isOutOfBoundsAfterNMoves(proposedHeadLocation, turnLeeway, newDirection) ) ; 
+            attempts++;
+        } while( attempts < 100 && this.isOutOfBoundsAfterNMoves(proposedHeadLocation, turnLeeway, newDirection) ) ; 
         
         let playerSegments = [];
         for( let i = 0; i < playerLength; i++) {
@@ -44,6 +46,7 @@ class CoordinateService {
         let maxX = Board.HORIZONTAL_SQUARES - 1;
         let maxY = Board.VERTICAL_SQUARES - 1;
         let coordinate, matches;
+        let attempts = 0;
         do {
             coordinate = new Coordinate(this._getRandomIntegerInRange(1, maxX ),
                                         this._getRandomIntegerInRange(1, maxY ));
@@ -54,7 +57,8 @@ class CoordinateService {
                     break;
                 }
             }
-        } while (matches);
+            attempts++;
+        } while (attempts < 100 && matches);
         
         return coordinate; 
     }

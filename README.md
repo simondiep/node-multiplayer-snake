@@ -54,6 +54,7 @@ Open your web browser to `localhost:3000`
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
  - Handle case where entire board is filled
+ - Optimize CoordinateService.setStartingLocationAndDirection and getUnoccupiedCoordinate to avoid repeating randoms
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
