@@ -54,19 +54,20 @@ class GameController {
             return;
         }
         
-        // Change bot direction at intervals
         for(let botName of this.botNames) {
             let bot = this.players[botName];
-            if(bot.moveCounter%ServerConfig.BOT_CHANGE_DIRECTION_INTERVAL === 0) {
-                let newDirection, isInvalidDirection, willGoOutOfBounds;
-                let numberOfRetries = 0;
+            if(this._isBotInDanger(bot.getHeadLocation(), bot.direction) || Math.random() <= ServerConfig.BOT_CHANGE_DIRECTION_PERCENT) {
+                let newDirection, nextCoordinate;
+                let attempts = 0;
                 do {
-                    newDirection = CoordinateService.getRandomDirection();
-                    numberOfRetries++;
-                    isInvalidDirection = GameControlsService.isInvalidDirection(bot, newDirection);
-                    willGoOutOfBounds = CoordinateService.isOutOfBoundsAfterNMoves(bot.getHeadLocation(), ServerConfig.BOT_CHANGE_DIRECTION_INTERVAL, newDirection);
-                } while (numberOfRetries < 10 && (isInvalidDirection || willGoOutOfBounds));
-                bot.changeDirection(newDirection);
+                    let newDirectionOptions = GameControlsService.getValidNextMove(bot.direction);
+                    newDirection = newDirectionOptions[CoordinateService._getRandomIntegerInRange(0,1)];
+                    nextCoordinate = CoordinateService.getNextCoordinate(bot.getHeadLocation(), newDirection);
+                    attempts++;
+                } while(attempts < ServerConfig.BOT_MAX_CHANGE_DIRECTION_ATTEMPTS && this._isBotInDanger(nextCoordinate, newDirection));
+                if(attempts < ServerConfig.BOT_MAX_CHANGE_DIRECTION_ATTEMPTS) {
+                    bot.changeDirection(newDirection);
+                }
             }
         }
         
@@ -309,6 +310,14 @@ class GameController {
         this.playerStatBoard.removePlayer(player.id);
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         delete this.players[playerId];
+    }
+    
+    _isBotInDanger(currentCoordinate, direction) {
+        let willGoOutOfBounds = CoordinateService.isOutOfBoundsAfterNMoves(currentCoordinate, 2, direction);
+        let nextCoordinate = CoordinateService.getNextCoordinate(currentCoordinate, direction);
+        let nextSecondCoordinate = CoordinateService.getNextCoordinate(nextCoordinate, direction);
+        let isOccupied = this.boardOccupancyService.isOccupied(nextCoordinate) || this.boardOccupancyService.isOccupied(nextSecondCoordinate);
+        return willGoOutOfBounds || isOccupied;
     }
     
     _keyDown(socket, keyCode) {

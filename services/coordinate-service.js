@@ -5,6 +5,11 @@ let Direction = require("../models/direction");
 
 class CoordinateService {
 
+    static getNextCoordinate(currentCoordinate, direction) {
+         return new Coordinate(currentCoordinate.x + direction.x,
+                               currentCoordinate.y + direction.y);
+    }
+
     static getRandomDirection() {
         let keys = Object.keys(Direction);
         return Direction[keys[ keys.length * Math.random() << 0]];

@@ -14,21 +14,30 @@ const KEYCODE_TO_DIRECTION = {
 
 class GameControlsService {
 
-    static handleKeyDown(player, keyCode) {
-        let newDirection = KEYCODE_TO_DIRECTION[keyCode];
-        if(!this.isInvalidDirection(player, newDirection)) {
-            player.changeDirection(newDirection); 
+    static getValidNextMove(currentDirection) {
+        if(currentDirection == Direction.UP) {
+            return [Direction.LEFT, Direction.RIGHT];
+        }
+        if(currentDirection == Direction.DOWN) {
+            return [Direction.LEFT, Direction.RIGHT];
+        }
+        if(currentDirection == Direction.LEFT) {
+            return [Direction.UP, Direction.DOWN];
+        }
+        if(currentDirection == Direction.RIGHT) {
+            return [Direction.UP, Direction.DOWN];
         }
     }
 
-    // Check if a new direction is going backwards
-    static isInvalidDirection(player, newDirection) {
-        return (!newDirection) ||
-            (newDirection == player.direction) ||
-            (newDirection == Direction.UP && player.directionBeforeMove == Direction.DOWN) ||
-            (newDirection == Direction.DOWN && player.directionBeforeMove == Direction.UP) ||
-            (newDirection == Direction.LEFT && player.directionBeforeMove == Direction.RIGHT) ||
-            (newDirection == Direction.RIGHT && player.directionBeforeMove == Direction.LEFT);
+    static handleKeyDown(player, keyCode) {
+        let newDirection = KEYCODE_TO_DIRECTION[keyCode];
+        let validNextDirections = this.getValidNextMove(player.directionBeforeMove);
+        for (let validNextDirection of validNextDirections) {
+            if(newDirection === validNextDirection) {
+                player.changeDirection(newDirection);
+                break;
+            }
+        }
     }
 }
 

@@ -6,6 +6,10 @@ class OccupiedCoordinate {
         this.playerIdWithTail = false;
         this.playerIdsWithHead = [];
     }
+    
+    isOccupied() {
+        return this.foodId || this.playerIdWithTail || this.playerIdsWithHead.length > 0;
+    }
 
     isOccupiedByFoodAndPlayer() {
         return this.foodId && this.playerIdsWithHead.length > 0;

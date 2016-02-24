@@ -62,6 +62,15 @@ class BoardOccupancyService {
         return occupiedCoordinates;
     }
     
+    isOccupied(coordinate) {
+        let coordinateString = JSON.stringify(coordinate);
+        let occupiedCoordinate = this.occupiedCoordinates[coordinateString];
+        if(typeof occupiedCoordinate === "undefined") {
+            return false;
+        }
+        return occupiedCoordinate.isOccupied();
+    }
+    
     removeFoodOccupancy(foodId, foodLocation) {
         this._removeOccupancy(foodId, foodLocation, FOOD_TYPE);
     }
