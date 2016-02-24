@@ -11,7 +11,7 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(botChangeCallback, foodChangeCallback, imageUploadCallback, joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback, speedChangeCallback, startLengthChangeCallback) {
+        constructor(botChangeCallback, foodChangeCallback, imageUploadCallback, joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback, speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
             this.isChangingName = false;
             this.botChangeCallback = botChangeCallback;
             this.foodChangeCallback = foodChangeCallback;
@@ -23,6 +23,7 @@ function (ClientConfig, DomHelper) {
             this.spectateGameCallback = spectateGameCallback;
             this.speedChangeCallback = speedChangeCallback;
             this.startLengthChangeCallback = startLengthChangeCallback;
+            this.toggleGridLinesCallback = toggleGridLinesCallback;
             this._setUpEventHandling();
         }
         
@@ -184,6 +185,10 @@ function (ClientConfig, DomHelper) {
             }
         }
         
+        _handleToggleGridLinesButtonClick() {
+            this.toggleGridLinesCallback();
+        }
+        
         _saveNewPlayerName() {
             let playerName = DomHelper.getPlayerNameElement().value;
             if(playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
@@ -214,6 +219,7 @@ function (ClientConfig, DomHelper) {
             DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
             DomHelper.getImageUploadElement().addEventListener("change", this._handleImageUpload.bind(this));
             DomHelper.getPlayOrWatchButton().addEventListener("click", this._handlePlayOrWatchButtonClick.bind(this), false);
+            DomHelper.getToggleGridLinesButton().addEventListener("click", this._handleToggleGridLinesButtonClick.bind(this), false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }

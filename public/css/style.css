@@ -208,6 +208,11 @@ button:hover {
     padding: 10px;
     width: 270px;
 }
+#toggleGridLinesButton {
+    font-size: 20px;
+    padding: 10px;
+    width: 350px;
+}
 #cover {
     visibility: hidden;
 }
@@ -243,9 +248,6 @@ button:hover {
     background: #808080;
     text-decoration: none;
     cursor: pointer;
-}
-#playOrWatchButton {
-    width: 200px;
 }
 *:focus {
     outline: none;

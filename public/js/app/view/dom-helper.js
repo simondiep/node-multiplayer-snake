@@ -119,6 +119,10 @@ define(function () {
         static getResetStartLengthButton() {
             return document.getElementById("resetStartLengthButton");
         }
+        
+        static getToggleGridLinesButton() {
+            return document.getElementById("toggleGridLinesButton");
+        }
     }
 
     return DomHelper;

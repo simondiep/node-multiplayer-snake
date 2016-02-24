@@ -20,7 +20,8 @@ function (ClientConfig, CanvasFactory, GameView, io) {
                                          this.playerNameUpdatedCallback.bind(this),
                                          this.spectateGameCallback.bind(this),
                                          this.speedChangeCallback.bind(this),
-                                         this.startLengthChangeCallback.bind(this)
+                                         this.startLengthChangeCallback.bind(this),
+                                         this.toggleGridLinesCallback.bind(this)
                                          );
             this.players = {};
             this.food = {};
@@ -103,6 +104,10 @@ function (ClientConfig, CanvasFactory, GameView, io) {
         
         startLengthChangeCallback(option) {
             this.socket.emit(ClientConfig.IO.OUTGOING.START_LENGTH_CHANGE, option);
+        }
+        
+        toggleGridLinesCallback() {
+            this.canvasView.toggleGridLines();
         }
         
         /*******************************
