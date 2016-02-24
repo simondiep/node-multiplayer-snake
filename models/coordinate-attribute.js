@@ -1,14 +1,15 @@
 "use strict";
 
-class OccupiedCoordinate {
+class CoordinateAttribute {
     constructor() {
+        this.wall = false;
         this.foodId = false;
         this.playerIdWithTail = false;
         this.playerIdsWithHead = [];
     }
     
     isOccupied() {
-        return this.foodId || this.playerIdWithTail || this.playerIdsWithHead.length > 0;
+        return this.wall || this.foodId || this.playerIdWithTail || this.playerIdsWithHead.length > 0;
     }
 
     isOccupiedByFoodAndPlayer() {
@@ -17,6 +18,10 @@ class OccupiedCoordinate {
     
     isOccupiedByMultiplePlayers() {
         return this.playerIdsWithHead.length >= 2 || (this.playerIdsWithHead.length === 1 && this.playerIdWithTail);
+    }
+    
+    isWall() {
+        return this.wall;
     }
     
     addPlayerIdWithHead(playerIdWithHead) {
@@ -35,6 +40,10 @@ class OccupiedCoordinate {
     setPlayerIdWithTail(playerIdWithTail) {
         this.playerIdWithTail = playerIdWithTail;
     }
+    
+    setWall() {
+        this.wall = true;
+    }
 }
 
-module.exports = OccupiedCoordinate;  
+module.exports = CoordinateAttribute;  

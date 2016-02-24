@@ -8,6 +8,7 @@ let GameControlsService = require("../services/game-controls-service");
 let CoordinateService = require("../services/coordinate-service");
 let NameService = require("../services/name-service");
 
+let Direction = require("../models/direction");
 let Food = require("../models/food");
 let Player = require("../models/player");
 let PlayerStatBoard = require("../models/player-stat-board");
@@ -51,6 +52,7 @@ class GameController {
             this._resetBots();
             this._resetFood();
             this._resetSpeed();
+            this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
             return;
         }
         
@@ -61,7 +63,7 @@ class GameController {
                 let attempts = 0;
                 do {
                     let newDirectionOptions = GameControlsService.getValidNextMove(bot.direction);
-                    newDirection = newDirectionOptions[CoordinateService._getRandomIntegerInRange(0,1)];
+                    newDirection = newDirectionOptions[this._getRandomIntegerInRange(0,1)];
                     nextCoordinate = CoordinateService.getNextCoordinate(bot.getHeadLocation(), newDirection);
                     attempts++;
                 } while(attempts < ServerConfig.BOT_MAX_CHANGE_DIRECTION_ATTEMPTS && this._isBotInDanger(nextCoordinate, newDirection));
@@ -76,7 +78,7 @@ class GameController {
             let player = this.players[playerId];
             this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
             CoordinateService.movePlayer(player);
-            if(CoordinateService.isOutOfBounds(player.getHeadLocation())) {
+            if(this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) || this.boardOccupancyService.isWall(player.getHeadLocation())) {
                 player.clearAllSegments();
                 playersToRespawn.push(player);
             } else {
@@ -142,13 +144,13 @@ class GameController {
     
     generateFood() {
         let foodId = this.nameService.getFoodId();
-        let food = new Food(foodId, CoordinateService.getUnoccupiedCoordinate(this.boardOccupancyService.getOccupiedCoordinates()), ServerConfig.FOOD_COLOR);
+        let food = new Food(foodId, this.boardOccupancyService.getRandomUnoccupiedCoordinate(), ServerConfig.FOOD_COLOR);
         this.food[foodId] = food;
         this.boardOccupancyService.addFoodOccupancy(food.id, food.location);
     }
     
     respawnPlayer(player) {
-        CoordinateService.setStartingLocationAndDirection(player, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY, this.boardOccupancyService.getOccupiedCoordinates());
+        this._setupNewSpawn(player);
         this.playerStatBoard.resetScore(player.id);
         this.playerStatBoard.addDeath(player.id);
     }
@@ -169,7 +171,7 @@ class GameController {
         let newBotName = this.nameService.getBotName();
         let botColor = this.colorService.getColor();
         let newBot = new Player(newBotName, newBotName, botColor);
-        CoordinateService.setStartingLocationAndDirection(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY, this.boardOccupancyService.getOccupiedCoordinates());
+        this._setupNewSpawn(newBot);
         this.players[newBotName] = newBot;
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
         this.sendNotificationToPlayers(newBotName + " has joined!", botColor);
@@ -180,7 +182,7 @@ class GameController {
         let playerName = this.nameService.getPlayerName();
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
-        CoordinateService.setStartingLocationAndDirection(newPlayer, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY, this.boardOccupancyService.getOccupiedCoordinates());
+        this._setupNewSpawn(newPlayer);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
@@ -312,12 +314,51 @@ class GameController {
         delete this.players[playerId];
     }
     
+    // Try to spawn the player in a safe area with enough time to react.  Otherwise don't spawn player if no safe areas
+    _setupNewSpawn(player) {
+        let spawnCoordinate, newDirection;
+        if(Math.random() < 0.5) {
+            let possibleSpawnCoordinates = this.boardOccupancyService.getUnoccupiedHorizontalCoordinates(ServerConfig.SPAWN_TURN_LEEWAY);
+            if(possibleSpawnCoordinates.length === 0) {
+                return;
+            }
+            if(Math.random() < 0.5) {
+                newDirection = Direction.LEFT;
+                spawnCoordinate = possibleSpawnCoordinates[possibleSpawnCoordinates.length-1];
+            } else {
+                newDirection = Direction.RIGHT;
+                spawnCoordinate = possibleSpawnCoordinates[0];
+            }
+        } else {
+            let possibleSpawnCoordinates = this.boardOccupancyService.getUnoccupiedVerticalCoordinates(ServerConfig.SPAWN_TURN_LEEWAY);
+            if(possibleSpawnCoordinates.length === 0) {
+                return;
+            }
+            if(Math.random() < 0.5) {
+                newDirection = Direction.UP;
+                spawnCoordinate = possibleSpawnCoordinates[possibleSpawnCoordinates.length-1];
+            } else {
+                newDirection = Direction.DOWN;
+                spawnCoordinate = possibleSpawnCoordinates[0];
+            }
+        }
+        let playerStartingCoordinates = new Array(this.playerStartLength).fill(spawnCoordinate);
+        player.setDirectionAndStartingLocation(newDirection, playerStartingCoordinates);
+    }
+    
     _isBotInDanger(currentCoordinate, direction) {
-        let willGoOutOfBounds = CoordinateService.isOutOfBoundsAfterNMoves(currentCoordinate, 2, direction);
         let nextCoordinate = CoordinateService.getNextCoordinate(currentCoordinate, direction);
+        let isOutOfBounds = this.boardOccupancyService.isOutOfBounds(nextCoordinate);
+        if(isOutOfBounds) {
+            return true;
+        }
         let nextSecondCoordinate = CoordinateService.getNextCoordinate(nextCoordinate, direction);
+        isOutOfBounds = this.boardOccupancyService.isOutOfBounds(nextSecondCoordinate);
+        if(isOutOfBounds) {
+            return true;
+        }
         let isOccupied = this.boardOccupancyService.isOccupied(nextCoordinate) || this.boardOccupancyService.isOccupied(nextSecondCoordinate);
-        return willGoOutOfBounds || isOccupied;
+        return isOccupied;
     }
     
     _keyDown(socket, keyCode) {
@@ -367,6 +408,9 @@ class GameController {
         this.sendNotificationToPlayers(player.name + " has uploaded a new image.", player.color);
     }
     
+    _getRandomIntegerInRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }
 
 module.exports = GameController;

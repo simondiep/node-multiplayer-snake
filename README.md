@@ -54,7 +54,7 @@ Open your web browser to `localhost:3000`
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
  - Handle case where entire board is filled
- - Optimize CoordinateService.setStartingLocationAndDirection and getUnoccupiedCoordinate to avoid repeating randoms
+ - Make spawn locations more random, as opposed to closest to top left
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
@@ -76,7 +76,7 @@ Open your web browser to `localhost:3000`
     - Custom sort stat board
     - More stats (max length)
     - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
-    - Add score for kills
+    - Add score for kills (steal the score of the player you killed)
  - Power-ups or Game Modes
     - individual speed (2 or more steps for a player)
     - invulnerable
