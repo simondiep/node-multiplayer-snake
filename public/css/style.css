@@ -7,17 +7,12 @@
     margin: 0 auto; 
 }
 body {
-    padding: 5px;
+    margin: 0;
+    padding: 0;
+    padding-top: 60px;
     background-color: black;
     color: white;
     font-family: PressStart2P;
-}
-.header {
-    height: 50px;
-}
-.footer {
-    height: 50px;
-    padding-top: 5px;
 }
 .mainContainer {
     height: 500px;
@@ -31,10 +26,14 @@ body {
     height: 500px;
     background-color: black
 }
+.settingsMenu {
+    padding: 10px;
+}
 .playerInfo {
     width: 100%;
     font-size: 24px;
     cursor: default;
+    padding: 10px;
 }
 .optionsControls {
     font-size: 24px;
@@ -184,11 +183,11 @@ button:hover {
 }
 #playerName {
     width: 300px;
-    border: 1px solid grey;
+    border: 1px solid #383838;
     font-family: PressStart2P;
     font-size: 24px;
     padding-left: 5px;
-    background-color: gray;
+    background-color: #383838;
 }
 #playerName:read-only {
     border: 1px solid rgba(0, 0, 0, 0);
@@ -212,7 +211,42 @@ button:hover {
 #cover {
     visibility: hidden;
 }
+#navigation {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    color: white;
+    height: 35px;
+    text-align: center;
+    padding-top: 15px;
+    /* Adds shadow to the bottom of the bar */
+    -webkit-box-shadow: 0px 0px 8px 0px #000000;
+    -moz-box-shadow: 0px 0px 8px 0px #000000;
+    box-shadow: 0px 0px 8px 0px #000000;
+    /* Adds the transparent background */
+    background-color: rgba(1, 1, 1, 0.8);
+    font-size: 24px;
+    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    cursor: default;
+}
+#navigation a {
+    padding: 15px;
+    background: #383838;
+    text-decoration: none;
+    color: #ffffff;
+}
 
+#navigation a:hover {
+    background: #808080;
+    text-decoration: none;
+    cursor: pointer;
+}
+#playOrWatchButton {
+    width: 200px;
+}
 *:focus {
     outline: none;
 }

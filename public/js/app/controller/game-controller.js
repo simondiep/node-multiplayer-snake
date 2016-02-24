@@ -14,9 +14,11 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.gameView = new GameView(this.botChangeCallback.bind(this),
                                          this.foodChangeCallback.bind(this),
                                          this.imageUploadCallback.bind(this),
+                                         this.joinGameCallback.bind(this),
                                          this.keyDownCallback.bind(this),
                                          this.playerColorChangeCallback.bind(this),
                                          this.playerNameUpdatedCallback.bind(this),
+                                         this.spectateGameCallback.bind(this),
                                          this.speedChangeCallback.bind(this),
                                          this.startLengthChangeCallback.bind(this)
                                          );
@@ -35,6 +37,9 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             }
             for(let playerId in this.players) {
                 let player = this.players[playerId];
+                if(player.segments.length === 0) {
+                    continue;
+                }
                 // Flash around where you have just spawned
                 if("/#"+this.socket.id === playerId && player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN && player.moveCounter%2 === 0) {
                     this.canvasView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
@@ -72,6 +77,10 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.socket.emit(ClientConfig.IO.OUTGOING.IMAGE_UPLOAD, resizedBase64Image);
         }
         
+        joinGameCallback() {
+            this.socket.emit(ClientConfig.IO.OUTGOING.JOIN_GAME);
+        }
+        
         keyDownCallback(keyCode) {
             this.socket.emit(ClientConfig.IO.OUTGOING.KEY_DOWN, keyCode);
         }
@@ -82,6 +91,10 @@ function (ClientConfig, CanvasFactory, GameView, io) {
         
         playerNameUpdatedCallback(name) {
             this.socket.emit(ClientConfig.IO.OUTGOING.NAME_CHANGE, name);
+        }
+        
+        spectateGameCallback() {
+            this.socket.emit(ClientConfig.IO.OUTGOING.SPECTATE_GAME);
         }
         
         speedChangeCallback(option) {

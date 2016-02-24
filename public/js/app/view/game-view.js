@@ -11,14 +11,16 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(botChangeCallback, foodChangeCallback, imageUploadCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, speedChangeCallback, startLengthChangeCallback) {
+        constructor(botChangeCallback, foodChangeCallback, imageUploadCallback, joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback, speedChangeCallback, startLengthChangeCallback) {
             this.isChangingName = false;
             this.botChangeCallback = botChangeCallback;
             this.foodChangeCallback = foodChangeCallback;
             this.imageUploadCallback = imageUploadCallback;
+            this.joinGameCallback = joinGameCallback;
             this.keyDownCallback = keyDownCallback;
             this.playerColorChangeCallback = playerColorChangeCallback;
             this.playerNameUpdatedCallback = playerNameUpdatedCallback;
+            this.spectateGameCallback = spectateGameCallback;
             this.speedChangeCallback = speedChangeCallback;
             this.startLengthChangeCallback = startLengthChangeCallback;
             this._setUpEventHandling();
@@ -171,6 +173,17 @@ function (ClientConfig, DomHelper) {
             }
         }
         
+        _handlePlayOrWatchButtonClick() {
+            let command = DomHelper.getPlayOrWatchButton().textContent;
+            if(command === "Play") {
+                DomHelper.getPlayOrWatchButton().textContent = "Watch";
+                this.joinGameCallback();
+            } else {
+                DomHelper.getPlayOrWatchButton().textContent = "Play";
+                this.spectateGameCallback();
+            }
+        }
+        
         _saveNewPlayerName() {
             let playerName = DomHelper.getPlayerNameElement().value;
             if(playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
@@ -200,6 +213,7 @@ function (ClientConfig, DomHelper) {
             DomHelper.getDecreaseStartLengthButton().addEventListener("click", this._handleDecreaseStartLengthButtonClick.bind(this), false);
             DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
             DomHelper.getImageUploadElement().addEventListener("change", this._handleImageUpload.bind(this));
+            DomHelper.getPlayOrWatchButton().addEventListener("click", this._handlePlayOrWatchButtonClick.bind(this), false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }

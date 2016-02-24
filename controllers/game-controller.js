@@ -42,6 +42,8 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, self._changeStartLength.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD, self._updatePlayerImage.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.JOIN_GAME, self._playerJoinGame.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.SPECTATE_GAME, self._playerSpectateGame.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
         });
     }
@@ -77,6 +79,10 @@ class GameController {
         let playersToRespawn = [];
         for(let playerId in this.players) {
             let player = this.players[playerId];
+            // Check if player is spectating
+            if(player.segments.length === 0) {
+                continue;
+            }
             this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
             CoordinateService.movePlayer(player);
             if(this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) || this.boardOccupancyService.isWall(player.getHeadLocation())) {
@@ -316,7 +322,9 @@ class GameController {
         this.colorService.returnColor(player.color);
         this.nameService.returnPlayerName(player.name);
         this.playerStatBoard.removePlayer(player.id);
-        this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
+        if(player.segments.length > 0) {
+            this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
+        }
         delete this.players[playerId];
     }
     
@@ -337,6 +345,19 @@ class GameController {
     
     _keyDown(socket, keyCode) {
         GameControlsService.handleKeyDown(this.players[socket.id], keyCode);
+    }
+    
+    _playerJoinGame(socket) {
+        let player = this.players[socket.id];
+        this.respawnPlayer(player);
+        this.sendNotificationToPlayers(player.name + " has rejoined the game.", player.color);
+    }
+    
+    _playerSpectateGame(socket) {
+        let player = this.players[socket.id];
+        this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
+        player.clearAllSegments();
+        this.sendNotificationToPlayers(player.name + " is now spectating.", player.color);
     }
     
     _removeBot(playerRequestingRemoval) {

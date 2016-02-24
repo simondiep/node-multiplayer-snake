@@ -100,6 +100,10 @@ define(function () {
             return document.getElementById("playerStats");
         }
         
+        static getPlayOrWatchButton() {
+            return document.getElementById("playOrWatchButton");
+        }
+        
         static getResetBotsButton() {
             return document.getElementById("resetBotsButton");
         }

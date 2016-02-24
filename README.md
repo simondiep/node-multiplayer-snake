@@ -32,6 +32,7 @@ Open your web browser to `localhost:3000`
  - Game notifications
  - Bots
  - Random, safe spawns
+ - Spectate
 
 ### Contributing
 
@@ -46,7 +47,6 @@ Open your web browser to `localhost:3000`
  - Additional Client-side validation to reduce unnecessary emits to server
  - Additional Server-side optimization to reduce unnecessary emits to client
  - Server-side validation of inputs
- - Create a single menu button, Edit Player Profile, that contains all existing buttons as menu items
  - Save all Player Profile settings to Local Storage, and load them on subsequent plays (also high score?)
  - Add a description for what 'Upload Image' does and any restrictions
  - Toggle view of admin options as a menu item
@@ -56,7 +56,6 @@ Open your web browser to `localhost:3000`
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
- - Spectate/Join
  - Multiple rooms
  - Incremental death (head no longer moves, but tail does)
  - Randomize board to contain walls
@@ -64,6 +63,7 @@ Open your web browser to `localhost:3000`
  - Increase game speed based on different conditions (faster if 1v1) or random
  - Choose your own color
  - Chat
+ - Support resolutions lower than 1225x550
  - Images
     - Food image
     - Support animated gifs (snake and food)

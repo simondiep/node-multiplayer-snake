@@ -4,20 +4,13 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
+        <div id="navigation">
+            <label>You are </label>
+            <input id="playerName" readonly="readonly"></input>
+            <a id="playOrWatchButton">Watch</a>
+            <a href="#playerSettings">Player Settings</a>
+        </div>
         <div id="cover">
-            <label id="invalidPlayerNameLabel">Please Enter a Valid Name (10 Characters Max)</label>
-            <div class="header">
-                <div class="playerInfo">
-                    <label>You are </label>
-                    <input id="playerName" readonly="readonly"></input>
-                    <button id="changePlayerNameButton">Change Name</button>
-                    <button id="changePlayerColorButton">Change Color</button>
-                    <label for="imageUpload" class="imageUploadLabel">
-                        Upload Image
-                    </label>
-                    <input type="file" id="imageUpload" accept="image/*"/>
-                </div>
-            </div>
             <div class="mainContainer">
                 <div class="leftContent">
                     <div id="gameBoard"></div>
@@ -29,37 +22,56 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">
-                <label>Admin Options</label>
-                <div class="optionsControls">
-                    <label class="optionsLabel">Speed: </label>
-                    <label id="currentSpeed" class="optionsValue"></label>
-                    <input id="decreaseSpeedButton" type="submit" class="minusButton"/>
-                    <input id="increaseSpeedButton" type="submit" class="plusButton"/>
-                    <input id="resetSpeedButton" type="submit" class="resetButton"/>
-                </div>
-                <div class="optionsControls">
-                    <label class="optionsLabel">Food: </label>
-                    <label id="currentFoodAmount" class="optionsValue"></label>
-                    <input id="decreaseFoodButton" type="submit" class="minusButton"/>
-                    <input id="increaseFoodButton" type="submit" class="plusButton"/>
-                    <input id="resetFoodButton" type="submit" class="resetButton"/>
-                </div>
-                <div class="optionsControls">
-                    <label class="optionsLabel">Bots: </label>
-                    <label id="currentNumberOfBots" class="optionsValue"></label>
-                    <input id="decreaseBotsButton" type="submit" class="minusButton"/>
-                    <input id="increaseBotsButton" type="submit" class="plusButton"/>
-                    <input id="resetBotsButton" type="submit" class="resetButton"/>
-                </div>
-                <div class="optionsControls">
-                    <label class="optionsLabel">Start Length: </label>
-                    <label id="currentStartLength" class="optionsValue"></label>
-                    <input id="decreaseStartLengthButton" type="submit" class="minusButton"/>
-                    <input id="increaseStartLengthButton" type="submit" class="plusButton"/>
-                    <input id="resetStartLengthButton" type="submit" class="resetButton"/>
-                </div>
+            <div id="playerSettings" class="settingsMenu">
+                <fieldset>
+                    <legend>Player Settings</legend>
+                    <label id="invalidPlayerNameLabel">Please Enter a Valid Name (10 Characters Max)</label>
+                    <div class="playerInfo">
+                        <button id="changePlayerNameButton">Change Name</button>
+                        <button id="changePlayerColorButton">Change Color</button>
+                    </div>
+                    <div class="settingsMenu">
+                        <label for="imageUpload" class="imageUploadLabel">Change Snake Image</label>
+                        <input type="file" id="imageUpload" accept="image/*"/>
+                        <label>Customize your snake by uploading an image</label>
+                    </div>
+                </fieldset>
             </div>
+            
+            
+            <div id="adminControls" class="settingsMenu">
+                <fieldset>
+                    <legend>Admin Controls</legend>
+                    <div class="optionsControls" class="settingsMenu">
+                        <label class="optionsLabel">Speed: </label>
+                        <label id="currentSpeed" class="optionsValue"></label>
+                        <input id="decreaseSpeedButton" type="submit" class="minusButton"/>
+                        <input id="increaseSpeedButton" type="submit" class="plusButton"/>
+                        <input id="resetSpeedButton" type="submit" class="resetButton"/>
+                    </div>
+                    <div class="optionsControls" class="settingsMenu">
+                        <label class="optionsLabel">Food: </label>
+                        <label id="currentFoodAmount" class="optionsValue"></label>
+                        <input id="decreaseFoodButton" type="submit" class="minusButton"/>
+                        <input id="increaseFoodButton" type="submit" class="plusButton"/>
+                        <input id="resetFoodButton" type="submit" class="resetButton"/>
+                    </div>
+                    <div class="optionsControls">
+                        <label class="optionsLabel">Bots: </label>
+                        <label id="currentNumberOfBots" class="optionsValue"></label>
+                        <input id="decreaseBotsButton" type="submit" class="minusButton"/>
+                        <input id="increaseBotsButton" type="submit" class="plusButton"/>
+                        <input id="resetBotsButton" type="submit" class="resetButton"/>
+                    </div>
+                    <div class="optionsControls">
+                        <label class="optionsLabel">Start Length: </label>
+                        <label id="currentStartLength" class="optionsValue"></label>
+                        <input id="decreaseStartLengthButton" type="submit" class="minusButton"/>
+                        <input id="increaseStartLengthButton" type="submit" class="plusButton"/>
+                        <input id="resetStartLengthButton" type="submit" class="resetButton"/>
+                    </div>
+                </fieldset>
+            </div>  
         </div>
         <script src="js/vendor/socket.io.js"></script>
         <script src="js/vendor/require.js"></script>
