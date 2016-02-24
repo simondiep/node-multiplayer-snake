@@ -20,6 +20,7 @@ define(function () {
                 START_LENGTH_CHANGE: "start length change",
                 JOIN_GAME: "join game",
                 SPECTATE_GAME: "spectate game",
+                CLEAR_UPLOADED_IMAGE: "clear uploaded image",
                 IMAGE_UPLOAD: "image upload",
                 NEW_PLAYER: "new player",
                 NAME_CHANGE: "player changed name",
@@ -31,6 +32,10 @@ define(function () {
             INCREASE: "increase",
             DECREASE: "decrease",
             RESET: "reset"
+        },
+        LOCAL_STORAGE: {
+            PLAYER_IMAGE: "node-multiplayer-snake-player-image",
+            PLAYER_NAME: "node-multiplayer-snake-player-name"
         }
     };
 

@@ -27,6 +27,10 @@ class PlayerStatBoard {
         this.statBoard.get(playerId).changeName(newName);
     }
     
+    clearPlayerImage(playerId) {
+       delete this.statBoard.get(playerId).base64Image; 
+    }
+    
     increaseScore(playerId) {
         this.statBoard.get(playerId).increaseScore();
     }

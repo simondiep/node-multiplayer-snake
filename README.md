@@ -34,6 +34,7 @@ Open your web browser to `localhost:3000`
  - Bots
  - Random, safe spawns
  - Spectate
+ - Local storage of name and image
 
 ### Contributing
 
@@ -48,7 +49,6 @@ Open your web browser to `localhost:3000`
  - Additional Client-side validation to reduce unnecessary emits to server
  - Additional Server-side optimization to reduce unnecessary emits to client
  - Server-side validation of inputs
- - Save all Player Profile settings to Local Storage, and load them on subsequent plays (also high score?)
  - Add a description for what 'Upload Image' does and any restrictions
  - Toggle view of admin options as a menu item
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)

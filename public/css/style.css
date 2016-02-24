@@ -138,6 +138,11 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+.optionsTextButton {
+    font-size: 20px;
+    padding: 10px;
+    width: 270px;
+}
 #imageUpload {
     display: none;
 }
@@ -198,19 +203,7 @@ button:hover {
     color: red;
     display: none
 }
-#changePlayerNameButton {
-    font-size: 20px;
-    padding: 10px;
-    width: 270px;
-}
-#changePlayerColorButton {
-    font-size: 20px;
-    padding: 10px;
-    width: 270px;
-}
 #toggleGridLinesButton {
-    font-size: 20px;
-    padding: 10px;
     width: 350px;
 }
 #cover {

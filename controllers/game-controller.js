@@ -41,6 +41,7 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, self._changeStartLength.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_IMAGE, self._clearPlayerImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD, self._updatePlayerImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.JOIN_GAME, self._playerJoinGame.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPECTATE_GAME, self._playerSpectateGame.bind(self, socket));
@@ -192,7 +193,7 @@ class GameController {
         this.botNames.push(newBotName);
     }
     
-    _addPlayer(socket) {
+    _addPlayer(socket, previousName, previousImage) {
         let playerName = this.nameService.getPlayerName();
         let playerColor = this.colorService.getColor();
         let newPlayer = new Player(socket.id, playerName, playerColor);
@@ -202,6 +203,14 @@ class GameController {
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.BOARD_INFO, Board);
         this.sendNotificationToPlayers(playerName + " has joined!", playerColor);
+        
+        if(previousName) {
+            this._changePlayerName(socket, previousName);
+        }
+        if(previousImage) {
+            this._updatePlayerImage(socket, previousImage);
+        }
+        
         // Start game if the first player has joined
         if(Object.keys(this.players).length === 1) {
             console.log("Game Started");
@@ -264,6 +273,7 @@ class GameController {
             player.name = newPlayerName;
             this.nameService.usePlayerName(newPlayerName);
             this.playerStatBoard.changePlayerName(player.id, newPlayerName);
+            socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, newPlayerName, player.color);
         }
     }
     
@@ -396,6 +406,13 @@ class GameController {
     
     _resetSpeed() {
         this.currentFPS = ServerConfig.STARTING_FPS;
+    }
+    
+    _clearPlayerImage(socket) {
+        let player = this.players[socket.id];
+        delete player.base64Image;
+        this.playerStatBoard.clearPlayerImage(player.id);
+        this.sendNotificationToPlayers(player.name + " has removed their image.", player.color);
     }
     
     _updatePlayerImage(socket, base64Image) {

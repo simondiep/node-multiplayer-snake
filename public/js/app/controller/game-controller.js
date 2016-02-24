@@ -27,7 +27,9 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.food = {};
             this.socket = io();
             this._initializeSocketIoHandlers();
-            this.socket.emit(ClientConfig.IO.OUTGOING.NEW_PLAYER);
+            let storedName = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_NAME);
+            let storedBase64Image = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_IMAGE);
+            this.socket.emit(ClientConfig.IO.OUTGOING.NEW_PLAYER, storedName, storedBase64Image);
         }
        
         renderGame() {
@@ -73,9 +75,18 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.socket.emit(ClientConfig.IO.OUTGOING.FOOD_CHANGE, option);
         }
         
-        imageUploadCallback(image, imageType) {
-            let resizedBase64Image = this.canvasView.resizeUploadedImageAndBase64(image,imageType);
+        // optional resizedBase64Image
+        imageUploadCallback(image, imageType, resizedBase64Image) {
+            if(arguments.length === 0) {
+                this.socket.emit(ClientConfig.IO.OUTGOING.CLEAR_UPLOADED_IMAGE);
+                localStorage.removeItem(ClientConfig.LOCAL_STORAGE.PLAYER_IMAGE);
+                return;
+            }
+            if(!resizedBase64Image) {
+                resizedBase64Image = this.canvasView.resizeUploadedImageAndBase64(image,imageType);
+            }
             this.socket.emit(ClientConfig.IO.OUTGOING.IMAGE_UPLOAD, resizedBase64Image);
+            localStorage.setItem(ClientConfig.LOCAL_STORAGE.PLAYER_IMAGE, resizedBase64Image);
         }
         
         joinGameCallback() {
@@ -92,6 +103,7 @@ function (ClientConfig, CanvasFactory, GameView, io) {
         
         playerNameUpdatedCallback(name) {
             this.socket.emit(ClientConfig.IO.OUTGOING.NAME_CHANGE, name);
+            localStorage.setItem(ClientConfig.LOCAL_STORAGE.PLAYER_NAME, name);
         }
         
         spectateGameCallback() {

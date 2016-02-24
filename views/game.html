@@ -27,15 +27,18 @@
                     <legend>Player Settings</legend>
                     <label id="invalidPlayerNameLabel">Please Enter a Valid Name (10 Characters Max)</label>
                     <div class="playerInfo">
-                        <button id="changePlayerNameButton">Change Name</button>
-                        <button id="changePlayerColorButton">Change Color</button>
-                        <button id="toggleGridLinesButton">Toggle GridLines</button>
+                        <button id="changePlayerNameButton" class="optionsTextButton">Change Name</button>
+                        <button id="changePlayerColorButton" class="optionsTextButton">Change Color</button>
+                        <button id="toggleGridLinesButton" class="optionsTextButton">Toggle GridLines</button>
                     </div>
                     <div class="settingsMenu">
                         <label for="imageUpload" class="imageUploadLabel">Change Snake Image</label>
                         <input type="file" id="imageUpload" accept="image/*"/>
-                        <label>Customize your snake by uploading an image</label>
+                        <button id="clearUploadedImageButton" class="optionsTextButton">Clear Image</button>
                     </div>
+                    <div class="settingsMenu">
+                        <label>Customize your snake by uploading an image (Will be scaled down to size)</label>
+                     </div>
                 </fieldset>
             </div>
             

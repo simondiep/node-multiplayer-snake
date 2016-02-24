@@ -15,6 +15,10 @@ define(function () {
             return document.body;
         }
     
+        static getClearUploadedImageButton() {
+            return document.getElementById("clearUploadedImageButton");
+        }
+        
         static getCoverDiv() {
             return document.getElementById("cover");
         }

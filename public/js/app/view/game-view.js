@@ -73,7 +73,9 @@ function (ClientConfig, DomHelper) {
         
         updatePlayerName(playerName, playerColor) {
             DomHelper.getPlayerNameElement().value = playerName;
-            DomHelper.getPlayerNameElement().style.color = playerColor;
+            if(playerColor) {
+                DomHelper.getPlayerNameElement().style.color = playerColor;
+            }
         }
         
         /*******************
@@ -161,6 +163,10 @@ function (ClientConfig, DomHelper) {
             this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
         }
         
+        _handleClearUploadedImageButtonClick() {
+            this.imageUploadCallback();
+        }
+        
         _handleImageUpload() {
             let uploadedImageAsFile = DomHelper.getImageUploadElement().files[0];
             if(uploadedImageAsFile) {
@@ -218,6 +224,7 @@ function (ClientConfig, DomHelper) {
             DomHelper.getDecreaseStartLengthButton().addEventListener("click", this._handleDecreaseStartLengthButtonClick.bind(this), false);
             DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
             DomHelper.getImageUploadElement().addEventListener("change", this._handleImageUpload.bind(this));
+            DomHelper.getClearUploadedImageButton().addEventListener("click", this._handleClearUploadedImageButtonClick.bind(this));
             DomHelper.getPlayOrWatchButton().addEventListener("click", this._handlePlayOrWatchButtonClick.bind(this), false);
             DomHelper.getToggleGridLinesButton().addEventListener("click", this._handleToggleGridLinesButtonClick.bind(this), false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);

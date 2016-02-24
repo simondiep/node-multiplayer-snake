@@ -22,6 +22,7 @@ let ServerConfig = {
             START_LENGTH_CHANGE: "start length change",
             JOIN_GAME: "join game",
             SPECTATE_GAME: "spectate game",
+            CLEAR_UPLOADED_IMAGE: "clear uploaded image",
             IMAGE_UPLOAD: "image upload",
             NEW_PLAYER: "new player",
             NAME_CHANGE: "player changed name",
