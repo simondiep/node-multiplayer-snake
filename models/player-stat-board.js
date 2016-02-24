@@ -43,6 +43,11 @@ class PlayerStatBoard {
         this.statBoard.get(playerId).setBase64Image(base64Image);
     }
     
+    stealScore(playerId, playerIdToStealFrom) {
+        let scoreToSteal = this.statBoard.get(playerIdToStealFrom).score;
+        this.statBoard.get(playerId).increaseScore(scoreToSteal);
+    }
+    
     toJSON() {
         let response = [];
         this.statBoard.forEach(function(value, key, map) {

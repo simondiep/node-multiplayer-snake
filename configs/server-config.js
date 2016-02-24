@@ -1,11 +1,12 @@
 "use strict";
 
 let ServerConfig = {
-    DEFAULT_FOOD_AMOUNT : 3,
+    DEFAULT_FOOD_AMOUNT : 10,
     FOOD_COLOR : "red",
-    DEFAULT_FPS: 8,
+    MIN_FPS: 8,
+    STARTING_FPS: 8,
     MAX_FPS: 60,
-    PLAYER_STARTING_LENGTH: 5,
+    PLAYER_STARTING_LENGTH: 10,
     SPAWN_TURN_LEEWAY: 10,
     DEFAULT_STARTING_BOTS: 0,
     MAX_BOTS: 20,

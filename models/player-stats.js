@@ -27,8 +27,11 @@ class PlayerStats {
         this.kills++;
     }
     
-    increaseScore() {
-        this.score++;
+    increaseScore(scoreAmount) {
+        if(!scoreAmount) {
+            scoreAmount = 1;
+        }
+        this.score+= scoreAmount;
         if(this.score > this.highScore) {
             this.highScore = this.score;
         }

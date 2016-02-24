@@ -15,7 +15,7 @@ let PlayerStatBoard = require("../models/player-stat-board");
 
 class GameController {
     constructor(io) {
-        this.currentFPS = ServerConfig.DEFAULT_FPS;
+        this.currentFPS = ServerConfig.STARTING_FPS;
         this.food = {};
         this.players = {};
         this.botNames = [];
@@ -96,13 +96,15 @@ class GameController {
         let killReports = this.boardOccupancyService.getKillReports();
         for(let killReport of killReports) {
             if(killReport.isSingleKill()) {
+                let victim = this.players[killReport.victimId];
                 if(killReport.killerId === killReport.victimId) {
                     // TODO Display suicide announcement
                 } else {
                     this.playerStatBoard.addKill(killReport.killerId);
+                    this.playerStatBoard.increaseScore(killReport.killerId);
+                    this.playerStatBoard.stealScore(killReport.killerId, victim.id);
                     // TODO Display kill announcement
                 }
-                let victim = this.players[killReport.victimId];
                 this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.segments);
                 victim.clearAllSegments();
                 playersToRespawn.push(victim);
@@ -276,7 +278,7 @@ class GameController {
                 notification += " tried to raised the game speed past the limit.";
             }
         } else if(speedOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
-            if(this.currentFPS > ServerConfig.DEFAULT_FPS) {
+            if(this.currentFPS > ServerConfig.MIX_FPS) {
                 notification += " has lowered the game speed.";
                 this.currentFPS--;
             } else {
@@ -393,7 +395,7 @@ class GameController {
     }
     
     _resetSpeed() {
-        this.currentFPS = ServerConfig.DEFAULT_FPS;
+        this.currentFPS = ServerConfig.STARTING_FPS;
     }
     
     _updatePlayerImage(socket, base64Image) {

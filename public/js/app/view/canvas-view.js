@@ -73,6 +73,7 @@ define(function () {
             let x = coordinate.x * this.squareSizeInPixels;
             let y = coordinate.y * this.squareSizeInPixels;
             let lengthAroundSquare = this.squareSizeInPixels * 2;
+            this.context.lineWidth = this.squareSizeInPixels;
             this.context.strokeStyle = color;
             this.context.beginPath();
             this.context.moveTo(x - lengthAroundSquare, y - lengthAroundSquare);

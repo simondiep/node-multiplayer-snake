@@ -28,7 +28,8 @@ Open your web browser to `localhost:3000`
  - Change amount of food
  - Change player starting length
  - Upload your own snake image
- - Player statistics including kills/deaths
+ - Player statistics including kills/deaths/score
+ - Steal player scores by killing them
  - Game notifications
  - Bots
  - Random, safe spawns
@@ -74,7 +75,6 @@ Open your web browser to `localhost:3000`
     - Custom sort stat board
     - More stats (max length)
     - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
-    - Add score for kills (steal the score of the player you killed)
  - Power-ups or Game Modes
     - individual speed (2 or more steps for a player)
     - invulnerable
