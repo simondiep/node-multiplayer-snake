@@ -90,4 +90,5 @@ Open your web browser to `localhost:3000`
     - random walls
     - elimination
     - maze
+    - Kills steal other player's length
     - Choice of power-up to start with

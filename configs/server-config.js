@@ -1,6 +1,6 @@
 "use strict";
 
-let ServerConfig = {
+const ServerConfig = {
     DEFAULT_FOOD_AMOUNT : 10,
     FOOD_COLOR : "red",
     MIN_FPS: 8,

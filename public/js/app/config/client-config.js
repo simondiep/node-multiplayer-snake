@@ -1,7 +1,7 @@
 define(function () {
     "use strict";
 
-    let ClientConfig = {
+    const ClientConfig = {
         FPS: 60,
         TURNS_TO_FLASH_AFTER_SPAWN: 10,
         SPAWN_FLASH_COLOR: "white",

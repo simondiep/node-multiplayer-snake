@@ -28,19 +28,19 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.food = {};
             this.socket = io();
             this._initializeSocketIoHandlers();
-            let storedName = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_NAME);
-            let storedBase64Image = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_IMAGE);
+            const storedName = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_NAME);
+            const storedBase64Image = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_IMAGE);
             this.socket.emit(ClientConfig.IO.OUTGOING.NEW_PLAYER, storedName, storedBase64Image);
         }
        
         renderGame() {
             this.canvasView.clear();
-            for(let foodId in this.food) {
-                let food = this.food[foodId];
+            for(const foodId in this.food) {
+                const food = this.food[foodId];
                 this.canvasView.drawSquare(food.location, food.color);
             }
-            for(let playerId in this.players) {
-                let player = this.players[playerId];
+            for(const playerId in this.players) {
+                const player = this.players[playerId];
                 if(player.segments.length === 0) {
                     continue;
                 }
@@ -56,7 +56,7 @@ function (ClientConfig, CanvasFactory, GameView, io) {
                 }
             }
             
-            let self = this;
+            const self = this;
             // Run in a loop
             setTimeout(function() {
                 requestAnimationFrame(self.renderGame.bind(self));
@@ -80,7 +80,7 @@ function (ClientConfig, CanvasFactory, GameView, io) {
                 this.socket.emit(ClientConfig.IO.OUTGOING.CLEAR_UPLOADED_BACKGROUND_IMAGE);
                 return;
             }
-            let resizedBase64Image = this.canvasView.resizeUploadedBackgroundImageAndBase64(image,imageType);
+            const resizedBase64Image = this.canvasView.resizeUploadedBackgroundImageAndBase64(image,imageType);
             this.socket.emit(ClientConfig.IO.OUTGOING.BACKGROUND_IMAGE_UPLOAD, resizedBase64Image);
         }
         

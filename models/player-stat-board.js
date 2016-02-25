@@ -1,5 +1,5 @@
 "use strict";
-let PlayerStats = require("./player-stats");
+const PlayerStats = require("./player-stats");
 
 class PlayerStatBoard {
 
@@ -48,18 +48,18 @@ class PlayerStatBoard {
     }
     
     stealScore(playerId, playerIdToStealFrom) {
-        let scoreToSteal = this.statBoard.get(playerIdToStealFrom).score;
+        const scoreToSteal = this.statBoard.get(playerIdToStealFrom).score;
         this.statBoard.get(playerId).increaseScore(scoreToSteal);
     }
     
     toJSON() {
-        let response = [];
+        const response = [];
         this.statBoard.forEach(function(value, key, map) {
             response.push(value); 
         });
         // Sort by score (highest first, then least number of deaths)
         response.sort(function(stat, anotherStat) {
-            let scoreComparison = anotherStat.score - stat.score;
+            const scoreComparison = anotherStat.score - stat.score;
             if(scoreComparison === 0) {
                 return stat.deaths - anotherStat.deaths;
             }

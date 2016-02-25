@@ -1,9 +1,9 @@
 "use strict";
-let Board = require("../configs/board");
-let Coordinate = require("../models/coordinate");
-let CoordinateAttribute = require("../models/coordinate-attribute");
-let FoodConsumed = require("../models/food-consumed");
-let KillReport = require("../models/kill-report");
+const Board = require("../configs/board");
+const Coordinate = require("../models/coordinate");
+const CoordinateAttribute = require("../models/coordinate-attribute");
+const FoodConsumed = require("../models/food-consumed");
+const KillReport = require("../models/kill-report");
 
 const FOOD_TYPE = "food";
 const HEAD_TYPE = "head";
@@ -39,10 +39,10 @@ class BoardOccupancyService {
     }
     
     getFoodsConsumed() {
-        let foodsConsumed = [];
+        const foodsConsumed = [];
         for (let column=0; column <= this.maxColumn; column++) {
             for (let row=0; row <= this.maxRow; row++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupiedByFoodAndPlayer()) {
                     foodsConsumed.push(new FoodConsumed(coordinateAttribute.foodId, coordinateAttribute.playerIdsWithHead[0]));
                 }
@@ -52,15 +52,15 @@ class BoardOccupancyService {
     }
     
     getKillReports() {
-        let killReports = [];
+        const killReports = [];
         for (let column=0; column <=this.maxColumn; column++) {
             for (let row=0; row <= this.maxRow; row++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupiedByMultiplePlayers()) {
-                    let killerId = coordinateAttribute.playerIdWithTail;
+                    const killerId = coordinateAttribute.playerIdWithTail;
                     if(killerId) {
                         // Heads collided with a tail
-                        for( let playerIdWithHead of coordinateAttribute.playerIdsWithHead) {
+                        for( const playerIdWithHead of coordinateAttribute.playerIdsWithHead) {
                             killReports.push(new KillReport(killerId, playerIdWithHead));
                         }
                     } else {
@@ -74,10 +74,10 @@ class BoardOccupancyService {
     }
     
     getRandomUnoccupiedCoordinate() {
-        let unoccupiedCoordinates = [];
+        const unoccupiedCoordinates = [];
         for (let column=0; column <= this.maxColumn; column++) {
             for (let row=0; row <= this.maxRow; row++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( !coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates.push(new Coordinate(column,row));
                 }
@@ -93,7 +93,7 @@ class BoardOccupancyService {
         for (let row=0; row <= this.maxRow; row++) {
             let unoccupiedCoordinates = [];
             for (let column=0; column <= this.maxColumn; column++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -111,7 +111,7 @@ class BoardOccupancyService {
         for (let row=0; row <= this.maxRow; row++) {
             let unoccupiedCoordinates = [];
             for (let column=this.maxColumn; column >= 0; column--) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -129,7 +129,7 @@ class BoardOccupancyService {
         for (let row=this.maxRow; row >= 0; row--) {
             let unoccupiedCoordinates = [];
             for (let column=this.maxColumn; column >= 0; column--) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -147,7 +147,7 @@ class BoardOccupancyService {
         for (let row=this.maxRow; row >= 0; row--) {
             let unoccupiedCoordinates = [];
             for (let column=0; column <= this.maxColumn; column++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -165,7 +165,7 @@ class BoardOccupancyService {
         for (let column=0; column <= this.maxColumn; column++) {
             let unoccupiedCoordinates = [];
             for (let row=0; row <= this.maxRow; row++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -183,7 +183,7 @@ class BoardOccupancyService {
         for (let column=this.maxColumn; column >= 0; column--) {
             let unoccupiedCoordinates = [];
             for (let row=0; row <= this.maxRow; row++) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -201,7 +201,7 @@ class BoardOccupancyService {
         for (let column=this.maxColumn; column >= 0; column--) {
             let unoccupiedCoordinates = [];
             for (let row=this.maxRow; row >= 0; row--) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -219,7 +219,7 @@ class BoardOccupancyService {
         for (let column=0; column <= this.maxColumn; column++) {
             let unoccupiedCoordinates = [];
             for (let row=this.maxRow; row >= 0; row--) {
-                let coordinateAttribute = this.board[column][row];
+                const coordinateAttribute = this.board[column][row];
                 if( coordinateAttribute.isOccupied()) {
                     unoccupiedCoordinates = [];
                 } else {
@@ -238,12 +238,12 @@ class BoardOccupancyService {
     }
         
     isSafe(coordinate) {
-        let coordinateAttribute = this.board[coordinate.x][coordinate.y];
+        const coordinateAttribute = this.board[coordinate.x][coordinate.y];
         return coordinateAttribute.isSafe();
     }
     
     isWall(coordinate) {
-        let coordinateAttribute = this.board[coordinate.x][coordinate.y];
+        const coordinateAttribute = this.board[coordinate.x][coordinate.y];
         return coordinateAttribute.isWall();
     }
     
@@ -259,7 +259,7 @@ class BoardOccupancyService {
     }
     
     _addOccupancy(id, coordinate, type) {
-        let coordinateAttribute = this.board[coordinate.x][coordinate.y];
+        const coordinateAttribute = this.board[coordinate.x][coordinate.y];
         if(type === FOOD_TYPE) {
             coordinateAttribute.setFoodId(id);
         } else if(type === HEAD_TYPE) {
@@ -271,7 +271,7 @@ class BoardOccupancyService {
     
         
     _removeOccupancy(id, coordinate, type) {
-        let coordinateAttribute = this.board[coordinate.x][coordinate.y];
+        const coordinateAttribute = this.board[coordinate.x][coordinate.y];
         if(type === FOOD_TYPE) {
             coordinateAttribute.setFoodId(false);
         } else if(type === HEAD_TYPE) {

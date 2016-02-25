@@ -33,7 +33,7 @@ class CoordinateAttribute {
     }
     
     removePlayerIdWithHead(playerIdWithHead) {
-        let indexOfHead = this.playerIdsWithHead.indexOf(playerIdWithHead);
+        const indexOfHead = this.playerIdsWithHead.indexOf(playerIdWithHead);
         this.playerIdsWithHead.splice(indexOfHead, 1);
     }
     

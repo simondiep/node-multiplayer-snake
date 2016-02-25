@@ -1,17 +1,17 @@
 "use strict";
-let Board = require("../configs/board");
-let ServerConfig = require("../configs/server-config");
+const Board = require("../configs/board");
+const ServerConfig = require("../configs/server-config");
 
-let BoardOccupancyService = require("../services/board-occupancy-service");
-let ColorService = require("../services/color-service");
-let GameControlsService = require("../services/game-controls-service");
-let CoordinateService = require("../services/coordinate-service");
-let NameService = require("../services/name-service");
-let PlayerSpawnService = require("../services/player-spawn-service");
+const BoardOccupancyService = require("../services/board-occupancy-service");
+const ColorService = require("../services/color-service");
+const GameControlsService = require("../services/game-controls-service");
+const CoordinateService = require("../services/coordinate-service");
+const NameService = require("../services/name-service");
+const PlayerSpawnService = require("../services/player-spawn-service");
 
-let Food = require("../models/food");
-let Player = require("../models/player");
-let PlayerStatBoard = require("../models/player-stat-board");
+const Food = require("../models/food");
+const Player = require("../models/player");
+const PlayerStatBoard = require("../models/player-stat-board");
 
 class GameController {
     constructor(io) {
@@ -31,7 +31,7 @@ class GameController {
         }
         
         this.io = io;
-        let self = this;
+        const self = this;
         this.io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, function (socket) {
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER, self._addPlayer.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.NAME_CHANGE, self._changePlayerName.bind(self, socket));
@@ -62,13 +62,13 @@ class GameController {
             return;
         }
         
-        for(let botName of this.botNames) {
-            let bot = this.players[botName];
+        for(const botName of this.botNames) {
+            const bot = this.players[botName];
             if(this._isBotInDanger(bot.getHeadLocation(), bot.direction) || Math.random() <= ServerConfig.BOT_CHANGE_DIRECTION_PERCENT) {
                 let newDirection, nextCoordinate;
                 let attempts = 0;
                 do {
-                    let newDirectionOptions = GameControlsService.getValidNextMove(bot.direction);
+                    const newDirectionOptions = GameControlsService.getValidNextMove(bot.direction);
                     newDirection = newDirectionOptions[this._getRandomIntegerInRange(0,1)];
                     nextCoordinate = CoordinateService.getNextCoordinate(bot.getHeadLocation(), newDirection);
                     attempts++;
@@ -79,9 +79,9 @@ class GameController {
             }
         }
         
-        let playersToRespawn = [];
-        for(let playerId in this.players) {
-            let player = this.players[playerId];
+        const playersToRespawn = [];
+        for(const playerId in this.players) {
+            const player = this.players[playerId];
             // Check if player is spectating
             if(player.segments.length === 0) {
                 continue;
@@ -96,10 +96,10 @@ class GameController {
             }
         }
         
-        let killReports = this.boardOccupancyService.getKillReports();
-        for(let killReport of killReports) {
+        const killReports = this.boardOccupancyService.getKillReports();
+        for(const killReport of killReports) {
             if(killReport.isSingleKill()) {
-                let victim = this.players[killReport.victimId];
+                const victim = this.players[killReport.victimId];
                 if(killReport.killerId === killReport.victimId) {
                     // TODO Display suicide announcement
                 } else {
@@ -112,8 +112,8 @@ class GameController {
                 victim.clearAllSegments();
                 playersToRespawn.push(victim);
             } else {
-                for(let victimId of killReport.victimIds) {
-                    let victim = this.players[victimId];
+                for(const victimId of killReport.victimIds) {
+                    const victim = this.players[victimId];
                     this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.segments);
                     victim.clearAllSegments();
                     playersToRespawn.push(victim); 
@@ -122,14 +122,14 @@ class GameController {
             }
         }
         
-        for(let player of playersToRespawn) {
+        for(const player of playersToRespawn) {
             this.respawnPlayer(player);
         }
         
         let foodToRespawn = 0;
-        let foodsConsumed = this.boardOccupancyService.getFoodsConsumed();
-        for(let foodConsumed of foodsConsumed) {
-            let playerWhoConsumedFood = this.players[foodConsumed.playerId];
+        const foodsConsumed = this.boardOccupancyService.getFoodsConsumed();
+        for(const foodConsumed of foodsConsumed) {
+            const playerWhoConsumedFood = this.players[foodConsumed.playerId];
             this._removeFood(foodConsumed.foodId);
             
             playerWhoConsumedFood.growNextTurn();
@@ -141,7 +141,7 @@ class GameController {
             this.generateFood();
         }
     
-        let gameData = {
+        const gameData = {
             players: this.players,
             food: this.food,
             playerStats: this.playerStatBoard,
@@ -155,13 +155,13 @@ class GameController {
     }
     
     generateFood() {
-        let randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
+        const randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
         if(!randomUnoccupiedCoordinate) {
             this.sendNotificationToPlayers("Could not add more food.  No room left.", "white");
             return;
         }
-        let foodId = this.nameService.getFoodId();
-        let food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD_COLOR);
+        const foodId = this.nameService.getFoodId();
+        const food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD_COLOR);
         this.food[foodId] = food;
         this.boardOccupancyService.addFoodOccupancy(food.id, food.location);
     }
@@ -185,9 +185,9 @@ class GameController {
             this.sendNotificationToPlayers(playerRequestingAddition.name + " tried to add a bot past the limit.", playerRequestingAddition.color);
             return;
         }
-        let newBotName = this.nameService.getBotName();
-        let botColor = this.colorService.getColor();
-        let newBot = new Player(newBotName, newBotName, botColor);
+        const newBotName = this.nameService.getBotName();
+        const botColor = this.colorService.getColor();
+        const newBot = new Player(newBotName, newBotName, botColor);
         this.playerSpawnService.setupNewSpawn(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
         this.players[newBotName] = newBot;
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
@@ -196,9 +196,9 @@ class GameController {
     }
     
     _addPlayer(socket, previousName, previousImage) {
-        let playerName = this.nameService.getPlayerName();
-        let playerColor = this.colorService.getColor();
-        let newPlayer = new Player(socket.id, playerName, playerColor);
+        const playerName = this.nameService.getPlayerName();
+        const playerColor = this.colorService.getColor();
+        const newPlayer = new Player(socket.id, playerName, playerColor);
         this.playerSpawnService.setupNewSpawn(newPlayer, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
@@ -221,7 +221,7 @@ class GameController {
     }
     
     _changeBots(socket, botOption) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         if(botOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this._addBot(player);
         } else if(botOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
@@ -232,8 +232,8 @@ class GameController {
     }
     
     _changeColor(socket, newPlayerName) {
-        let player = this.players[socket.id];
-        let newColor = this.colorService.getColor();
+        const player = this.players[socket.id];
+        const newColor = this.colorService.getColor();
         this.colorService.returnColor(player.color);
         player.color = newColor;
         this.playerStatBoard.changePlayerColor(player.id, newColor);
@@ -242,7 +242,7 @@ class GameController {
     }
     
     _changeFood(socket, foodOption) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         let notification = player.name;
         if(foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this.generateFood();
@@ -262,8 +262,8 @@ class GameController {
     }
     
     _changePlayerName(socket, newPlayerName) {
-        let player = this.players[socket.id];
-        let oldPlayerName = player.name;
+        const player = this.players[socket.id];
+        const oldPlayerName = player.name;
         if(oldPlayerName === newPlayerName) {
             return;
         }
@@ -280,7 +280,7 @@ class GameController {
     }
     
     _changeSpeed(socket, speedOption) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         let notification = player.name;
         if(speedOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             if(this.currentFPS < ServerConfig.MAX_FPS) {
@@ -290,7 +290,7 @@ class GameController {
                 notification += " tried to raised the game speed past the limit.";
             }
         } else if(speedOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
-            if(this.currentFPS > ServerConfig.MIX_FPS) {
+            if(this.currentFPS > ServerConfig.MIN_FPS) {
                 notification += " has lowered the game speed.";
                 this.currentFPS--;
             } else {
@@ -304,7 +304,7 @@ class GameController {
     }
     
     _changeStartLength(socket, lengthOption) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         let notification = player.name;
         if(lengthOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             notification += " has increased the player start length.";
@@ -328,7 +328,7 @@ class GameController {
     }
     
     _disconnectPlayer(playerId) {
-        let player = this.players[playerId];
+        const player = this.players[playerId];
         if(!player) {
             return;
         }
@@ -343,17 +343,17 @@ class GameController {
     }
     
     _isBotInDanger(currentCoordinate, direction) {
-        let nextCoordinate = CoordinateService.getNextCoordinate(currentCoordinate, direction);
+        const nextCoordinate = CoordinateService.getNextCoordinate(currentCoordinate, direction);
         let isOutOfBounds = this.boardOccupancyService.isOutOfBounds(nextCoordinate);
         if(isOutOfBounds) {
             return true;
         }
-        let nextSecondCoordinate = CoordinateService.getNextCoordinate(nextCoordinate, direction);
+        const nextSecondCoordinate = CoordinateService.getNextCoordinate(nextCoordinate, direction);
         isOutOfBounds = this.boardOccupancyService.isOutOfBounds(nextSecondCoordinate);
         if(isOutOfBounds) {
             return true;
         }
-        let isSafe = this.boardOccupancyService.isSafe(nextCoordinate) || this.boardOccupancyService.isSafe(nextSecondCoordinate);
+        const isSafe = this.boardOccupancyService.isSafe(nextCoordinate) || this.boardOccupancyService.isSafe(nextSecondCoordinate);
         return !isSafe;
     }
     
@@ -362,13 +362,13 @@ class GameController {
     }
     
     _playerJoinGame(socket) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         this.respawnPlayer(player);
         this.sendNotificationToPlayers(player.name + " has rejoined the game.", player.color);
     }
     
     _playerSpectateGame(socket) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         player.clearAllSegments();
         this.sendNotificationToPlayers(player.name + " is now spectating.", player.color);
@@ -389,14 +389,14 @@ class GameController {
     }
     
     _removeFood(foodId) {
-        let foodToRemove = this.food[foodId];
+        const foodToRemove = this.food[foodId];
         this.nameService.returnFoodId(foodId);
         this.boardOccupancyService.removeFoodOccupancy(foodId, foodToRemove.location);
         delete this.food[foodId];
     }
     
     _removeLastFood() {
-        let lastFood = this.food[Object.keys(this.food)[Object.keys(this.food).length - 1]];
+        const lastFood = this.food[Object.keys(this.food)[Object.keys(this.food).length - 1]];
         this._removeFood(lastFood.id);
     }
     
@@ -411,26 +411,26 @@ class GameController {
     }
     
     _clearBackgroundImage(socket, backgroundImage) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE );
         this.sendNotificationToPlayers(player.name + " has clear the background image.", player.color);
     }
     
     _clearPlayerImage(socket) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         delete player.base64Image;
         this.playerStatBoard.clearPlayerImage(player.id);
         this.sendNotificationToPlayers(player.name + " has removed their image.", player.color);
     }
     
     _updateBackgroundImage(socket, base64Image) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, base64Image );
         this.sendNotificationToPlayers(player.name + " has updated the background image.", player.color);
     }
     
     _updatePlayerImage(socket, base64Image) {
-        let player = this.players[socket.id];
+        const player = this.players[socket.id];
         player.setBase64Image(base64Image);
         this.playerStatBoard.setBase64Image(player.id, base64Image);
         this.sendNotificationToPlayers(player.name + " has uploaded a new image.", player.color);

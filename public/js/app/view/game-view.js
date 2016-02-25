@@ -38,8 +38,8 @@ function (ClientConfig, DomHelper) {
         }
         
         showNotification(notification, playerColor) {
-            let notificationDiv = DomHelper.getNotificationsDiv();
-            let formattedNotification = "<div><span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> <span style='color:" + playerColor + "'>" + notification + "<span/></div>";
+            const notificationDiv = DomHelper.getNotificationsDiv();
+            const formattedNotification = "<div><span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> <span style='color:" + playerColor + "'>" + notification + "<span/></div>";
             notificationDiv.innerHTML = formattedNotification + notificationDiv.innerHTML;
         }
         
@@ -49,7 +49,7 @@ function (ClientConfig, DomHelper) {
         
         showPlayerStats(playerStats) {        
             let formattedScores = "<div class='playerStatsHeader'><span class='image'></span><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Kills</span><span class='stat'>Deaths</span></div>";
-            for( let playerStat of playerStats) {
+            for( const playerStat of playerStats) {
                 let playerImageElement = "";
                 if(playerStat.base64Image) {
                     playerImageElement = "<img src=" + playerStat.base64Image + " class='playerStatsImage'></img>" ;
@@ -173,11 +173,11 @@ function (ClientConfig, DomHelper) {
         }
         
         _handleBackgroundImageUpload() {
-            let uploadedBackgroundImageAsFile = DomHelper.getBackgroundImageUploadElement().files[0];
+            const uploadedBackgroundImageAsFile = DomHelper.getBackgroundImageUploadElement().files[0];
             if(uploadedBackgroundImageAsFile) {
                 // Convert file to image
-                let image = new Image();
-                let self = this;
+                const image = new Image();
+                const self = this;
                 image.onload = function() {
                     self.backgroundImageUploadCallback(image, uploadedBackgroundImageAsFile.type);
                 };
@@ -186,11 +186,11 @@ function (ClientConfig, DomHelper) {
         }
         
         _handleImageUpload() {
-            let uploadedImageAsFile = DomHelper.getImageUploadElement().files[0];
+            const uploadedImageAsFile = DomHelper.getImageUploadElement().files[0];
             if(uploadedImageAsFile) {
                 // Convert file to image
-                let image = new Image();
-                let self = this;
+                const image = new Image();
+                const self = this;
                 image.onload = function() {
                     self.imageUploadCallback(image, uploadedImageAsFile.type);
                 };
@@ -199,7 +199,7 @@ function (ClientConfig, DomHelper) {
         }
         
         _handlePlayOrWatchButtonClick() {
-            let command = DomHelper.getPlayOrWatchButton().textContent;
+            const command = DomHelper.getPlayOrWatchButton().textContent;
             if(command === "Play") {
                 DomHelper.getPlayOrWatchButton().textContent = "Watch";
                 this.joinGameCallback();
@@ -214,7 +214,7 @@ function (ClientConfig, DomHelper) {
         }
         
         _saveNewPlayerName() {
-            let playerName = DomHelper.getPlayerNameElement().value;
+            const playerName = DomHelper.getPlayerNameElement().value;
             if(playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
                 this.playerNameUpdatedCallback(playerName);
                 DomHelper.getChangeNameButton().innerHTML = "Change Name";

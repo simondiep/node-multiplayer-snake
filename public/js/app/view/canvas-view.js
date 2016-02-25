@@ -42,28 +42,28 @@ define(function () {
         }
         
         drawImages(coordinates, base64Image) {
-            for(let coordinate of coordinates) {
+            for(const coordinate of coordinates) {
                 this.drawImage(coordinate, base64Image);
             }
         }
         
         drawImage(coordinate, base64Image) {
-            let x = coordinate.x * this.squareSizeInPixels;
-            let y = coordinate.y * this.squareSizeInPixels;
-            let image = new Image();
+            const x = coordinate.x * this.squareSizeInPixels;
+            const y = coordinate.y * this.squareSizeInPixels;
+            const image = new Image();
             image.src = base64Image;
             this.context.drawImage(image, x - (this.squareSizeInPixels / 2), y - (this.squareSizeInPixels / 2), this.squareSizeInPixels, this.squareSizeInPixels);
         }
         
         drawSquares(coordinates, color) {
-            for(let coordinate of coordinates) {
+            for(const coordinate of coordinates) {
                 this.drawSquare(coordinate, color);
             }
         }
         
         drawSquare(coordinate, color) {
-            let x = coordinate.x * this.squareSizeInPixels;
-            let y = coordinate.y * this.squareSizeInPixels;
+            const x = coordinate.x * this.squareSizeInPixels;
+            const y = coordinate.y * this.squareSizeInPixels;
             this.context.fillStyle = color;
             this.context.beginPath();
             this.context.moveTo(x - (this.squareSizeInPixels / 2), y - (this.squareSizeInPixels / 2));
@@ -75,9 +75,9 @@ define(function () {
         }
         
         drawSquareAround(coordinate, color) {
-            let x = coordinate.x * this.squareSizeInPixels;
-            let y = coordinate.y * this.squareSizeInPixels;
-            let lengthAroundSquare = this.squareSizeInPixels * 2;
+            const x = coordinate.x * this.squareSizeInPixels;
+            const y = coordinate.y * this.squareSizeInPixels;
+            const lengthAroundSquare = this.squareSizeInPixels * 2;
             this.context.lineWidth = this.squareSizeInPixels;
             this.context.strokeStyle = color;
             this.context.beginPath();
@@ -99,15 +99,15 @@ define(function () {
         }
         
         resizeUploadedBackgroundImageAndBase64(image, imageType){
-            let maxImageWidth = this.backgroundImageUploadCanvas.width;
-            let maxImageHeight = this.backgroundImageUploadCanvas.height;
+            const maxImageWidth = this.backgroundImageUploadCanvas.width;
+            const maxImageHeight = this.backgroundImageUploadCanvas.height;
             if(image.width > maxImageWidth ) {
                 image.width = maxImageWidth;
             }
             if(image.height > maxImageHeight ) {
                 image.height = maxImageHeight;
             }
-            let imageUploadCanvasContext = this.backgroundImageUploadCanvas.getContext("2d");
+            const imageUploadCanvasContext = this.backgroundImageUploadCanvas.getContext("2d");
             imageUploadCanvasContext.clearRect(0, 0, maxImageWidth, maxImageHeight);     
             imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
 
@@ -115,15 +115,15 @@ define(function () {
         }
         
         resizeUploadedImageAndBase64(image, imageType){
-            let maxImageWidth = this.imageUploadCanvas.width;
-            let maxImageHeight = this.imageUploadCanvas.height;
+            const maxImageWidth = this.imageUploadCanvas.width;
+            const maxImageHeight = this.imageUploadCanvas.height;
             if(image.width > maxImageWidth ) {
                 image.width = maxImageWidth;
             }
             if(image.height > maxImageHeight ) {
                 image.height = maxImageHeight;
             }
-            let imageUploadCanvasContext = this.imageUploadCanvas.getContext("2d");
+            const imageUploadCanvasContext = this.imageUploadCanvas.getContext("2d");
             imageUploadCanvasContext.clearRect(0, 0, maxImageWidth, maxImageHeight);
             imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
 
