@@ -146,6 +146,9 @@ body {
 #imageUpload {
     display: none;
 }
+#backgroundImageUpload {
+    display: none;
+}
 button {
     -webkit-border-radius: 10;
     -moz-border-radius: 10;

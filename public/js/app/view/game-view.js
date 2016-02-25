@@ -11,8 +11,9 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(botChangeCallback, foodChangeCallback, imageUploadCallback, joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback, speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
+        constructor(backgroundImageUploadCallback, botChangeCallback, foodChangeCallback, imageUploadCallback, joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback, speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
             this.isChangingName = false;
+            this.backgroundImageUploadCallback = backgroundImageUploadCallback;
             this.botChangeCallback = botChangeCallback;
             this.foodChangeCallback = foodChangeCallback;
             this.imageUploadCallback = imageUploadCallback;
@@ -163,8 +164,25 @@ function (ClientConfig, DomHelper) {
             this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
         }
         
+        _handleClearUploadedBackgroundImageButtonClick() {
+            this.backgroundImageUploadCallback();
+        }
+        
         _handleClearUploadedImageButtonClick() {
             this.imageUploadCallback();
+        }
+        
+        _handleBackgroundImageUpload() {
+            let uploadedBackgroundImageAsFile = DomHelper.getBackgroundImageUploadElement().files[0];
+            if(uploadedBackgroundImageAsFile) {
+                // Convert file to image
+                let image = new Image();
+                let self = this;
+                image.onload = function() {
+                    self.backgroundImageUploadCallback(image, uploadedBackgroundImageAsFile.type);
+                };
+                image.src = URL.createObjectURL(uploadedBackgroundImageAsFile);
+            }
         }
         
         _handleImageUpload() {
@@ -225,6 +243,8 @@ function (ClientConfig, DomHelper) {
             DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
             DomHelper.getImageUploadElement().addEventListener("change", this._handleImageUpload.bind(this));
             DomHelper.getClearUploadedImageButton().addEventListener("click", this._handleClearUploadedImageButtonClick.bind(this));
+            DomHelper.getBackgroundImageUploadElement().addEventListener("change", this._handleBackgroundImageUpload.bind(this));
+            DomHelper.getClearUploadedBackgroundImageButton().addEventListener("click", this._handleClearUploadedBackgroundImageButtonClick.bind(this));
             DomHelper.getPlayOrWatchButton().addEventListener("click", this._handlePlayOrWatchButtonClick.bind(this), false);
             DomHelper.getToggleGridLinesButton().addEventListener("click", this._handleToggleGridLinesButtonClick.bind(this), false);
             DomHelper.getFullScreenButton().addEventListener("click", DomHelper.toggleFullScreenMode, false);

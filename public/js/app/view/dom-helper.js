@@ -11,8 +11,16 @@ define(function () {
             return document.createElement(elementName);
         }
     
+        static getBackgroundImageUploadElement() {
+            return document.getElementById("backgroundImageUpload");
+        }
+    
         static getBody() {
             return document.body;
+        }
+    
+        static getClearUploadedBackgroundImageButton() {
+            return document.getElementById("clearUploadedBackgroundImageButton");
         }
     
         static getClearUploadedImageButton() {

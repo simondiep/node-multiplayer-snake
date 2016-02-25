@@ -22,6 +22,8 @@ let ServerConfig = {
             START_LENGTH_CHANGE: "start length change",
             JOIN_GAME: "join game",
             SPECTATE_GAME: "spectate game",
+            CLEAR_UPLOADED_BACKGROUND_IMAGE: "clear uploaded background image",
+            BACKGROUND_IMAGE_UPLOAD: "background image upload",
             CLEAR_UPLOADED_IMAGE: "clear uploaded image",
             IMAGE_UPLOAD: "image upload",
             NEW_PLAYER: "new player",
@@ -32,6 +34,7 @@ let ServerConfig = {
         OUTGOING: {
             NEW_STATE: "game update",
             NEW_PLAYER_INFO: "new player info",
+            NEW_BACKGROUND_IMAGE: "new background image",
             BOARD_INFO: "board info",
             NOTIFICATION: "server notification"
         }

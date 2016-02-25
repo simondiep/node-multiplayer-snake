@@ -8,6 +8,7 @@ define(function () {
             this.width = canvas.width;
             this.context = canvas.getContext("2d");
             this.squareSizeInPixels = squareSizeInPixels;
+            this.backgroundImageUploadCanvas = canvas;
             this.imageUploadCanvas = imageUploadCanvas;
             this.showGridLines = false;
         }
@@ -16,6 +17,10 @@ define(function () {
             this.context.fillStyle = "black";
             this.context.globalAlpha = 1;
             this.context.fillRect(0, 0, this.width, this.height);
+            
+            if(this.backgroundImage) {
+                this.context.drawImage(this.backgroundImage,0,0);
+            }
             
             this.context.lineWidth = this.squareSizeInPixels;
             this.context.strokeStyle = "gray";
@@ -82,6 +87,34 @@ define(function () {
             this.context.lineTo(x - lengthAroundSquare, y + lengthAroundSquare);
             this.context.closePath();
             this.context.stroke();
+        }
+        
+        clearBackgroundImage() {
+            delete this.backgroundImage;
+        }
+        
+        setBackgroundImage(backgroundImage) {
+            this.backgroundImage = new Image();
+            this.backgroundImage.src = backgroundImage;
+        }
+        
+        resizeUploadedBackgroundImageAndBase64(image, imageType){
+            let maxImageWidth = this.backgroundImageUploadCanvas.width;
+            let maxImageHeight = this.backgroundImageUploadCanvas.height;
+            if(image.width > maxImageWidth ) {
+                image.width = maxImageWidth;
+            }
+            if(image.height > maxImageHeight ) {
+                image.height = maxImageHeight;
+            }
+            let imageUploadCanvasContext = this.backgroundImageUploadCanvas.getContext("2d");
+            // clear canvas for next image
+            imageUploadCanvasContext.fillStyle = "black";
+            imageUploadCanvasContext.fillRect(0, 0, maxImageWidth, maxImageHeight);
+            
+            imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
+
+            return this.backgroundImageUploadCanvas.toDataURL(imageType);
         }
         
         resizeUploadedImageAndBase64(image, imageType){

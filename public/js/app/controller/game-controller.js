@@ -11,7 +11,8 @@ function (ClientConfig, CanvasFactory, GameView, io) {
     class GameController {
 
         constructor() {
-            this.gameView = new GameView(this.botChangeCallback.bind(this),
+            this.gameView = new GameView(this.backgroundImageUploadCallback.bind(this),
+                                         this.botChangeCallback.bind(this),
                                          this.foodChangeCallback.bind(this),
                                          this.imageUploadCallback.bind(this),
                                          this.joinGameCallback.bind(this),
@@ -48,7 +49,6 @@ function (ClientConfig, CanvasFactory, GameView, io) {
                     this.canvasView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
                 }
                 
-                
                 if(player.base64Image) {
                     this.canvasView.drawImages(player.segments, player.base64Image);
                 } else {
@@ -73,6 +73,15 @@ function (ClientConfig, CanvasFactory, GameView, io) {
         
         foodChangeCallback(option) {
             this.socket.emit(ClientConfig.IO.OUTGOING.FOOD_CHANGE, option);
+        }
+        
+        backgroundImageUploadCallback(image, imageType) {
+            if(arguments.length === 0) {
+                this.socket.emit(ClientConfig.IO.OUTGOING.CLEAR_UPLOADED_BACKGROUND_IMAGE);
+                return;
+            }
+            let resizedBase64Image = this.canvasView.resizeUploadedBackgroundImageAndBase64(image,imageType);
+            this.socket.emit(ClientConfig.IO.OUTGOING.BACKGROUND_IMAGE_UPLOAD, resizedBase64Image);
         }
         
         // optional resizedBase64Image
@@ -133,6 +142,14 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.renderGame();
         }
         
+        _handleBackgroundImage(backgroundImage) {
+            if(backgroundImage) {
+                this.canvasView.setBackgroundImage(backgroundImage);
+            } else {
+                this.canvasView.clearBackgroundImage();
+            }
+        }
+        
         _handleNewGameData(gameData) {
             this.players = gameData.players;
             this.food = gameData.food;
@@ -155,6 +172,7 @@ function (ClientConfig, CanvasFactory, GameView, io) {
             this.socket.on(ClientConfig.IO.INCOMING.NEW_PLAYER_INFO, this._updatePlayerName.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.BOARD_INFO, this._createBoard.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NEW_STATE, this._handleNewGameData.bind(this));
+            this.socket.on(ClientConfig.IO.INCOMING.NEW_BACKGROUND_IMAGE, this._handleBackgroundImage.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION, this._handleNotification.bind(this));
         }
     }

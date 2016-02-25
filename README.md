@@ -27,7 +27,7 @@ Open your web browser to `localhost:3000`
  - Change game speed
  - Change amount of food
  - Change player starting length
- - Upload your own snake image
+ - Upload your own snake image and background image
  - Player statistics including kills/deaths/score
  - Steal player scores by killing them
  - Game notifications

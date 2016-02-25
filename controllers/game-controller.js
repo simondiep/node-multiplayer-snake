@@ -41,6 +41,8 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self._changeFood.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self._changeSpeed.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, self._changeStartLength.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_BACKGROUND_IMAGE, self._clearBackgroundImage.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.BACKGROUND_IMAGE_UPLOAD, self._updateBackgroundImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_IMAGE, self._clearPlayerImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD, self._updatePlayerImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.JOIN_GAME, self._playerJoinGame.bind(self, socket));
@@ -408,11 +410,23 @@ class GameController {
         this.currentFPS = ServerConfig.STARTING_FPS;
     }
     
+    _clearBackgroundImage(socket, backgroundImage) {
+        let player = this.players[socket.id];
+        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE );
+        this.sendNotificationToPlayers(player.name + " has clear the background image.", player.color);
+    }
+    
     _clearPlayerImage(socket) {
         let player = this.players[socket.id];
         delete player.base64Image;
         this.playerStatBoard.clearPlayerImage(player.id);
         this.sendNotificationToPlayers(player.name + " has removed their image.", player.color);
+    }
+    
+    _updateBackgroundImage(socket, base64Image) {
+        let player = this.players[socket.id];
+        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, base64Image );
+        this.sendNotificationToPlayers(player.name + " has updated the background image.", player.color);
     }
     
     _updatePlayerImage(socket, base64Image) {
