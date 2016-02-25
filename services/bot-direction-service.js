@@ -1,5 +1,4 @@
 "use strict";
-const BoardOccupancyService = require("../services/board-occupancy-service");
 const CoordinateService = require("../services/coordinate-service");
 const GameControlsService = require("../services/game-controls-service");
 const ServerConfig = require("../configs/server-config");

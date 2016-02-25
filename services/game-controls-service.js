@@ -1,5 +1,5 @@
 "use strict";
-let Direction = require("../models/direction");
+const Direction = require("../models/direction");
 
 const KEYCODE_TO_DIRECTION = {
     87 : Direction.UP,    //W
@@ -30,12 +30,12 @@ class GameControlsService {
     }
 
     static handleKeyDown(player, keyCode) {
-        let newDirection = KEYCODE_TO_DIRECTION[keyCode];
+        const newDirection = KEYCODE_TO_DIRECTION[keyCode];
         if(!newDirection) {
             return;
         }
-        let validNextDirections = this.getValidNextMove(player.directionBeforeMove);
-        for (let validNextDirection of validNextDirections) {
+        const validNextDirections = this.getValidNextMove(player.directionBeforeMove);
+        for (const validNextDirection of validNextDirections) {
             if(newDirection === validNextDirection) {
                 player.changeDirection(newDirection);
                 break;
