@@ -108,10 +108,7 @@ define(function () {
                 image.height = maxImageHeight;
             }
             let imageUploadCanvasContext = this.backgroundImageUploadCanvas.getContext("2d");
-            // clear canvas for next image
-            imageUploadCanvasContext.fillStyle = "black";
-            imageUploadCanvasContext.fillRect(0, 0, maxImageWidth, maxImageHeight);
-            
+            imageUploadCanvasContext.clearRect(0, 0, maxImageWidth, maxImageHeight);     
             imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
 
             return this.backgroundImageUploadCanvas.toDataURL(imageType);
@@ -127,10 +124,7 @@ define(function () {
                 image.height = maxImageHeight;
             }
             let imageUploadCanvasContext = this.imageUploadCanvas.getContext("2d");
-            // clear canvas for next image
-            imageUploadCanvasContext.fillStyle = "black";
-            imageUploadCanvasContext.fillRect(0, 0, maxImageWidth, maxImageHeight);
-            
+            imageUploadCanvasContext.clearRect(0, 0, maxImageWidth, maxImageHeight);
             imageUploadCanvasContext.drawImage(image, 0, 0, image.width, image.height);
 
             return this.imageUploadCanvas.toDataURL(imageType);

@@ -66,7 +66,9 @@ Open your web browser to `localhost:3000`
  - Chat
  - Support resolutions lower than 1225x550
  - Smarter bots (go after food, don't run into themselves)
+ - Voice chat
  - Images
+    - Store background image on server
     - Food image
     - Support animated gifs (snake and food)
     - Upload head image vs body images
