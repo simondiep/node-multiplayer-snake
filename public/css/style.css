@@ -2,10 +2,6 @@
    font-family: PressStart2P; 
    src: url('../fonts/PressStart2P.ttf');
 } 
-#cover {
-    display: table;
-    margin: 0 auto; 
-}
 body {
     margin: 0;
     padding: 0;
@@ -13,6 +9,10 @@ body {
     background-color: black;
     color: white;
     font-family: PressStart2P;
+}
+.bodyContent {
+    display: table;
+    margin: 0 auto; 
 }
 .mainContainer {
     height: 500px;
@@ -160,6 +160,20 @@ button:hover {
     background: #808080;
     text-decoration: none;
     cursor: pointer;
+}
+#fullScreenButton {
+    background: url(../assets/fullscreen-icon.png)  no-repeat; border: none;
+    background-color: #383838;
+    height: 54px;
+    width: 60px;
+    vertical-align: top;
+    margin-top: -13px;
+    text-indent:-9999px;
+    cursor: pointer;
+}
+#fullScreenButton:hover {
+    background: url(../assets/fullscreen-icon-hover.png)  no-repeat; border: none;
+    background-color: #808080;
 }
 #playerStats {
     height: 250px;

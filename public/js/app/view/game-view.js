@@ -227,6 +227,7 @@ function (ClientConfig, DomHelper) {
             DomHelper.getClearUploadedImageButton().addEventListener("click", this._handleClearUploadedImageButtonClick.bind(this));
             DomHelper.getPlayOrWatchButton().addEventListener("click", this._handlePlayOrWatchButtonClick.bind(this), false);
             DomHelper.getToggleGridLinesButton().addEventListener("click", this._handleToggleGridLinesButtonClick.bind(this), false);
+            DomHelper.getFullScreenButton().addEventListener("click", DomHelper.toggleFullScreenMode, false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }
     }
