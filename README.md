@@ -65,7 +65,7 @@ Open your web browser to `localhost:3000`
  - Choose your own color
  - Chat
  - Support resolutions lower than 1225x550
- - Smarter bots (go after food, don't run into themselves)
+ - Smarter bots (prioritize food, don't trap themselves, have a sense for other player movements)
  - Voice chat
  - Images
     - Store background image on server

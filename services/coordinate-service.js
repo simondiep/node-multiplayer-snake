@@ -8,8 +8,7 @@ class CoordinateService {
     }
     
     static movePlayer(player) {
-        player.move(new Coordinate(player.getHeadLocation().x + player.direction.x, 
-                                   player.getHeadLocation().y + player.direction.y));
+        player.move(this.getNextCoordinate(player.getHeadLocation(), player.direction));
     }
 }
 

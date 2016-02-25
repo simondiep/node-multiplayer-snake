@@ -3,6 +3,7 @@ const Board = require("../configs/board");
 const ServerConfig = require("../configs/server-config");
 
 const BoardOccupancyService = require("../services/board-occupancy-service");
+const BotDirectionService = require("../services/bot-direction-service");
 const ColorService = require("../services/color-service");
 const GameControlsService = require("../services/game-controls-service");
 const CoordinateService = require("../services/coordinate-service");
@@ -21,6 +22,7 @@ class GameController {
         this.botNames = [];
         this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
         this.boardOccupancyService = new BoardOccupancyService();
+        this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
         this.playerSpawnService = new PlayerSpawnService(this.boardOccupancyService);
         this.colorService = new ColorService();
         this.nameService = new NameService();
@@ -64,19 +66,10 @@ class GameController {
         
         for(const botName of this.botNames) {
             const bot = this.players[botName];
-            if(this._isBotInDanger(bot.getHeadLocation(), bot.direction) || Math.random() <= ServerConfig.BOT_CHANGE_DIRECTION_PERCENT) {
-                let newDirection, nextCoordinate;
-                let attempts = 0;
-                do {
-                    const newDirectionOptions = GameControlsService.getValidNextMove(bot.direction);
-                    newDirection = newDirectionOptions[this._getRandomIntegerInRange(0,1)];
-                    nextCoordinate = CoordinateService.getNextCoordinate(bot.getHeadLocation(), newDirection);
-                    attempts++;
-                } while(attempts < ServerConfig.BOT_MAX_CHANGE_DIRECTION_ATTEMPTS && this._isBotInDanger(nextCoordinate, newDirection));
-                if(attempts < ServerConfig.BOT_MAX_CHANGE_DIRECTION_ATTEMPTS) {
-                    bot.changeDirection(newDirection);
-                }
+            if(Math.random() <= ServerConfig.BOT_CHANGE_DIRECTION_PERCENT) {
+                this.botDirectionService.changeToRandomDirection(bot);
             }
+            this.botDirectionService.changeDirectionIfInDanger(bot);
         }
         
         const playersToRespawn = [];
@@ -342,21 +335,6 @@ class GameController {
         delete this.players[playerId];
     }
     
-    _isBotInDanger(currentCoordinate, direction) {
-        const nextCoordinate = CoordinateService.getNextCoordinate(currentCoordinate, direction);
-        let isOutOfBounds = this.boardOccupancyService.isOutOfBounds(nextCoordinate);
-        if(isOutOfBounds) {
-            return true;
-        }
-        const nextSecondCoordinate = CoordinateService.getNextCoordinate(nextCoordinate, direction);
-        isOutOfBounds = this.boardOccupancyService.isOutOfBounds(nextSecondCoordinate);
-        if(isOutOfBounds) {
-            return true;
-        }
-        const isSafe = this.boardOccupancyService.isSafe(nextCoordinate) || this.boardOccupancyService.isSafe(nextSecondCoordinate);
-        return !isSafe;
-    }
-    
     _keyDown(socket, keyCode) {
         GameControlsService.handleKeyDown(this.players[socket.id], keyCode);
     }
@@ -434,10 +412,6 @@ class GameController {
         player.setBase64Image(base64Image);
         this.playerStatBoard.setBase64Image(player.id, base64Image);
         this.sendNotificationToPlayers(player.name + " has uploaded a new image.", player.color);
-    }
-    
-    _getRandomIntegerInRange(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }
 
