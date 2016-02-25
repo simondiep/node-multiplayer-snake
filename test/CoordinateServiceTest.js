@@ -1,16 +1,16 @@
-var assert = require("chai").assert;
-var Board = require("../configs/board");
-var Coordinate = require("../models/coordinate");
-var Direction = require("../models/direction");
-var Food = require("../models/food");
-var Player = require("../models/player");
-var CoordinateService = require("../services/coordinate-service");
+const assert = require("chai").assert;
+const Board = require("../configs/board");
+const Coordinate = require("../models/coordinate");
+const Direction = require("../models/direction");
+const Food = require("../models/food");
+const Player = require("../models/player");
+const CoordinateService = require("../services/coordinate-service");
 
 describe("CoordinateService", function() {
     "use strict";
     
     it("should move player to the next location based on current direction", function(done) {
-        let player = new Player();
+        const player = new Player();
         player.segments = [new Coordinate(5,1),new Coordinate(4,1),new Coordinate(3,1),new Coordinate(2,1),new Coordinate(1,1)];
         
         player.changeDirection(Direction.RIGHT);
@@ -36,7 +36,7 @@ describe("CoordinateService", function() {
     });
     
     it("should be able to grow player on request", function(done) {
-        let player = new Player();
+        const player = new Player();
         player.segments = [new Coordinate(5,1),new Coordinate(4,1),new Coordinate(3,1),new Coordinate(2,1),new Coordinate(1,1)];
         player.growNextTurn();
         player.changeDirection(Direction.RIGHT);

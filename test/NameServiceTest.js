@@ -1,5 +1,5 @@
-var assert = require("chai").assert;
-var NameService = require("../services/name-service");
+const assert = require("chai").assert;
+const NameService = require("../services/name-service");
 
 describe("NameService", function() {
     "use strict";
@@ -7,8 +7,8 @@ describe("NameService", function() {
     const NUMBER_OF_NAMES_TO_TEST = 500;
   
     it("should generate a new unused player name", function(done) {
-        let nameService = new NameService();
-        let usedNames = new Set();
+        const nameService = new NameService();
+        const usedNames = new Set();
          for (let i = 0; i < NUMBER_OF_NAMES_TO_TEST; i++) {
             usedNames.add(nameService.getPlayerName());
         }
