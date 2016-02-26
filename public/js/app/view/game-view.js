@@ -8,6 +8,8 @@ function (ClientConfig, DomHelper) {
     
     const ENTER_KEYCODE = 13;
     const SPACE_BAR_KEYCODE = 32;
+    const UP_ARROW_KEYCODE = 38;
+    const DOWN_ARROW_KEYCODE = 40;
     
     class GameView {
         
@@ -99,8 +101,9 @@ function (ClientConfig, DomHelper) {
         }
         
         _handleKeyDown(e) {
-            // Prevent space bar scrolling default behavior
-            if (e.keyCode === SPACE_BAR_KEYCODE && e.target == DomHelper.getBody()) {
+            // Prevent keyboard scrolling default behavior
+            if ((e.keyCode === UP_ARROW_KEYCODE || e.keyCode === DOWN_ARROW_KEYCODE) || 
+                 (e.keyCode === SPACE_BAR_KEYCODE && e.target == DomHelper.getBody()) ) {
                 e.preventDefault();
             }
             

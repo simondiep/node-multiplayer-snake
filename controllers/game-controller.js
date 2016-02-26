@@ -216,6 +216,7 @@ class GameController {
     _changePlayerName(socket, newPlayerName) {
         const player = this.players[socket.id];
         const oldPlayerName = player.name;
+        newPlayerName = newPlayerName.trim();
         if(oldPlayerName === newPlayerName) {
             return;
         }
