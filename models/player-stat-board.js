@@ -54,7 +54,7 @@ class PlayerStatBoard {
     
     toJSON() {
         const response = [];
-        this.statBoard.forEach(function(value, key, map) {
+        this.statBoard.forEach(function(value) {
             response.push(value); 
         });
         // Sort by score (highest first, then least number of deaths)

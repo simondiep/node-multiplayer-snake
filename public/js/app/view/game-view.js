@@ -103,7 +103,7 @@ function (ClientConfig, DomHelper) {
         _handleKeyDown(e) {
             // Prevent keyboard scrolling default behavior
             if ((e.keyCode === UP_ARROW_KEYCODE || e.keyCode === DOWN_ARROW_KEYCODE) || 
-                 (e.keyCode === SPACE_BAR_KEYCODE && e.target == DomHelper.getBody()) ) {
+                 (e.keyCode === SPACE_BAR_KEYCODE && e.target === DomHelper.getBody()) ) {
                 e.preventDefault();
             }
             

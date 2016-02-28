@@ -20,7 +20,7 @@ function (CanvasView, DomHelper) {
         }
         
         static _createImageUploadCanvas(squareSizeInPixels) {
-            const canvas = document.createElement('canvas');
+            const canvas = document.createElement("canvas");
             const roundedSize = Math.floor(squareSizeInPixels);
             canvas.width = roundedSize;
             canvas.height = roundedSize;

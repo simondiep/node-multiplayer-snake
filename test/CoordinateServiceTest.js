@@ -1,8 +1,6 @@
 const assert = require("chai").assert;
-const Board = require("../configs/board");
 const Coordinate = require("../models/coordinate");
 const Direction = require("../models/direction");
-const Food = require("../models/food");
 const Player = require("../models/player");
 const CoordinateService = require("../services/coordinate-service");
 

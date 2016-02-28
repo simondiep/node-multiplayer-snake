@@ -203,7 +203,7 @@ class GameController {
         }
     }
     
-    _changeColor(socket, newPlayerName) {
+    _changeColor(socket) {
         const player = this.players[socket.id];
         const newColor = this.colorService.getColor();
         this.colorService.returnColor(player.color);
@@ -268,7 +268,7 @@ class GameController {
         this.sendNotificationToPlayers(player.name + " is now spectating.", player.color);
     }
     
-    _clearBackgroundImage(socket, backgroundImage) {
+    _clearBackgroundImage(socket) {
         const player = this.players[socket.id];
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE );
         this.sendNotificationToPlayers(player.name + " has clear the background image.", player.color);

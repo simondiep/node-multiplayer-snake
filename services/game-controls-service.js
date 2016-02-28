@@ -15,16 +15,16 @@ const KEYCODE_TO_DIRECTION = {
 class GameControlsService {
 
     static getValidNextMove(currentDirection) {
-        if(currentDirection == Direction.UP) {
+        if(currentDirection === Direction.UP) {
             return [Direction.LEFT, Direction.RIGHT];
         }
-        if(currentDirection == Direction.DOWN) {
+        if(currentDirection === Direction.DOWN) {
             return [Direction.LEFT, Direction.RIGHT];
         }
-        if(currentDirection == Direction.LEFT) {
+        if(currentDirection === Direction.LEFT) {
             return [Direction.UP, Direction.DOWN];
         }
-        if(currentDirection == Direction.RIGHT) {
+        if(currentDirection === Direction.RIGHT) {
             return [Direction.UP, Direction.DOWN];
         }
     }

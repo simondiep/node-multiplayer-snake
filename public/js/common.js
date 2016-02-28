@@ -1,6 +1,8 @@
+"use strict";
+/* globals requirejs */
 requirejs.config({
-  baseUrl: './js/app',
+  baseUrl: "./js/app",
   paths: {
-    socketio: '../vendor/socket.io',
+    socketio: "../vendor/socket.io",
   }
 });

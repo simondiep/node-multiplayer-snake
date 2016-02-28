@@ -5,11 +5,11 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-const favicon = require('serve-favicon');
+const favicon = require("serve-favicon");
 
 // Expose all static resources in /public
 app.use(express.static(path.join(__dirname, "public"), { maxAge: 0 }));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
+app.use(favicon(path.join(__dirname, "public", "favicon.png")));
 
 // Redirect to the main page
 app.get("/", function(request, response){

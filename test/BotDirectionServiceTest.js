@@ -4,7 +4,6 @@ const Direction = require("../models/direction");
 const Player = require("../models/player");
 const BoardOccupancyService = require("../services/board-occupancy-service");
 const BotDirectionService = require("../services/bot-direction-service");
-const CoordinateService = require("../services/coordinate-service");
 
 describe("BotDirectionService", function() {
     "use strict";
