@@ -13,7 +13,10 @@ function (ClientConfig, DomHelper) {
     
     class GameView {
         
-        constructor(backgroundImageUploadCallback, botChangeCallback, foodChangeCallback, imageUploadCallback, joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback, speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
+        constructor(backgroundImageUploadCallback, botChangeCallback, foodChangeCallback, imageUploadCallback, 
+            joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback,
+            speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
+            
             this.isChangingName = false;
             this.backgroundImageUploadCallback = backgroundImageUploadCallback;
             this.botChangeCallback = botChangeCallback;
@@ -41,7 +44,8 @@ function (ClientConfig, DomHelper) {
         
         showNotification(notification, playerColor) {
             const notificationDiv = DomHelper.getNotificationsDiv();
-            const formattedNotification = "<div><span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> <span style='color:" + playerColor + "'>" + notification + "<span/></div>";
+            const formattedNotification = "<div><span class='timelabel'>" + new Date().toLocaleTimeString() + " -</span> " + 
+                "<span style='color:" + playerColor + "'>" + notification + "<span/></div>";
             notificationDiv.innerHTML = formattedNotification + notificationDiv.innerHTML;
         }
         
@@ -50,7 +54,12 @@ function (ClientConfig, DomHelper) {
         }
         
         showPlayerStats(playerStats) {        
-            let formattedScores = "<div class='playerStatsHeader'><span class='image'></span><span class='name'>Name</span><span class='stat'>Score</span><span class='stat'>High</span><span class='stat'>Kills</span><span class='stat'>Deaths</span></div>";
+            let formattedScores = "<div class='playerStatsHeader'><span class='image'></span>" + 
+                "<span class='name'>Name</span>" + 
+                "<span class='stat'>Score</span>" + 
+                "<span class='stat'>High</span>" + 
+                "<span class='stat'>Kills</span>" + 
+                "<span class='stat'>Deaths</span></div>";
             for( const playerStat of playerStats) {
                 let playerImageElement = "";
                 if(playerStat.base64Image) {
@@ -230,26 +239,46 @@ function (ClientConfig, DomHelper) {
         }
         
         _setUpEventHandling() {
-            DomHelper.getChangeColorButton().addEventListener("click", this._handleChangeColorButtonClick.bind(this), false);
-            DomHelper.getChangeNameButton().addEventListener("click", this._handleChangeNameButtonClick.bind(this), false);
-            DomHelper.getIncreaseBotsButton().addEventListener("click", this._handleIncreaseBotsButtonClick.bind(this), false);
-            DomHelper.getDecreaseBotsButton().addEventListener("click", this._handleDecreaseBotsButtonClick.bind(this), false);
-            DomHelper.getResetBotsButton().addEventListener("click", this._handleResetBotsButtonClick.bind(this), false);
-            DomHelper.getIncreaseFoodButton().addEventListener("click", this._handleIncreaseFoodButtonClick.bind(this), false);
-            DomHelper.getDecreaseFoodButton().addEventListener("click", this._handleDecreaseFoodButtonClick.bind(this), false);
-            DomHelper.getResetFoodButton().addEventListener("click", this._handleResetFoodButtonClick.bind(this), false);
-            DomHelper.getIncreaseSpeedButton().addEventListener("click", this._handleIncreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getDecreaseSpeedButton().addEventListener("click", this._handleDecreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getResetSpeedButton().addEventListener("click", this._handleResetSpeedButtonClick.bind(this), false);
-            DomHelper.getIncreaseStartLengthButton().addEventListener("click", this._handleIncreaseStartLengthButtonClick.bind(this), false);
-            DomHelper.getDecreaseStartLengthButton().addEventListener("click", this._handleDecreaseStartLengthButtonClick.bind(this), false);
-            DomHelper.getResetStartLengthButton().addEventListener("click", this._handleResetStartLengthButtonClick.bind(this), false);
-            DomHelper.getImageUploadElement().addEventListener("change", this._handleImageUpload.bind(this));
-            DomHelper.getClearUploadedImageButton().addEventListener("click", this._handleClearUploadedImageButtonClick.bind(this));
-            DomHelper.getBackgroundImageUploadElement().addEventListener("change", this._handleBackgroundImageUpload.bind(this));
-            DomHelper.getClearUploadedBackgroundImageButton().addEventListener("click", this._handleClearUploadedBackgroundImageButtonClick.bind(this));
-            DomHelper.getPlayOrWatchButton().addEventListener("click", this._handlePlayOrWatchButtonClick.bind(this), false);
-            DomHelper.getToggleGridLinesButton().addEventListener("click", this._handleToggleGridLinesButtonClick.bind(this), false);
+            DomHelper.getChangeColorButton().addEventListener("click", 
+                this._handleChangeColorButtonClick.bind(this), false);
+            DomHelper.getChangeNameButton().addEventListener("click", 
+                this._handleChangeNameButtonClick.bind(this), false);
+            DomHelper.getIncreaseBotsButton().addEventListener("click", 
+                this._handleIncreaseBotsButtonClick.bind(this), false);
+            DomHelper.getDecreaseBotsButton().addEventListener("click", 
+                this._handleDecreaseBotsButtonClick.bind(this), false);
+            DomHelper.getResetBotsButton().addEventListener("click", 
+                this._handleResetBotsButtonClick.bind(this), false);
+            DomHelper.getIncreaseFoodButton().addEventListener("click", 
+                this._handleIncreaseFoodButtonClick.bind(this), false);
+            DomHelper.getDecreaseFoodButton().addEventListener("click", 
+                this._handleDecreaseFoodButtonClick.bind(this), false);
+            DomHelper.getResetFoodButton().addEventListener("click", 
+                this._handleResetFoodButtonClick.bind(this), false);
+            DomHelper.getIncreaseSpeedButton().addEventListener("click", 
+                this._handleIncreaseSpeedButtonClick.bind(this), false);
+            DomHelper.getDecreaseSpeedButton().addEventListener("click", 
+                this._handleDecreaseSpeedButtonClick.bind(this), false);
+            DomHelper.getResetSpeedButton().addEventListener("click", 
+                this._handleResetSpeedButtonClick.bind(this), false);
+            DomHelper.getIncreaseStartLengthButton().addEventListener("click", 
+                this._handleIncreaseStartLengthButtonClick.bind(this), false);
+            DomHelper.getDecreaseStartLengthButton().addEventListener("click", 
+                this._handleDecreaseStartLengthButtonClick.bind(this), false);
+            DomHelper.getResetStartLengthButton().addEventListener("click", 
+                this._handleResetStartLengthButtonClick.bind(this), false);
+            DomHelper.getImageUploadElement().addEventListener("change", 
+                this._handleImageUpload.bind(this));
+            DomHelper.getClearUploadedImageButton().addEventListener("click", 
+                this._handleClearUploadedImageButtonClick.bind(this));
+            DomHelper.getBackgroundImageUploadElement().addEventListener("change", 
+                this._handleBackgroundImageUpload.bind(this));
+            DomHelper.getClearUploadedBackgroundImageButton().addEventListener("click", 
+                this._handleClearUploadedBackgroundImageButtonClick.bind(this));
+            DomHelper.getPlayOrWatchButton().addEventListener("click", 
+                this._handlePlayOrWatchButtonClick.bind(this), false);
+            DomHelper.getToggleGridLinesButton().addEventListener("click", 
+                this._handleToggleGridLinesButtonClick.bind(this), false);
             DomHelper.getFullScreenButton().addEventListener("click", DomHelper.toggleFullScreenMode, false);
             window.addEventListener( "keydown", this._handleKeyDown.bind(this), true);
         }

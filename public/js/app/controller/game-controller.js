@@ -45,7 +45,9 @@ function (ClientConfig, CanvasFactory, GameView, io) {
                     continue;
                 }
                 // Flash around where you have just spawned
-                if("/#"+this.socket.id === playerId && player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN && player.moveCounter%2 === 0) {
+                if("/#"+this.socket.id === playerId &&
+                        player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN &&
+                        player.moveCounter%2 === 0) {
                     this.canvasView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
                 }
                 
@@ -136,7 +138,8 @@ function (ClientConfig, CanvasFactory, GameView, io) {
          *******************************/
         
         _createBoard(board) {
-            this.canvasView = CanvasFactory.createCanvasView(board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES);
+            this.canvasView = 
+                CanvasFactory.createCanvasView(board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES);
             this.canvasView.clear();
             this.gameView.ready();
             this.renderGame();

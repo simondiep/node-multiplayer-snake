@@ -25,7 +25,10 @@ class GameController {
         this.colorService = new ColorService();
         this.nameService = new NameService();
         this.playerStatBoard = new PlayerStatBoard();
-        this.adminService = new AdminService(this.players,this.food, this.playerStatBoard, this.boardOccupancyService, this.colorService, this.nameService, this.playerSpawnService, this.generateFood.bind(this), this.removeFood.bind(this), this._disconnectPlayer.bind(this), this.sendNotificationToPlayers.bind(this));
+        this.adminService = new AdminService(this.players,this.food, this.playerStatBoard, 
+            this.boardOccupancyService, this.colorService, this.nameService, this.playerSpawnService,
+            this.generateFood.bind(this), this.removeFood.bind(this), this._disconnectPlayer.bind(this),
+            this.sendNotificationToPlayers.bind(this));
         
         for(let i = 0; i < ServerConfig.DEFAULT_FOOD_AMOUNT; i++) {
             this.generateFood();
@@ -46,10 +49,14 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.SPECTATE_GAME, self._playerSpectateGame.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
             
-            socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE, self.adminService.changeBots.bind(self.adminService, socket));
-            socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, self.adminService.changeFood.bind(self.adminService, socket));
-            socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, self.adminService.changeSpeed.bind(self.adminService, socket));
-            socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, self.adminService.changeStartLength.bind(self.adminService, socket));
+            socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE, 
+                self.adminService.changeBots.bind(self.adminService, socket));
+            socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE, 
+                self.adminService.changeFood.bind(self.adminService, socket));
+            socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE, 
+                self.adminService.changeSpeed.bind(self.adminService, socket));
+            socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE, 
+                self.adminService.changeStartLength.bind(self.adminService, socket));
         });
     }
     
@@ -78,7 +85,8 @@ class GameController {
             }
             this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
             CoordinateService.movePlayer(player);
-            if(this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) || this.boardOccupancyService.isWall(player.getHeadLocation())) {
+            if(this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) ||
+                    this.boardOccupancyService.isWall(player.getHeadLocation())) {
                 player.clearAllSegments();
                 playersToRespawn.push(player);
             } else {
@@ -164,7 +172,8 @@ class GameController {
     }
     
     respawnPlayer(player) {
-        this.playerSpawnService.setupNewSpawn(player, this.adminService.getPlayerStartLength(), ServerConfig.SPAWN_TURN_LEEWAY);
+        this.playerSpawnService.setupNewSpawn(player, this.adminService.getPlayerStartLength(),
+            ServerConfig.SPAWN_TURN_LEEWAY);
         this.playerStatBoard.resetScore(player.id);
         this.playerStatBoard.addDeath(player.id);
     }
@@ -182,7 +191,8 @@ class GameController {
         const playerName = this.nameService.getPlayerName();
         const playerColor = this.colorService.getColor();
         const newPlayer = new Player(socket.id, playerName, playerColor);
-        this.playerSpawnService.setupNewSpawn(newPlayer, this.adminService.getPlayerStartLength(), ServerConfig.SPAWN_TURN_LEEWAY);
+        this.playerSpawnService.setupNewSpawn(newPlayer, this.adminService.getPlayerStartLength(),
+            ServerConfig.SPAWN_TURN_LEEWAY);
         this.players[socket.id] = newPlayer;
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);

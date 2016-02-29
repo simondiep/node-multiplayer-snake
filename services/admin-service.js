@@ -120,7 +120,8 @@ class AdminService {
     
     _addBot(playerRequestingAddition) {
         if(this.botNames.length >= ServerConfig.MAX_BOTS) {
-            this.sendNotificationToPlayers(playerRequestingAddition.name + " tried to add a bot past the limit.", playerRequestingAddition.color);
+            this.sendNotificationToPlayers(playerRequestingAddition.name + " tried to add a bot past the limit.",
+                playerRequestingAddition.color);
             return;
         }
         const newBotName = this.nameService.getBotName();
@@ -137,7 +138,8 @@ class AdminService {
         if(this.botNames.length > 0) {
             this.disconnectPlayer(this.botNames.pop());
         } else {
-            this.sendNotificationToPlayers(playerRequestingRemoval.name + " tried to remove a bot that doesn't exist.", playerRequestingRemoval.color);
+            this.sendNotificationToPlayers(playerRequestingRemoval.name + " tried to remove a bot that doesn't exist.",
+                playerRequestingRemoval.color);
         }
     }
     

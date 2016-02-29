@@ -52,7 +52,8 @@ define(function () {
             const y = coordinate.y * this.squareSizeInPixels;
             const image = new Image();
             image.src = base64Image;
-            this.context.drawImage(image, x - (this.squareSizeInPixels / 2), y - (this.squareSizeInPixels / 2), this.squareSizeInPixels, this.squareSizeInPixels);
+            this.context.drawImage(image, x - (this.squareSizeInPixels / 2), y - (this.squareSizeInPixels / 2),
+                this.squareSizeInPixels, this.squareSizeInPixels);
         }
         
         drawSquares(coordinates, color) {
