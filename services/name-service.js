@@ -6,11 +6,11 @@ class NameService {
         this.usedPlayerNames = new Set();
         this.usedFoodIds = new Set();
     }
-    
+
     doesPlayerNameExist(name) {
         return this.usedPlayerNames.has(name);
     }
-    
+
     getBotName() {
         let newBotName;
         do {
@@ -19,7 +19,7 @@ class NameService {
         this.usedPlayerNames.add(newBotName);
         return newBotName;
     }
-    
+
     getFoodId() {
         let foodId;
         do {
@@ -28,7 +28,7 @@ class NameService {
         this.usedFoodIds.add(foodId);
         return foodId;
     }
-    
+
     getPlayerName() {
         let newPlayerName;
         do {
@@ -37,31 +37,31 @@ class NameService {
         this.usedPlayerNames.add(newPlayerName);
         return newPlayerName;
     }
-    
+
     returnFoodId(foodId) {
         this.usedFoodIds.delete(foodId);
     }
-    
+
     returnPlayerName(name) {
         this.usedPlayerNames.delete(name);
     }
-    
+
     usePlayerName(name) {
         this.usedPlayerNames.add(name);
     }
-    
+
     _generateBotName() {
-        return "Bot " + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber();
+        return `Bot ${this._getRandomNumber()}${this._getRandomNumber()}${this._getRandomNumber()}`;
     }
-    
+
     _generateFoodId() {
-        return "Food " + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber();
+        return `Food ${this._getRandomNumber()}${this._getRandomNumber()}${this._getRandomNumber()}${this._getRandomNumber()}`;
     }
-    
+
     _generatePlayerName() {
-        return "Player " + this._getRandomNumber() + this._getRandomNumber() + this._getRandomNumber();
+        return `Player ${this._getRandomNumber()}${this._getRandomNumber()}${this._getRandomNumber()}`;
     }
-    
+
     _getRandomNumber() {
         return Math.floor(Math.random() * 10);
     }

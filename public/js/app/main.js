@@ -1,8 +1,8 @@
 define([
-    "controller/game-controller"
+    "controller/game-controller",
 ],
 
-function (GameController) {
+GameController => {
     "use strict";
 
     new GameController();

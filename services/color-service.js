@@ -4,11 +4,11 @@
  *  Generates new unused colors
  */
 class ColorService {
-    
+
     constructor() {
         this.usedColors = new Set();
     }
-    
+
     getColor() {
         let newColor;
         do {
@@ -18,19 +18,19 @@ class ColorService {
         this.usedColors.add(newColor);
         return newColor;
     }
-    
+
     returnColor(color) {
         this.usedColors.delete(color);
     }
 
     // Format is #ABCDEF
     _getRandomColor() {
-        return "#" + this._getRandomLightHexRGBVal() + this._getRandomLightHexRGBVal() + this._getRandomLightHexRGBVal();
+        return `#${this._getRandomLightHexRGBVal()}${this._getRandomLightHexRGBVal()}${this._getRandomLightHexRGBVal()}`;
     }
-    
+
     _getRandomLightHexRGBVal() {
         return (Math.floor(Math.random() * 156) + 100).toString(16);
     }
 }
 
-module.exports = ColorService;     
+module.exports = ColorService;

@@ -55,6 +55,9 @@ Open your web browser to `localhost:3000`
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
  - Pressing play should scroll you to the top of the screen (use anchors #)
+ - Chai does not support --use_strict mode.  
+    - This means "use strict"; is needed in all node modules, even though it is redundant
+ - Remove relaxed eslint checks from .eslintrc.js
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement

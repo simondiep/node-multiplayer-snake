@@ -6,7 +6,7 @@ class Food {
         this.location = coordinate;
         this.color = color;
     }
-    
+
     setLocation(coordinate) {
         this.location = coordinate;
     }

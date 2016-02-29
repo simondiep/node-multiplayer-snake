@@ -8,28 +8,28 @@ class Player {
         this.growQueued = false;
         this.moveCounter = 0;
     }
-    
+
     changeDirection(newDirection) {
         this.direction = newDirection;
     }
-    
+
     clearAllSegments() {
         this.segments = [];
     }
-    
+
     getHeadLocation() {
         return this.segments[0];
     }
-    
+
     // Growing is not done immediately, but on the next turn
     growNextTurn() {
         this.growQueued = true;
     }
-    
+
     move(newHeadLocation) {
         // Record the last drawn player direction, to limit the player from moving too quickly back into themselves
         this.directionBeforeMove = this.direction;
-        if(this.growQueued) {
+        if (this.growQueued) {
             this.growQueued = false;
         } else {
             // pop tail and make it the head
@@ -38,7 +38,7 @@ class Player {
         this.segments.unshift(newHeadLocation);
         this.moveCounter++;
     }
-    
+
     setDirectionAndStartingLocation(newDirection, newStartingLocation) {
         this.direction = newDirection;
         this.directionBeforeMove = newDirection;
@@ -46,11 +46,11 @@ class Player {
         this.segments = newStartingLocation;
         this.moveCounter = 0;
     }
-    
+
     setBase64Image(base64Image) {
         this.base64Image = base64Image;
     }
-    
+
     toJSON() {
         return {
             id: this.id,
@@ -59,9 +59,9 @@ class Player {
             segments: this.segments,
             color: this.color,
             moveCounter: this.moveCounter,
-            base64Image: this.base64Image
+            base64Image: this.base64Image,
         };
     }
 }
 
-module.exports = Player;    
+module.exports = Player;

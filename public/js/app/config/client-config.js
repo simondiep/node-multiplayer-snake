@@ -1,4 +1,4 @@
-define(function () {
+define(() => {
     "use strict";
 
     const ClientConfig = {
@@ -11,7 +11,7 @@ define(function () {
                 NEW_PLAYER_INFO: "new player info",
                 NEW_BACKGROUND_IMAGE: "new background image",
                 BOARD_INFO: "board info",
-                NOTIFICATION: "server notification"
+                NOTIFICATION: "server notification",
             },
             OUTGOING: {
                 BOT_CHANGE: "bot change",
@@ -27,21 +27,20 @@ define(function () {
                 IMAGE_UPLOAD: "image upload",
                 NEW_PLAYER: "new player",
                 NAME_CHANGE: "player changed name",
-                KEY_DOWN: "key down"
-            }
+                KEY_DOWN: "key down",
+            },
         },
         MAX_NAME_LENGTH: 10,
         INCREMENT_CHANGE: {
             INCREASE: "increase",
             DECREASE: "decrease",
-            RESET: "reset"
+            RESET: "reset",
         },
         LOCAL_STORAGE: {
             PLAYER_IMAGE: "node-multiplayer-snake-player-image",
-            PLAYER_NAME: "node-multiplayer-snake-player-name"
-        }
+            PLAYER_NAME: "node-multiplayer-snake-player-name",
+        },
     };
 
     return ClientConfig;
-
-}); 
+});

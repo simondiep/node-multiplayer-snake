@@ -10,41 +10,42 @@ class PlayerStats {
         this.deaths = 0;
         this.kills = 0;
     }
-    
+
     changeColor(newColor) {
         this.color = newColor;
     }
-    
+
     changeName(newName) {
         this.name = newName;
     }
-    
+
     addDeath() {
         this.deaths++;
     }
-    
+
     addKill() {
         this.kills++;
     }
-    
+
     increaseScore(scoreAmount) {
-        if(!scoreAmount) {
-            scoreAmount = 1;
+        let amountToIncrease = scoreAmount;
+        if (!amountToIncrease) {
+            amountToIncrease = 1;
         }
-        this.score+= scoreAmount;
-        if(this.score > this.highScore) {
+        this.score += amountToIncrease;
+        if (this.score > this.highScore) {
             this.highScore = this.score;
         }
     }
-    
+
     resetScore() {
         this.score = 0;
     }
-    
+
     setBase64Image(base64Image) {
         this.base64Image = base64Image;
     }
-    
+
     toJSON() {
         return {
             name: this.name,
@@ -53,9 +54,9 @@ class PlayerStats {
             highScore: this.highScore,
             deaths: this.deaths,
             kills: this.kills,
-            base64Image: this.base64Image
+            base64Image: this.base64Image,
         };
     }
 }
 
-module.exports = PlayerStats;     
+module.exports = PlayerStats;
