@@ -9,13 +9,15 @@
   "scripts": {
     "start": "node app.js",
     "pretest": "eslint .",
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.2",
     "eslint-plugin-react": "^4.1.0",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "socket.io-client": "^1.4.5",
     "supertest": "^1.2.0"
