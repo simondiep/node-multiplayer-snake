@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
-const Coordinate = require('../models/coordinate');
-const Player = require('../models/player');
-const BoardOccupancyService = require('../services/board-occupancy-service');
+const Coordinate = require('../app/models/coordinate');
+const Player = require('../app/models/player');
+const BoardOccupancyService = require('../app/services/board-occupancy-service');
 
 describe('BoardOccupancyService', () => {
     'use strict';

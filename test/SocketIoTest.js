@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const io = require('socket.io-client');
 const app = require('../app.js');
-const ServerConfig = require('../configs/server-config.js');
+const ServerConfig = require('../app/configs/server-config.js');
 
 const socketURL = `http://localhost:${app.get('port')}`;
 

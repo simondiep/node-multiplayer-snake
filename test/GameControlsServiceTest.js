@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
-const Direction = require('../models/direction');
-const Player = require('../models/player');
-const GameControlsService = require('../services/game-controls-service');
+const Direction = require('../app/models/direction');
+const Player = require('../app/models/player');
+const GameControlsService = require('../app/services/game-controls-service');
 
 describe('GameControlsService', () => {
     'use strict';

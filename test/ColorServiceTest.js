@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const ColorService = require('../services/color-service');
+const ColorService = require('../app/services/color-service');
 
 describe('ColorService', () => {
     'use strict';

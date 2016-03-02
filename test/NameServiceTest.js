@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const NameService = require('../services/name-service');
+const NameService = require('../app/services/name-service');
 
 describe('NameService', () => {
     'use strict';

@@ -1,9 +1,9 @@
 const assert = require('chai').assert;
-const Coordinate = require('../models/coordinate');
-const Direction = require('../models/direction');
-const Player = require('../models/player');
-const BoardOccupancyService = require('../services/board-occupancy-service');
-const BotDirectionService = require('../services/bot-direction-service');
+const Coordinate = require('../app/models/coordinate');
+const Direction = require('../app/models/direction');
+const Player = require('../app/models/player');
+const BoardOccupancyService = require('../app/services/board-occupancy-service');
+const BotDirectionService = require('../app/services/bot-direction-service');
 
 describe('BotDirectionService', () => {
     'use strict';

@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const ValidationService = require('../services/validation-service');
+const ValidationService = require('../app/services/validation-service');
 
 describe('ValidationService', () => {
     'use strict';

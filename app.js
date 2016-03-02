@@ -1,6 +1,6 @@
 'use strict';
 const path = require('path');
-const GameController = require('./controllers/game-controller');
+const GameController = require('./app/controllers/game-controller');
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
@@ -15,7 +15,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 
 // Redirect to the main page
 app.get('/', (request, response) => {
-    response.sendFile('game.html', { root: path.join(__dirname, 'views') });
+    response.sendFile('game.html', { root: path.join(__dirname, 'app/views') });
 });
 
 // Create the main controller

@@ -1,10 +1,10 @@
 const assert = require('chai').assert;
-const Coordinate = require('../models/coordinate');
-const Direction = require('../models/direction');
-const Player = require('../models/player');
-const BoardOccupancyService = require('../services/board-occupancy-service');
-const CoordinateService = require('../services/coordinate-service');
-const PlayerSpawnService = require('../services/player-spawn-service');
+const Coordinate = require('../app/models/coordinate');
+const Direction = require('../app/models/direction');
+const Player = require('../app/models/player');
+const BoardOccupancyService = require('../app/services/board-occupancy-service');
+const CoordinateService = require('../app/services/coordinate-service');
+const PlayerSpawnService = require('../app/services/player-spawn-service');
 
 describe('PlayerSpawnService', () => {
     'use strict';
