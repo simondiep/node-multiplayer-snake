@@ -6,8 +6,9 @@ const AdminService = require("../services/admin-service");
 const BoardOccupancyService = require("../services/board-occupancy-service");
 const BotDirectionService = require("../services/bot-direction-service");
 const ColorService = require("../services/color-service");
-const GameControlsService = require("../services/game-controls-service");
 const CoordinateService = require("../services/coordinate-service");
+const GameControlsService = require("../services/game-controls-service");
+const ImageService = require("../services/image-service");
 const NameService = require("../services/name-service");
 const PlayerSpawnService = require("../services/player-spawn-service");
 const ValidationService = require("../services/validation-service");
@@ -17,6 +18,7 @@ const Player = require("../models/player");
 const PlayerStatBoard = require("../models/player-stat-board");
 
 class GameController {
+
     constructor() {
         this.food = {};
         this.players = {};
@@ -26,6 +28,7 @@ class GameController {
         this.colorService = new ColorService();
         this.nameService = new NameService();
         this.playerStatBoard = new PlayerStatBoard();
+        this.imageService = new ImageService(this.players, this.playerStatBoard, this.sendNotificationToPlayers.bind(this));
         this.adminService = new AdminService(this.players, this.food, this.playerStatBoard,
             this.boardOccupancyService, this.colorService, this.nameService, this.playerSpawnService,
             this.generateFood.bind(this), this.removeFood.bind(this), this._disconnectPlayer.bind(this),
@@ -38,19 +41,25 @@ class GameController {
 
     listen(io) {
         this.io = io;
+        this.imageService.setIo(this.io);
         const self = this;
         this.io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER, self._addPlayer.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.NAME_CHANGE, self._changePlayerName.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.COLOR_CHANGE, self._changeColor.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket));
-            socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_BACKGROUND_IMAGE, self._clearBackgroundImage.bind(self, socket));
-            socket.on(ServerConfig.IO.INCOMING.BACKGROUND_IMAGE_UPLOAD, self._updateBackgroundImage.bind(self, socket));
-            socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_IMAGE, self._clearPlayerImage.bind(self, socket));
-            socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD, self._updatePlayerImage.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.JOIN_GAME, self._playerJoinGame.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.SPECTATE_GAME, self._playerSpectateGame.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT, self._disconnect.bind(self, socket));
+
+            socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_BACKGROUND_IMAGE,
+                self.imageService.clearBackgroundImage.bind(self.imageService, socket));
+            socket.on(ServerConfig.IO.INCOMING.BACKGROUND_IMAGE_UPLOAD,
+                self.imageService.updateBackgroundImage.bind(self.imageService, socket));
+            socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_IMAGE,
+                self.imageService.clearPlayerImage.bind(self.imageService, socket));
+            socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD,
+                self.imageService.updatePlayerImage.bind(self.imageService, socket));
 
             socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE,
                 self.adminService.changeBots.bind(self.adminService, socket));
@@ -68,6 +77,7 @@ class GameController {
         if (Object.keys(this.players).length - this.adminService.getBotNames().length === 0) {
             console.log("Game Paused");
             this.adminService.resetGame();
+            this.imageService.resetGame();
             return;
         }
 
@@ -204,6 +214,10 @@ class GameController {
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.BOARD_INFO, Board);
         this.sendNotificationToPlayers(`${playerName} has joined!`, playerColor);
+        const backgroundImage = this.imageService.getBackgroundImage();
+        if (backgroundImage) {
+            socket.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, backgroundImage);
+        }
 
         const previousNameCleaned = ValidationService.cleanString(previousName);
         if (ValidationService.isValidPlayerName(previousNameCleaned)) {
@@ -287,40 +301,6 @@ class GameController {
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         player.clearAllSegments();
         this.sendNotificationToPlayers(`${player.name} is now spectating.`, player.color);
-    }
-
-    _clearBackgroundImage(socket) {
-        const player = this.players[socket.id];
-        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE);
-        this.sendNotificationToPlayers(`${player.name} has clear the background image.`, player.color);
-    }
-
-    _clearPlayerImage(socket) {
-        const player = this.players[socket.id];
-        delete player.base64Image;
-        this.playerStatBoard.clearPlayerImage(player.id);
-        this.sendNotificationToPlayers(`${player.name} has removed their image.`, player.color);
-    }
-
-    _updateBackgroundImage(socket, base64Image) {
-        const player = this.players[socket.id];
-        if (!ValidationService.isValidBase64String(base64Image)) {
-            console.log(`${player.name} tried uploading an invalid background image`);
-            return;
-        }
-        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, base64Image);
-        this.sendNotificationToPlayers(`${player.name} has updated the background image.`, player.color);
-    }
-
-    _updatePlayerImage(socket, base64Image) {
-        const player = this.players[socket.id];
-        if (!ValidationService.isValidBase64String(base64Image)) {
-            console.log(`${player.name} tried uploading an invalid player image`);
-            return;
-        }
-        player.setBase64Image(base64Image);
-        this.playerStatBoard.setBase64Image(player.id, base64Image);
-        this.sendNotificationToPlayers(`${player.name} has uploaded a new image.`, player.color);
     }
 }
 
