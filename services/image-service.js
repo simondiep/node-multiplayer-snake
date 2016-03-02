@@ -33,7 +33,7 @@ class ImageService {
 
     updateBackgroundImage(socket, base64Image) {
         const player = this.players[socket.id];
-        if (!ValidationService.isValidBase64String(base64Image)) {
+        if (!ValidationService.isValidBase64DataURI(base64Image)) {
             console.log(`${player.name} tried uploading an invalid background image`);
             return;
         }
@@ -44,7 +44,7 @@ class ImageService {
 
     updatePlayerImage(socket, base64Image) {
         const player = this.players[socket.id];
-        if (!ValidationService.isValidBase64String(base64Image)) {
+        if (!ValidationService.isValidBase64DataURI(base64Image)) {
             console.log(`${player.name} tried uploading an invalid player image`);
             return;
         }

@@ -2,6 +2,7 @@
 const StringValidator = require("validator");
 const ServerConfig = require("../configs/server-config");
 
+const DATA_URI_REGEX = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i; // eslint-disable-line max-len
 
 class ValidationService {
 
@@ -20,8 +21,8 @@ class ValidationService {
         return playerName && StringValidator.isLength(playerName.trim(), { min: 1, max: ServerConfig.PLAYER_MAX_NAME_LENGTH });
     }
 
-    static isValidBase64String(base64String) {
-        return base64String && StringValidator.isBase64(base64String);
+    static isValidBase64DataURI(uri) {
+        return !!uri.match(DATA_URI_REGEX);
     }
 }
 

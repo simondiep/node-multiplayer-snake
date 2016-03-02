@@ -223,8 +223,8 @@ class GameController {
         if (ValidationService.isValidPlayerName(previousNameCleaned)) {
             this._changePlayerName(socket, previousName);
         }
-        if (previousImage && ValidationService.isValidBase64String(previousImage)) {
-            this._updatePlayerImage(socket, previousImage);
+        if (previousImage) {
+            this.imageService.updatePlayerImage(socket, previousImage);
         }
 
         // Start game if the first player has joined
