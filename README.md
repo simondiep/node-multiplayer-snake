@@ -60,6 +60,7 @@ Open your web browser to `localhost:3000`
     - https://strongloop.com/strongblog/compare-node-js-logging-winston-bunyan/
  - Remove relaxed eslint checks from .eslintrc.js
  - When supported by browsers, try replacing RequireJS with ES6 import/export
+ - Switch to SASS when Windows makes it easier to install [node-gyp dependencies](https://github.com/nodejs/node-gyp/issues/629)
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement

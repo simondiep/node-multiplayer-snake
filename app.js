@@ -6,9 +6,11 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const favicon = require("serve-favicon");
+const lessMiddleware = require("less-middleware");
 
+app.use(lessMiddleware(path.join(__dirname, "public")));
 // Expose all static resources in /public
-app.use(express.static(path.join(__dirname, "public"), { maxAge: 0 }));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "favicon.png")));
 
 // Redirect to the main page
