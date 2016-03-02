@@ -10,6 +10,12 @@ body {
     color: white;
     font-family: PressStart2P;
 }
+a.anchor {
+    display: block;
+    position: relative;
+    top: -60px;
+    visibility: hidden;
+}
 .bodyContent {
     display: table;
     margin: 0 auto; 

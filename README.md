@@ -48,16 +48,19 @@ Open your web browser to `localhost:3000`
 ### Tech Debt
  - Additional Client-side validation to reduce unnecessary emits to server
  - Additional Server-side optimization to reduce unnecessary emits to client
- - Server-side validation of inputs
+ - Server-side validation of inputs (use express-validator to sanitize body?)
  - Add a description for what 'Upload Image' does and any restrictions
  - Toggle view of admin options as a menu item
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
- - Pressing play should scroll you to the top of the screen (use anchors #)
  - Chai does not support --use_strict mode.  
     - This means "use strict"; is needed in all node modules, even though it is redundant
+ - Replace console.log with logging framework
+    - https://www.loggly.com/ultimate-guide/node-logging-basics/
+    - https://strongloop.com/strongblog/compare-node-js-logging-winston-bunyan/
  - Remove relaxed eslint checks from .eslintrc.js
+ - When supported by browsers, try replacing RequireJS with ES6 import/export
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
