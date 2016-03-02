@@ -2,10 +2,9 @@ define([
     "config/client-config",
     "view/canvas-factory",
     "view/game-view",
-    "socketio",
 ],
 
-(ClientConfig, CanvasFactory, GameView, io) => {
+(ClientConfig, CanvasFactory, GameView) => {
     "use strict";
 
     class GameController {
@@ -26,6 +25,9 @@ define([
                                          );
             this.players = {};
             this.food = {};
+        }
+
+        connect(io) {
             this.socket = io();
             this._initializeSocketIoHandlers();
             const storedName = localStorage.getItem(ClientConfig.LOCAL_STORAGE.PLAYER_NAME);

@@ -1,9 +1,11 @@
 define([
     "controller/game-controller",
+    "socketio",
 ],
 
-GameController => {
+(GameController, io) => {
     "use strict";
 
-    new GameController();
+    const gameController = new GameController();
+    gameController.connect(io);
 });

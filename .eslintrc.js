@@ -12,7 +12,6 @@ module.exports = {
             "ignoreComments": false
         }],
         "no-console": 0,
-        "no-new": 0,
         "quotes": [2, "double", "avoid-escape"],
         "spaced-comment": [2, "always", { "exceptions": ["*"] }],
         "strict": 0

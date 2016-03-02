@@ -17,7 +17,8 @@ app.get("/", (request, response) => {
 });
 
 // Create the main controller
-new GameController(io);
+const gameController = new GameController();
+gameController.listen(io);
 
 const SERVER_PORT = process.env.PORT || 3000;
 app.set("port", SERVER_PORT);

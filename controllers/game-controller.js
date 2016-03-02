@@ -10,13 +10,14 @@ const GameControlsService = require("../services/game-controls-service");
 const CoordinateService = require("../services/coordinate-service");
 const NameService = require("../services/name-service");
 const PlayerSpawnService = require("../services/player-spawn-service");
+const ValidationService = require("../services/validation-service");
 
 const Food = require("../models/food");
 const Player = require("../models/player");
 const PlayerStatBoard = require("../models/player-stat-board");
 
 class GameController {
-    constructor(io) {
+    constructor() {
         this.food = {};
         this.players = {};
         this.boardOccupancyService = new BoardOccupancyService();
@@ -33,7 +34,9 @@ class GameController {
         for (let i = 0; i < ServerConfig.DEFAULT_FOOD_AMOUNT; i++) {
             this.generateFood();
         }
+    }
 
+    listen(io) {
         this.io = io;
         const self = this;
         this.io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
@@ -189,6 +192,7 @@ class GameController {
      *  socket.io handling methods *
      *******************************/
 
+    // previousName and previousImage are optional
     _addPlayer(socket, previousName, previousImage) {
         const playerName = this.nameService.getPlayerName();
         const playerColor = this.colorService.getColor();
@@ -201,10 +205,11 @@ class GameController {
         socket.emit(ServerConfig.IO.OUTGOING.BOARD_INFO, Board);
         this.sendNotificationToPlayers(`${playerName} has joined!`, playerColor);
 
-        if (previousName) {
+        const previousNameCleaned = ValidationService.cleanString(previousName);
+        if (ValidationService.isValidPlayerName(previousNameCleaned)) {
             this._changePlayerName(socket, previousName);
         }
-        if (previousImage) {
+        if (previousImage && ValidationService.isValidBase64String(previousImage)) {
             this._updatePlayerImage(socket, previousImage);
         }
 
@@ -228,19 +233,23 @@ class GameController {
     _changePlayerName(socket, newPlayerName) {
         const player = this.players[socket.id];
         const oldPlayerName = player.name;
-        const trimmedNewPlayerName = newPlayerName.trim();
-        if (oldPlayerName === trimmedNewPlayerName) {
+        const newPlayerNameCleaned = ValidationService.cleanString(newPlayerName);
+        if (!ValidationService.isValidPlayerName(newPlayerNameCleaned)) {
+            console.log(`${player.name} tried changing to an invalid name`);
             return;
         }
-        if (this.nameService.doesPlayerNameExist(trimmedNewPlayerName)) {
+        if (oldPlayerName === newPlayerNameCleaned) {
+            return;
+        }
+        if (this.nameService.doesPlayerNameExist(newPlayerNameCleaned)) {
             socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, oldPlayerName, player.color);
-            this.sendNotificationToPlayers(`${player.name} couldn't claim the name ${trimmedNewPlayerName}`, player.color);
+            this.sendNotificationToPlayers(`${player.name} couldn't claim the name ${newPlayerNameCleaned}`, player.color);
         } else {
-            this.sendNotificationToPlayers(`${oldPlayerName} is now known as ${trimmedNewPlayerName}`, player.color);
-            player.name = trimmedNewPlayerName;
-            this.nameService.usePlayerName(trimmedNewPlayerName);
-            this.playerStatBoard.changePlayerName(player.id, trimmedNewPlayerName);
-            socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, trimmedNewPlayerName, player.color);
+            this.sendNotificationToPlayers(`${oldPlayerName} is now known as ${newPlayerNameCleaned}`, player.color);
+            player.name = newPlayerNameCleaned;
+            this.nameService.usePlayerName(newPlayerNameCleaned);
+            this.playerStatBoard.changePlayerName(player.id, newPlayerNameCleaned);
+            socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, newPlayerNameCleaned, player.color);
         }
     }
 
@@ -295,12 +304,20 @@ class GameController {
 
     _updateBackgroundImage(socket, base64Image) {
         const player = this.players[socket.id];
+        if (!ValidationService.isValidBase64String(base64Image)) {
+            console.log(`${player.name} tried uploading an invalid background image`);
+            return;
+        }
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, base64Image);
         this.sendNotificationToPlayers(`${player.name} has updated the background image.`, player.color);
     }
 
     _updatePlayerImage(socket, base64Image) {
         const player = this.players[socket.id];
+        if (!ValidationService.isValidBase64String(base64Image)) {
+            console.log(`${player.name} tried uploading an invalid player image`);
+            return;
+        }
         player.setBase64Image(base64Image);
         this.playerStatBoard.setBase64Image(player.id, base64Image);
         this.sendNotificationToPlayers(`${player.name} has uploaded a new image.`, player.color);
