@@ -1,13 +1,13 @@
-"use strict";
-const Board = require("../configs/board");
-const Coordinate = require("../models/coordinate");
-const CoordinateAttribute = require("../models/coordinate-attribute");
-const FoodConsumed = require("../models/food-consumed");
-const KillReport = require("../models/kill-report");
+'use strict';
+const Board = require('../configs/board');
+const Coordinate = require('../models/coordinate');
+const CoordinateAttribute = require('../models/coordinate-attribute');
+const FoodConsumed = require('../models/food-consumed');
+const KillReport = require('../models/kill-report');
 
-const FOOD_TYPE = "food";
-const HEAD_TYPE = "head";
-const TAIL_TYPE = "tail";
+const FOOD_TYPE = 'food';
+const HEAD_TYPE = 'head';
+const TAIL_TYPE = 'tail';
 
 class BoardOccupancyService {
     constructor() {

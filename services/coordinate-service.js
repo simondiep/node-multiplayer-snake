@@ -1,5 +1,5 @@
-"use strict";
-const Coordinate = require("../models/coordinate");
+'use strict';
+const Coordinate = require('../models/coordinate');
 class CoordinateService {
 
     static getNextCoordinate(currentCoordinate, direction) {

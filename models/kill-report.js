@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 class KillReport {
 
@@ -12,7 +12,7 @@ class KillReport {
     }
 
     isSingleKill() {
-        return typeof this.killerId !== "undefined";
+        return typeof this.killerId !== 'undefined';
     }
 }
 

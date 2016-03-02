@@ -1,6 +1,6 @@
-"use strict";
-const Player = require("../models/player");
-const ServerConfig = require("../configs/server-config");
+'use strict';
+const Player = require('../models/player');
+const ServerConfig = require('../configs/server-config');
 
 class AdminService {
 
@@ -40,17 +40,17 @@ class AdminService {
         let notification = player.name;
         if (foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this.generateFood();
-            notification += " has added some food.";
+            notification += ' has added some food.';
         } else if (foodOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             if (Object.keys(this.food).length > 0) {
                 this._removeLastFood();
-                notification += " has removed some food.";
+                notification += ' has removed some food.';
             } else {
-                notification += " couldn't remove food.";
+                notification += ' couldn\'t remove food.';
             }
         } else if (foodOption === ServerConfig.INCREMENT_CHANGE.RESET) {
             this._resetFood();
-            notification += " has reset the food.";
+            notification += ' has reset the food.';
         }
         this.sendNotificationToPlayers(notification, player.color);
     }
@@ -60,21 +60,21 @@ class AdminService {
         let notification = player.name;
         if (speedOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             if (this.currentFPS < ServerConfig.MAX_FPS) {
-                notification += " has raised the game speed.";
+                notification += ' has raised the game speed.';
                 this.currentFPS++;
             } else {
-                notification += " tried to raised the game speed past the limit.";
+                notification += ' tried to raised the game speed past the limit.';
             }
         } else if (speedOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             if (this.currentFPS > ServerConfig.MIN_FPS) {
-                notification += " has lowered the game speed.";
+                notification += ' has lowered the game speed.';
                 this.currentFPS--;
             } else {
-                notification += " tried to lower the game speed past the limit.";
+                notification += ' tried to lower the game speed past the limit.';
             }
         } else if (speedOption === ServerConfig.INCREMENT_CHANGE.RESET) {
             this._resetSpeed();
-            notification += " has reset the game speed.";
+            notification += ' has reset the game speed.';
         }
         this.sendNotificationToPlayers(notification, player.color);
     }
@@ -83,18 +83,18 @@ class AdminService {
         const player = this.players[socket.id];
         let notification = player.name;
         if (lengthOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
-            notification += " has increased the player start length.";
+            notification += ' has increased the player start length.';
             this.playerStartLength++;
         } else if (lengthOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             if (this.playerStartLength > 1) {
-                notification += " has decreased the player start length.";
+                notification += ' has decreased the player start length.';
                 this.playerStartLength--;
             } else {
-                notification += " tried to lower the player start length past the limit.";
+                notification += ' tried to lower the player start length past the limit.';
             }
         } else if (lengthOption === ServerConfig.INCREMENT_CHANGE.RESET) {
             this._resetPlayerStartLength();
-            notification += " has reset the player start length.";
+            notification += ' has reset the player start length.';
         }
         this.sendNotificationToPlayers(notification, player.color);
     }

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const Board = {
     SQUARE_SIZE_IN_PIXELS: 12.5,

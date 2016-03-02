@@ -1,6 +1,6 @@
-"use strict";
-const ServerConfig = require("../configs/server-config");
-const ValidationService = require("../services/validation-service");
+'use strict';
+const ServerConfig = require('../configs/server-config');
+const ValidationService = require('../services/validation-service');
 
 class ImageService {
 

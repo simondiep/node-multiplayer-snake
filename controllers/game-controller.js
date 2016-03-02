@@ -1,21 +1,21 @@
-"use strict";
-const Board = require("../configs/board");
-const ServerConfig = require("../configs/server-config");
+'use strict';
+const Board = require('../configs/board');
+const ServerConfig = require('../configs/server-config');
 
-const AdminService = require("../services/admin-service");
-const BoardOccupancyService = require("../services/board-occupancy-service");
-const BotDirectionService = require("../services/bot-direction-service");
-const ColorService = require("../services/color-service");
-const CoordinateService = require("../services/coordinate-service");
-const GameControlsService = require("../services/game-controls-service");
-const ImageService = require("../services/image-service");
-const NameService = require("../services/name-service");
-const PlayerSpawnService = require("../services/player-spawn-service");
-const ValidationService = require("../services/validation-service");
+const AdminService = require('../services/admin-service');
+const BoardOccupancyService = require('../services/board-occupancy-service');
+const BotDirectionService = require('../services/bot-direction-service');
+const ColorService = require('../services/color-service');
+const CoordinateService = require('../services/coordinate-service');
+const GameControlsService = require('../services/game-controls-service');
+const ImageService = require('../services/image-service');
+const NameService = require('../services/name-service');
+const PlayerSpawnService = require('../services/player-spawn-service');
+const ValidationService = require('../services/validation-service');
 
-const Food = require("../models/food");
-const Player = require("../models/player");
-const PlayerStatBoard = require("../models/player-stat-board");
+const Food = require('../models/food');
+const Player = require('../models/player');
+const PlayerStatBoard = require('../models/player-stat-board');
 
 class GameController {
 
@@ -75,7 +75,7 @@ class GameController {
     runGameCycle() {
         // Pause and reset the game if there aren't any players
         if (Object.keys(this.players).length - this.adminService.getBotNames().length === 0) {
-            console.log("Game Paused");
+            console.log('Game Paused');
             this.adminService.resetGame();
             this.imageService.resetGame();
             return;
@@ -170,7 +170,7 @@ class GameController {
     generateFood() {
         const randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
         if (!randomUnoccupiedCoordinate) {
-            this.sendNotificationToPlayers("Could not add more food.  No room left.", "white");
+            this.sendNotificationToPlayers('Could not add more food.  No room left.', 'white');
             return;
         }
         const foodId = this.nameService.getFoodId();
@@ -229,7 +229,7 @@ class GameController {
 
         // Start game if the first player has joined
         if (Object.keys(this.players).length === 1) {
-            console.log("Game Started");
+            console.log('Game Started');
             this.runGameCycle();
         }
     }

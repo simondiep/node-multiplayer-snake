@@ -1,5 +1,5 @@
-"use strict";
-const Direction = require("../models/direction");
+'use strict';
+const Direction = require('../models/direction');
 
 class PlayerSpawnService {
 

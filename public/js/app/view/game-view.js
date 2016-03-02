@@ -1,10 +1,10 @@
 define([
-    "config/client-config",
-    "view/dom-helper",
+    'config/client-config',
+    'view/dom-helper',
 ],
 
 (ClientConfig, DomHelper) => {
-    "use strict";
+    'use strict';
 
     const ENTER_KEYCODE = 13;
     const SPACE_BAR_KEYCODE = 32;
@@ -43,8 +43,8 @@ define([
 
         showNotification(notification, playerColor) {
             const notificationDiv = DomHelper.getNotificationsDiv();
-            const formattedNotification = `<div><span class="timelabel">${new Date().toLocaleTimeString()} - </span>` +
-                `<span style="color: ${playerColor}">${notification}<span/></div>`;
+            const formattedNotification = `<div><span class='timelabel'>${new Date().toLocaleTimeString()} - </span>` +
+                `<span style='color: ${playerColor}'>${notification}<span/></div>`;
             notificationDiv.innerHTML = formattedNotification + notificationDiv.innerHTML;
         }
 
@@ -53,23 +53,23 @@ define([
         }
 
         showPlayerStats(playerStats) {
-            let formattedScores = "<div class='playerStatsHeader'><span class='image'></span>" +
-                "<span class='name'>Name</span>" +
-                "<span class='stat'>Score</span>" +
-                "<span class='stat'>High</span>" +
-                "<span class='stat'>Kills</span>" +
-                "<span class='stat'>Deaths</span></div>";
+            let formattedScores = '<div class="playerStatsHeader"><span class="image"></span>' +
+                '<span class="name">Name</span>' +
+                '<span class="stat">Score</span>' +
+                '<span class="stat">High</span>' +
+                '<span class="stat">Kills</span>' +
+                '<span class="stat">Deaths</span></div>';
             for (const playerStat of playerStats) {
-                let playerImageElement = "";
+                let playerImageElement = '';
                 if (playerStat.base64Image) {
-                    playerImageElement = `<img src=${playerStat.base64Image} class="playerStatsImage"></img>`;
+                    playerImageElement = `<img src=${playerStat.base64Image} class='playerStatsImage'></img>`;
                 }
-                formattedScores += `<div class="playerStatsContent"><span class="image">${playerImageElement}</span>` +
-                    `<span class="name" style="color: ${playerStat.color}">${playerStat.name}</span>` +
-                    `<span class="stat">${playerStat.score}</span>` +
-                    `<span class="stat">${playerStat.highScore}</span>` +
-                    `<span class="stat">${playerStat.kills}</span>` +
-                    `<span class="stat">${playerStat.deaths}</span></div>`;
+                formattedScores += `<div class='playerStatsContent'><span class='image'>${playerImageElement}</span>` +
+                    `<span class='name' style='color: ${playerStat.color}'>${playerStat.name}</span>` +
+                    `<span class='stat'>${playerStat.score}</span>` +
+                    `<span class='stat'>${playerStat.highScore}</span>` +
+                    `<span class='stat'>${playerStat.kills}</span>` +
+                    `<span class='stat'>${playerStat.deaths}</span></div>`;
             }
             DomHelper.setPlayerStatsDivText(formattedScores);
         }
@@ -101,7 +101,7 @@ define([
             if (this.isChangingName) {
                 this._saveNewPlayerName();
             } else {
-                DomHelper.setChangeNameButtonText("Save");
+                DomHelper.setChangeNameButtonText('Save');
                 DomHelper.setPlayerNameElementReadOnly(false);
                 DomHelper.getPlayerNameElement().select();
                 this.isChangingName = true;
@@ -211,11 +211,11 @@ define([
 
         _handlePlayOrWatchButtonClick() {
             const command = DomHelper.getPlayOrWatchButton().textContent;
-            if (command === "Play") {
-                DomHelper.setPlayOrWatchButtonText("Watch");
+            if (command === 'Play') {
+                DomHelper.setPlayOrWatchButtonText('Watch');
                 this.joinGameCallback();
             } else {
-                DomHelper.setPlayOrWatchButtonText("Play");
+                DomHelper.setPlayOrWatchButtonText('Play');
                 this.spectateGameCallback();
             }
         }
@@ -228,7 +228,7 @@ define([
             const playerName = DomHelper.getPlayerNameElement().value;
             if (playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
                 this.playerNameUpdatedCallback(playerName);
-                DomHelper.setChangeNameButtonText("Change Name");
+                DomHelper.setChangeNameButtonText('Change Name');
                 DomHelper.setPlayerNameElementReadOnly(true);
                 this.isChangingName = false;
                 DomHelper.hideInvalidPlayerNameLabel();
@@ -238,48 +238,48 @@ define([
         }
 
         _setUpEventHandling() {
-            DomHelper.getChangeColorButton().addEventListener("click",
+            DomHelper.getChangeColorButton().addEventListener('click',
                 this._handleChangeColorButtonClick.bind(this), false);
-            DomHelper.getChangeNameButton().addEventListener("click",
+            DomHelper.getChangeNameButton().addEventListener('click',
                 this._handleChangeNameButtonClick.bind(this), false);
-            DomHelper.getIncreaseBotsButton().addEventListener("click",
+            DomHelper.getIncreaseBotsButton().addEventListener('click',
                 this._handleIncreaseBotsButtonClick.bind(this), false);
-            DomHelper.getDecreaseBotsButton().addEventListener("click",
+            DomHelper.getDecreaseBotsButton().addEventListener('click',
                 this._handleDecreaseBotsButtonClick.bind(this), false);
-            DomHelper.getResetBotsButton().addEventListener("click",
+            DomHelper.getResetBotsButton().addEventListener('click',
                 this._handleResetBotsButtonClick.bind(this), false);
-            DomHelper.getIncreaseFoodButton().addEventListener("click",
+            DomHelper.getIncreaseFoodButton().addEventListener('click',
                 this._handleIncreaseFoodButtonClick.bind(this), false);
-            DomHelper.getDecreaseFoodButton().addEventListener("click",
+            DomHelper.getDecreaseFoodButton().addEventListener('click',
                 this._handleDecreaseFoodButtonClick.bind(this), false);
-            DomHelper.getResetFoodButton().addEventListener("click",
+            DomHelper.getResetFoodButton().addEventListener('click',
                 this._handleResetFoodButtonClick.bind(this), false);
-            DomHelper.getIncreaseSpeedButton().addEventListener("click",
+            DomHelper.getIncreaseSpeedButton().addEventListener('click',
                 this._handleIncreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getDecreaseSpeedButton().addEventListener("click",
+            DomHelper.getDecreaseSpeedButton().addEventListener('click',
                 this._handleDecreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getResetSpeedButton().addEventListener("click",
+            DomHelper.getResetSpeedButton().addEventListener('click',
                 this._handleResetSpeedButtonClick.bind(this), false);
-            DomHelper.getIncreaseStartLengthButton().addEventListener("click",
+            DomHelper.getIncreaseStartLengthButton().addEventListener('click',
                 this._handleIncreaseStartLengthButtonClick.bind(this), false);
-            DomHelper.getDecreaseStartLengthButton().addEventListener("click",
+            DomHelper.getDecreaseStartLengthButton().addEventListener('click',
                 this._handleDecreaseStartLengthButtonClick.bind(this), false);
-            DomHelper.getResetStartLengthButton().addEventListener("click",
+            DomHelper.getResetStartLengthButton().addEventListener('click',
                 this._handleResetStartLengthButtonClick.bind(this), false);
-            DomHelper.getImageUploadElement().addEventListener("change",
+            DomHelper.getImageUploadElement().addEventListener('change',
                 this._handleImageUpload.bind(this));
-            DomHelper.getClearUploadedImageButton().addEventListener("click",
+            DomHelper.getClearUploadedImageButton().addEventListener('click',
                 this._handleClearUploadedImageButtonClick.bind(this));
-            DomHelper.getBackgroundImageUploadElement().addEventListener("change",
+            DomHelper.getBackgroundImageUploadElement().addEventListener('change',
                 this._handleBackgroundImageUpload.bind(this));
-            DomHelper.getClearUploadedBackgroundImageButton().addEventListener("click",
+            DomHelper.getClearUploadedBackgroundImageButton().addEventListener('click',
                 this._handleClearUploadedBackgroundImageButtonClick.bind(this));
-            DomHelper.getPlayOrWatchButton().addEventListener("click",
+            DomHelper.getPlayOrWatchButton().addEventListener('click',
                 this._handlePlayOrWatchButtonClick.bind(this), false);
-            DomHelper.getToggleGridLinesButton().addEventListener("click",
+            DomHelper.getToggleGridLinesButton().addEventListener('click',
                 this._handleToggleGridLinesButtonClick.bind(this), false);
-            DomHelper.getFullScreenButton().addEventListener("click", DomHelper.toggleFullScreenMode, false);
-            window.addEventListener("keydown", this._handleKeyDown.bind(this), true);
+            DomHelper.getFullScreenButton().addEventListener('click', DomHelper.toggleFullScreenMode, false);
+            window.addEventListener('keydown', this._handleKeyDown.bind(this), true);
         }
     }
 

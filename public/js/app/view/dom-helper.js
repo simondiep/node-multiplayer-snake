@@ -1,5 +1,5 @@
 define(() => {
-    "use strict";
+    'use strict';
 
     class DomHelper {
 
@@ -12,7 +12,7 @@ define(() => {
         }
 
         static getBackgroundImageUploadElement() {
-            return document.getElementById("backgroundImageUpload");
+            return document.getElementById('backgroundImageUpload');
         }
 
         static getBody() {
@@ -20,99 +20,99 @@ define(() => {
         }
 
         static getClearUploadedBackgroundImageButton() {
-            return document.getElementById("clearUploadedBackgroundImageButton");
+            return document.getElementById('clearUploadedBackgroundImageButton');
         }
 
         static getClearUploadedImageButton() {
-            return document.getElementById("clearUploadedImageButton");
+            return document.getElementById('clearUploadedImageButton');
         }
 
         static getChangeColorButton() {
-            return document.getElementById("changePlayerColorButton");
+            return document.getElementById('changePlayerColorButton');
         }
 
         static getChangeNameButton() {
-            return document.getElementById("changePlayerNameButton");
+            return document.getElementById('changePlayerNameButton');
         }
 
         static getDecreaseBotsButton() {
-            return document.getElementById("decreaseBotsButton");
+            return document.getElementById('decreaseBotsButton');
         }
 
         static getDecreaseFoodButton() {
-            return document.getElementById("decreaseFoodButton");
+            return document.getElementById('decreaseFoodButton');
         }
 
         static getDecreaseSpeedButton() {
-            return document.getElementById("decreaseSpeedButton");
+            return document.getElementById('decreaseSpeedButton');
         }
 
         static getDecreaseStartLengthButton() {
-            return document.getElementById("decreaseStartLengthButton");
+            return document.getElementById('decreaseStartLengthButton');
         }
 
         static getFullScreenButton() {
-            return document.getElementById("fullScreenButton");
+            return document.getElementById('fullScreenButton');
         }
 
         static getGameBoardDiv() {
-            return document.getElementById("gameBoard");
+            return document.getElementById('gameBoard');
         }
 
         static getImageUploadElement() {
-            return document.getElementById("imageUpload");
+            return document.getElementById('imageUpload');
         }
 
         static getIncreaseBotsButton() {
-            return document.getElementById("increaseBotsButton");
+            return document.getElementById('increaseBotsButton');
         }
 
         static getIncreaseFoodButton() {
-            return document.getElementById("increaseFoodButton");
+            return document.getElementById('increaseFoodButton');
         }
 
         static getIncreaseSpeedButton() {
-            return document.getElementById("increaseSpeedButton");
+            return document.getElementById('increaseSpeedButton');
         }
 
         static getIncreaseStartLengthButton() {
-            return document.getElementById("increaseStartLengthButton");
+            return document.getElementById('increaseStartLengthButton');
         }
 
         static getNotificationsDiv() {
-            return document.getElementById("notifications");
+            return document.getElementById('notifications');
         }
 
         static getPlayerNameElement() {
-            return document.getElementById("playerName");
+            return document.getElementById('playerName');
         }
 
         static getPlayOrWatchButton() {
-            return document.getElementById("playOrWatchButton");
+            return document.getElementById('playOrWatchButton');
         }
 
         static getResetBotsButton() {
-            return document.getElementById("resetBotsButton");
+            return document.getElementById('resetBotsButton');
         }
 
         static getResetFoodButton() {
-            return document.getElementById("resetFoodButton");
+            return document.getElementById('resetFoodButton');
         }
 
         static getResetSpeedButton() {
-            return document.getElementById("resetSpeedButton");
+            return document.getElementById('resetSpeedButton');
         }
 
         static getResetStartLengthButton() {
-            return document.getElementById("resetStartLengthButton");
+            return document.getElementById('resetStartLengthButton');
         }
 
         static getToggleGridLinesButton() {
-            return document.getElementById("toggleGridLinesButton");
+            return document.getElementById('toggleGridLinesButton');
         }
 
         static hideInvalidPlayerNameLabel() {
-            document.getElementById("invalidPlayerNameLabel").style.display = "none";
+            document.getElementById('invalidPlayerNameLabel').style.display = 'none';
         }
 
         static setChangeNameButtonText(text) {
@@ -120,20 +120,20 @@ define(() => {
         }
 
         static setCurrentFoodAmountLabelText(text) {
-            document.getElementById("currentFoodAmount").innerHTML = text;
+            document.getElementById('currentFoodAmount').innerHTML = text;
         }
 
         static setCurrentNumberOfBotsLabelText(text) {
-            document.getElementById("currentNumberOfBots").innerHTML = text;
+            document.getElementById('currentNumberOfBots').innerHTML = text;
         }
 
         static setCurrentSpeedLabelText(text) {
-            document.getElementById("currentSpeed").innerHTML = text;
+            document.getElementById('currentSpeed').innerHTML = text;
         }
 
 
         static setCurrentStartLengthLabelText(text) {
-            document.getElementById("currentStartLength").innerHTML = text;
+            document.getElementById('currentStartLength').innerHTML = text;
         }
 
         static setPlayerNameElementColor(color) {
@@ -149,7 +149,7 @@ define(() => {
         }
 
         static setPlayerStatsDivText(text) {
-            document.getElementById("playerStats").innerHTML = text;
+            document.getElementById('playerStats').innerHTML = text;
         }
 
         static setPlayOrWatchButtonText(text) {
@@ -157,11 +157,11 @@ define(() => {
         }
 
         static showAllContent() {
-            document.getElementById("cover").style.visibility = "visible";
+            document.getElementById('cover').style.visibility = 'visible';
         }
 
         static showInvalidPlayerNameLabel() {
-            document.getElementById("invalidPlayerNameLabel").style.display = "inline";
+            document.getElementById('invalidPlayerNameLabel').style.display = 'inline';
         }
 
         static toggleFullScreenMode() {

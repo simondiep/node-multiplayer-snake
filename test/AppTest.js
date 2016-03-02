@@ -1,11 +1,11 @@
-"use strict";
-const request = require("supertest");
-const app = require("../app.js");
+'use strict';
+const request = require('supertest');
+const app = require('../app.js');
 
-describe("GET /", () => {
-    it("should return 200 OK", done => {
+describe('GET /', () => {
+    it('should return 200 OK', done => {
         request(app)
-        .get("/")
+        .get('/')
         .expect(200, done);
     });
 });

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  *  Generates new unused colors

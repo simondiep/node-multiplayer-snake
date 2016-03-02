@@ -1,12 +1,12 @@
-const assert = require("chai").assert;
-const Coordinate = require("../models/coordinate");
-const Direction = require("../models/direction");
-const Player = require("../models/player");
-const BoardOccupancyService = require("../services/board-occupancy-service");
-const BotDirectionService = require("../services/bot-direction-service");
+const assert = require('chai').assert;
+const Coordinate = require('../models/coordinate');
+const Direction = require('../models/direction');
+const Player = require('../models/player');
+const BoardOccupancyService = require('../services/board-occupancy-service');
+const BotDirectionService = require('../services/bot-direction-service');
 
-describe("BotDirectionService", () => {
-    "use strict";
+describe('BotDirectionService', () => {
+    'use strict';
 
     let bot;
     let boardOccupancyService;
@@ -20,21 +20,21 @@ describe("BotDirectionService", () => {
         botDirectionService = new BotDirectionService(boardOccupancyService);
     });
 
-    it("should not change direction if it is safe two spaces ahead", done => {
+    it('should not change direction if it is safe two spaces ahead', done => {
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.RIGHT);
         done();
     });
 
-    it("should change direction if it one space ahead is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(11, 10)]);
+    it('should change direction if it one space ahead is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(11, 10)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.isTrue(bot.direction === Direction.UP || bot.direction === Direction.DOWN);
         done();
     });
 
-    it("should change direction if it two spaces ahead is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(12, 10)]);
+    it('should change direction if it two spaces ahead is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(12, 10)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.isTrue(bot.direction === Direction.UP || bot.direction === Direction.DOWN);
         done();
@@ -45,9 +45,9 @@ describe("BotDirectionService", () => {
      * 111 2
      *
      */
-    it("should change direction if it two spaces ahead is occupied and left two spaces ahead is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(12, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(10, 8)]);
+    it('should change direction if it two spaces ahead is occupied and left two spaces ahead is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(12, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(10, 8)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.DOWN);
         done();
@@ -58,9 +58,9 @@ describe("BotDirectionService", () => {
      * 1112
      *
      */
-    it("should change direction if space ahead is occupied and left two spaces ahead is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(11, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(10, 8)]);
+    it('should change direction if space ahead is occupied and left two spaces ahead is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(11, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(10, 8)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.DOWN);
         done();
@@ -70,9 +70,9 @@ describe("BotDirectionService", () => {
      * 1112
      *
      */
-    it("should change direction if space ahead is occupied and left space is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(11, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(10, 9)]);
+    it('should change direction if space ahead is occupied and left space is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(11, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(10, 9)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.DOWN);
         done();
@@ -83,9 +83,9 @@ describe("BotDirectionService", () => {
      *
      *   3
      */
-    it("should change direction if it two spaces ahead is occupied and right two spaces ahead is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(12, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(10, 12)]);
+    it('should change direction if it two spaces ahead is occupied and right two spaces ahead is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(12, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(10, 12)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.UP);
         done();
@@ -95,9 +95,9 @@ describe("BotDirectionService", () => {
      * 111 2
      *   3
      */
-    it("should change direction if it two spaces ahead is occupied and right space is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(12, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(10, 11)]);
+    it('should change direction if it two spaces ahead is occupied and right space is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(12, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(10, 11)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.UP);
         done();
@@ -107,9 +107,9 @@ describe("BotDirectionService", () => {
      * 1112
      *   3
      */
-    it("should change direction if space ahead is occupied and right space is occupied", done => {
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(11, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(10, 11)]);
+    it('should change direction if space ahead is occupied and right space is occupied', done => {
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(11, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(10, 11)]);
         botDirectionService.changeDirectionIfInDanger(bot);
         assert.equal(bot.direction, Direction.UP);
         done();

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  *  A coordinate that is not scaled to the canvas.

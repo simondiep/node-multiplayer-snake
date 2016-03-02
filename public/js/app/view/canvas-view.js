@@ -1,12 +1,12 @@
 define(() => {
-    "use strict";
+    'use strict';
 
     class CanvasView {
 
         constructor(canvas, squareSizeInPixels, imageUploadCanvas) {
             this.height = canvas.height;
             this.width = canvas.width;
-            this.context = canvas.getContext("2d");
+            this.context = canvas.getContext('2d');
             this.squareSizeInPixels = squareSizeInPixels;
             this.backgroundImageUploadCanvas = canvas;
             this.imageUploadCanvas = imageUploadCanvas;
@@ -14,7 +14,7 @@ define(() => {
         }
 
         clear() {
-            this.context.fillStyle = "black";
+            this.context.fillStyle = 'black';
             this.context.globalAlpha = 1;
             this.context.fillRect(0, 0, this.width, this.height);
 
@@ -23,11 +23,11 @@ define(() => {
             }
 
             this.context.lineWidth = this.squareSizeInPixels;
-            this.context.strokeStyle = "gray";
+            this.context.strokeStyle = 'gray';
             this.context.strokeRect(0, 0, this.width, this.height);
 
             if (this.showGridLines) {
-                this.context.strokeStyle = "#2a2a2a";
+                this.context.strokeStyle = '#2a2a2a';
                 this.context.lineWidth = 0.5;
                 for (let i = this.squareSizeInPixels / 2; i < this.width || i < this.height; i += this.squareSizeInPixels) {
                     // draw horizontal lines
@@ -109,7 +109,7 @@ define(() => {
             if (imageToDraw.height > maxImageHeight) {
                 imageToDraw.height = maxImageHeight;
             }
-            const imageUploadCanvasContext = this.backgroundImageUploadCanvas.getContext("2d");
+            const imageUploadCanvasContext = this.backgroundImageUploadCanvas.getContext('2d');
             imageUploadCanvasContext.clearRect(0, 0, maxImageWidth, maxImageHeight);
             imageUploadCanvasContext.drawImage(imageToDraw, 0, 0, imageToDraw.width, imageToDraw.height);
 
@@ -126,7 +126,7 @@ define(() => {
             if (imageToDraw.height > maxImageHeight) {
                 imageToDraw.height = maxImageHeight;
             }
-            const imageUploadCanvasContext = this.imageUploadCanvas.getContext("2d");
+            const imageUploadCanvasContext = this.imageUploadCanvas.getContext('2d');
             imageUploadCanvasContext.clearRect(0, 0, maxImageWidth, maxImageHeight);
             imageUploadCanvasContext.drawImage(imageToDraw, 0, 0, imageToDraw.width, imageToDraw.height);
 

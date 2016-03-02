@@ -1,10 +1,10 @@
-const assert = require("chai").assert;
-const Coordinate = require("../models/coordinate");
-const Player = require("../models/player");
-const BoardOccupancyService = require("../services/board-occupancy-service");
+const assert = require('chai').assert;
+const Coordinate = require('../models/coordinate');
+const Player = require('../models/player');
+const BoardOccupancyService = require('../services/board-occupancy-service');
 
-describe("BoardOccupancyService", () => {
-    "use strict";
+describe('BoardOccupancyService', () => {
+    'use strict';
 
     let boardOccupancyService;
 
@@ -12,7 +12,7 @@ describe("BoardOccupancyService", () => {
         boardOccupancyService = new BoardOccupancyService();
     });
 
-    it("should detect no kills", done => {
+    it('should detect no kills', done => {
         const player1 = new Player(1);
         player1.segments = [new Coordinate(5, 1),
                             new Coordinate(4, 1),
@@ -49,7 +49,7 @@ describe("BoardOccupancyService", () => {
         done();
     });
 
-    it("should detect a single player kill", done => {
+    it('should detect a single player kill', done => {
         const player1 = new Player(1);
         player1.segments = [new Coordinate(4, 2),
                             new Coordinate(4, 1),
@@ -88,7 +88,7 @@ describe("BoardOccupancyService", () => {
         done();
     });
 
-    it("should detect multiple kills", done => {
+    it('should detect multiple kills', done => {
         const player1 = new Player(1);
         player1.segments = [new Coordinate(4, 2),
                             new Coordinate(4, 1),
@@ -131,7 +131,7 @@ describe("BoardOccupancyService", () => {
         done();
     });
 
-    it("should determine if a player has collided with itself", done => {
+    it('should determine if a player has collided with itself', done => {
         const player1 = new Player(1);
         player1.segments = [new Coordinate(4, 2),
                             new Coordinate(4, 1),
@@ -147,8 +147,8 @@ describe("BoardOccupancyService", () => {
         done();
     });
 
-    it("should detect food consumed by player", done => {
-        const foodId = "food1";
+    it('should detect food consumed by player', done => {
+        const foodId = 'food1';
         const foodLocation = new Coordinate(4, 2);
 
         boardOccupancyService.addFoodOccupancy(foodId, foodLocation);

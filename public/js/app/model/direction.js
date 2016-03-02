@@ -1,5 +1,5 @@
 define(() => {
-    "use strict";
+    'use strict';
 
     // (0,0) is top-left
     const Direction = {

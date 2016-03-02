@@ -1,14 +1,14 @@
-const assert = require("chai").assert;
-const io = require("socket.io-client");
-const app = require("../app.js");
-const ServerConfig = require("../configs/server-config.js");
+const assert = require('chai').assert;
+const io = require('socket.io-client');
+const app = require('../app.js');
+const ServerConfig = require('../configs/server-config.js');
 
-const socketURL = `http://localhost:${app.get("port")}`;
+const socketURL = `http://localhost:${app.get('port')}`;
 
-describe("socket.io connection", () => {
-    "use strict";
+describe('socket.io connection', () => {
+    'use strict';
 
-    it("should provide a new player information to start playing", done => {
+    it('should provide a new player information to start playing', done => {
         const player1Socket = io.connect(socketURL);
         player1Socket.emit(ServerConfig.IO.INCOMING.NEW_PLAYER);
 
@@ -35,7 +35,7 @@ describe("socket.io connection", () => {
         });
     });
 
-    it("should display notifications when a new player joins or leaves", done => {
+    it('should display notifications when a new player joins or leaves', done => {
         // Three total notifications
         // 1: Player 1 will join the game and receive a notification that they have joined
         // 2: Then, Player 2 will join the game

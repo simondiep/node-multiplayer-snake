@@ -1,11 +1,11 @@
 define([
-    "config/client-config",
-    "view/canvas-factory",
-    "view/game-view",
+    'config/client-config',
+    'view/canvas-factory',
+    'view/game-view',
 ],
 
 (ClientConfig, CanvasFactory, GameView) => {
-    "use strict";
+    'use strict';
 
     class GameController {
 

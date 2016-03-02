@@ -53,6 +53,7 @@ Open your web browser to `localhost:3000`
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
+ - Isolated unit tests, using a mocking framework like Sinon
  - Chai does not support --use_strict mode.  
     - This means "use strict"; is needed in all node modules, even though it is redundant
  - Replace console.log with logging framework

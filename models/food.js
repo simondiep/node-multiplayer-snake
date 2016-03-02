@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 class Food {
     constructor(id, coordinate, color) {

@@ -1,15 +1,15 @@
 define([
-    "view/canvas-view",
-    "view/dom-helper",
+    'view/canvas-view',
+    'view/dom-helper',
 ],
 
 (CanvasView, DomHelper) => {
-    "use strict";
+    'use strict';
 
     class CanvasFactory {
 
         static createCanvasView(squareSizeInPixels, horizontalSquares, verticalSquares) {
-            const canvas = DomHelper.createElement("canvas");
+            const canvas = DomHelper.createElement('canvas');
             canvas.width = horizontalSquares * squareSizeInPixels;
             canvas.height = verticalSquares * squareSizeInPixels;
             canvas.style.width = `${canvas.width}px`;
@@ -20,7 +20,7 @@ define([
         }
 
         static _createImageUploadCanvas(squareSizeInPixels) {
-            const canvas = document.createElement("canvas");
+            const canvas = document.createElement('canvas');
             const roundedSize = Math.floor(squareSizeInPixels);
             canvas.width = roundedSize;
             canvas.height = roundedSize;

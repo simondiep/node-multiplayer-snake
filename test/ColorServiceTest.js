@@ -1,12 +1,12 @@
-const assert = require("chai").assert;
-const ColorService = require("../services/color-service");
+const assert = require('chai').assert;
+const ColorService = require('../services/color-service');
 
-describe("ColorService", () => {
-    "use strict";
+describe('ColorService', () => {
+    'use strict';
 
     const NUMBER_OF_COLORS_TO_TEST = 10000;
 
-    it("should generate a new unused color", done => {
+    it('should generate a new unused color', done => {
         const colorService = new ColorService();
         const usedColors = new Set();
         for (let i = 0; i < NUMBER_OF_COLORS_TO_TEST; i++) {

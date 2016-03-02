@@ -1,6 +1,6 @@
-"use strict";
-const StringValidator = require("validator");
-const ServerConfig = require("../configs/server-config");
+'use strict';
+const StringValidator = require('validator');
+const ServerConfig = require('../configs/server-config');
 
 const DATA_URI_REGEX = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i; // eslint-disable-line max-len
 
@@ -14,7 +14,7 @@ class ValidationService {
     }
 
     static isString(stringCandidate) {
-        return (typeof stringCandidate === "string" || stringCandidate instanceof String);
+        return (typeof stringCandidate === 'string' || stringCandidate instanceof String);
     }
 
     static isValidPlayerName(playerName) {

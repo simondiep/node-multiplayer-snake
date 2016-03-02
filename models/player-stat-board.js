@@ -1,5 +1,5 @@
-"use strict";
-const PlayerStats = require("./player-stats");
+'use strict';
+const PlayerStats = require('./player-stats');
 
 class PlayerStatBoard {
 

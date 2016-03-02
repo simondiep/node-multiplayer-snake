@@ -1,13 +1,13 @@
-const assert = require("chai").assert;
-const Coordinate = require("../models/coordinate");
-const Direction = require("../models/direction");
-const Player = require("../models/player");
-const BoardOccupancyService = require("../services/board-occupancy-service");
-const CoordinateService = require("../services/coordinate-service");
-const PlayerSpawnService = require("../services/player-spawn-service");
+const assert = require('chai').assert;
+const Coordinate = require('../models/coordinate');
+const Direction = require('../models/direction');
+const Player = require('../models/player');
+const BoardOccupancyService = require('../services/board-occupancy-service');
+const CoordinateService = require('../services/coordinate-service');
+const PlayerSpawnService = require('../services/player-spawn-service');
 
-describe("PlayerSpawnService", () => {
-    "use strict";
+describe('PlayerSpawnService', () => {
+    'use strict';
 
     const NUMBER_OF_PLAYERS_TO_SPAWN = 100;
     let player;
@@ -19,11 +19,11 @@ describe("PlayerSpawnService", () => {
         player.changeDirection(Direction.RIGHT);
         boardOccupancyService = new BoardOccupancyService();
         playerSpawnService = new PlayerSpawnService(boardOccupancyService);
-        boardOccupancyService.addPlayerOccupancy("player2", [new Coordinate(11, 10)]);
-        boardOccupancyService.addPlayerOccupancy("player3", [new Coordinate(11, 11)]);
+        boardOccupancyService.addPlayerOccupancy('player2', [new Coordinate(11, 10)]);
+        boardOccupancyService.addPlayerOccupancy('player3', [new Coordinate(11, 11)]);
     });
 
-    it("should spawn player in an unoccupied space with enough spaces ahead", done => {
+    it('should spawn player in an unoccupied space with enough spaces ahead', done => {
         const playerLength = 5;
         const requiredFreeLength = 10;
 
