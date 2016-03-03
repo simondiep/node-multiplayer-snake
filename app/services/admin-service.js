@@ -155,10 +155,10 @@ class AdminService {
     }
 
     _resetFood() {
-        while (Object.keys(this.food).length > ServerConfig.DEFAULT_FOOD_AMOUNT) {
+        while (Object.keys(this.food).length > ServerConfig.FOOD.DEFAULT_AMOUNT) {
             this._removeLastFood();
         }
-        while (Object.keys(this.food).length < ServerConfig.DEFAULT_FOOD_AMOUNT) {
+        while (Object.keys(this.food).length < ServerConfig.FOOD.DEFAULT_AMOUNT) {
             this.generateFood();
         }
     }

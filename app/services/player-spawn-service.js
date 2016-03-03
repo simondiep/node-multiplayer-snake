@@ -134,8 +134,7 @@ class PlayerSpawnService {
             }
         }
         this.boardOccupancyService.addPlayerOccupancy(player.id, [spawnCoordinate]);
-        const playerStartingCoordinates = new Array(playerLength).fill(spawnCoordinate);
-        player.setDirectionAndStartingLocation(newDirection, playerStartingCoordinates);
+        player.setStartingSpawn(newDirection, spawnCoordinate, playerLength - 1);
     }
 }
 

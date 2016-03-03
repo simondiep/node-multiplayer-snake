@@ -27,9 +27,10 @@ Open your web browser to `localhost:3000`
  - Change game speed
  - Change amount of food
  - Change player starting length
+ - Different food types
  - Upload your own snake image and background image
  - Player statistics including kills/deaths/score
- - Steal player scores by killing them
+ - Steal player scores and length by killing them
  - Game notifications
  - Bots
  - Random, safe spawns
@@ -87,18 +88,19 @@ Open your web browser to `localhost:3000`
     - Custom sort stat board
     - More stats (max length)
     - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
- - Power-ups or Game Modes
+ - Power-ups
     - individual speed (2 or more steps for a player)
     - invulnerable
-    - length increase (super food)
+    - length increase
     - width increase
     - swap positions
     - reverse controls
     - be able to draw on canvas
+    - choice of power-up to start with
+    - random power up on kill
+ - Game Modes
+    - head to head with preselected spawn points
     - fog of war
     - random walls
     - elimination
     - maze
-    - Kills steal other player's length
-    - Choice of power-up to start with
-    - Head to head fixed spawns

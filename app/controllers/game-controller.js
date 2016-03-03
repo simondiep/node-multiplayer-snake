@@ -34,7 +34,7 @@ class GameController {
             this.generateFood.bind(this), this.removeFood.bind(this), this._disconnectPlayer.bind(this),
             this.sendNotificationToPlayers.bind(this));
 
-        for (let i = 0; i < ServerConfig.DEFAULT_FOOD_AMOUNT; i++) {
+        for (let i = 0; i < ServerConfig.FOOD.DEFAULT_AMOUNT; i++) {
             this.generateFood();
         }
     }
@@ -119,6 +119,8 @@ class GameController {
                     this.playerStatBoard.addKill(killReport.killerId);
                     this.playerStatBoard.increaseScore(killReport.killerId);
                     this.playerStatBoard.stealScore(killReport.killerId, victim.id);
+                    // Steal victim's length
+                    this.players[killReport.killerId].grow(victim.segments.length);
                     // TODO Display kill announcement
                 }
                 this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.segments);
@@ -143,10 +145,10 @@ class GameController {
         const foodsConsumed = this.boardOccupancyService.getFoodsConsumed();
         for (const foodConsumed of foodsConsumed) {
             const playerWhoConsumedFood = this.players[foodConsumed.playerId];
+            const food = this.food[foodConsumed.foodId];
+            playerWhoConsumedFood.grow(ServerConfig.FOOD[food.type].GROWTH);
+            this.playerStatBoard.increaseScore(playerWhoConsumedFood.id, ServerConfig.FOOD[food.type].POINTS);
             this.removeFood(foodConsumed.foodId);
-
-            playerWhoConsumedFood.growNextTurn();
-            this.playerStatBoard.increaseScore(playerWhoConsumedFood.id);
             foodToRespawn++;
         }
 
@@ -174,7 +176,14 @@ class GameController {
             return;
         }
         const foodId = this.nameService.getFoodId();
-        const food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD_COLOR);
+        let food;
+        if (Math.random() < ServerConfig.FOOD.GOLDEN.SPAWN_RATE) {
+            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.GOLDEN.TYPE, ServerConfig.FOOD.GOLDEN.COLOR);
+        } else if (Math.random() < ServerConfig.FOOD.SUPER.SPAWN_RATE) {
+            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.SUPER.TYPE, ServerConfig.FOOD.SUPER.COLOR);
+        } else {
+            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.NORMAL.TYPE, ServerConfig.FOOD.NORMAL.COLOR);
+        }
         this.food[foodId] = food;
         this.boardOccupancyService.addFoodOccupancy(food.id, food.location);
     }

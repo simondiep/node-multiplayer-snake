@@ -60,7 +60,7 @@ describe('CoordinateService', () => {
                            new Coordinate(3, 1),
                            new Coordinate(2, 1),
                            new Coordinate(1, 1)];
-        player.growNextTurn();
+        player.grow(1);
         player.changeDirection(Direction.RIGHT);
         CoordinateService.movePlayer(player);
         let expectedSegments = [new Coordinate(6, 1),

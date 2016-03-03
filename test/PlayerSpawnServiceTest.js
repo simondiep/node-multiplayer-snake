@@ -29,7 +29,7 @@ describe('PlayerSpawnService', () => {
 
         for (let playersSpawned = 0; playersSpawned < NUMBER_OF_PLAYERS_TO_SPAWN; playersSpawned++) {
             playerSpawnService.setupNewSpawn(player, playerLength, requiredFreeLength);
-            assert.equal(player.segments.length, playerLength);
+            assert.equal(player.segments.length + player.growAmount, playerLength);
 
             let currentCoordinate = player.getHeadLocation();
             for (let spacesAhead = 0; spacesAhead < requiredFreeLength - 1; spacesAhead++) {

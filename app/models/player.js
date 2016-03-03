@@ -5,7 +5,7 @@ class Player {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.growQueued = false;
+        this.growAmount = 0;
         this.moveCounter = 0;
     }
 
@@ -22,15 +22,15 @@ class Player {
     }
 
     // Growing is not done immediately, but on the next turn
-    growNextTurn() {
-        this.growQueued = true;
+    grow(amount) {
+        this.growAmount += amount;
     }
 
     move(newHeadLocation) {
         // Record the last drawn player direction, to limit the player from moving too quickly back into themselves
         this.directionBeforeMove = this.direction;
-        if (this.growQueued) {
-            this.growQueued = false;
+        if (this.growAmount > 0) {
+            this.growAmount--;
         } else {
             // pop tail and make it the head
             this.segments.pop();
@@ -39,11 +39,11 @@ class Player {
         this.moveCounter++;
     }
 
-    setDirectionAndStartingLocation(newDirection, newStartingLocation) {
+    setStartingSpawn(newDirection, headLocation, growAmount) {
         this.direction = newDirection;
         this.directionBeforeMove = newDirection;
-        this.growQueued = false;
-        this.segments = newStartingLocation;
+        this.growAmount = growAmount;
+        this.segments = [headLocation];
         this.moveCounter = 0;
     }
 

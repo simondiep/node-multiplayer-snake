@@ -2,7 +2,6 @@
 
 const ServerConfig = {
     DEFAULT_FOOD_AMOUNT: 10,
-    FOOD_COLOR: 'red',
     MIN_FPS: 8,
     STARTING_FPS: 8,
     MAX_FPS: 60,
@@ -11,6 +10,29 @@ const ServerConfig = {
     DEFAULT_STARTING_BOTS: 0,
     MAX_BOTS: 20,
     BOT_CHANGE_DIRECTION_PERCENT: 0.1,
+    FOOD: {
+        DEFAULT_AMOUNT: 10,
+        NORMAL: {
+            TYPE: 'NORMAL',
+            COLOR: 'red',
+            POINTS: 1,
+            GROWTH: 1,
+        },
+        SUPER: {
+            TYPE: 'SUPER',
+            COLOR: 'green',
+            POINTS: 5,
+            GROWTH: 5,
+            SPAWN_RATE: 0.1,
+        },
+        GOLDEN: {
+            TYPE: 'GOLDEN',
+            COLOR: 'yellow',
+            POINTS: 25,
+            GROWTH: 25,
+            SPAWN_RATE: 0.01,
+        },
+    },
     IO: {
         DEFAULT_CONNECTION: 'connection',
         INCOMING: {

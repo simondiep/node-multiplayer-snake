@@ -31,8 +31,8 @@ class PlayerStatBoard {
         delete this.statBoard.get(playerId).base64Image;
     }
 
-    increaseScore(playerId) {
-        this.statBoard.get(playerId).increaseScore();
+    increaseScore(playerId, amount) {
+        this.statBoard.get(playerId).increaseScore(amount);
     }
 
     resetScore(playerId) {
