@@ -55,15 +55,17 @@ Open your web browser to `localhost:3000`
  - Add a report bug menu item
  - More consistent names: pick either location or coordinate and stick with it
  - Isolated unit tests, using a mocking framework like Sinon
- - Chai does not support --use_strict mode.  
-    - This means "use strict"; is needed in all node modules, even though it is redundant
  - Replace console.log with logging framework
     - https://www.loggly.com/ultimate-guide/node-logging-basics/
     - https://strongloop.com/strongblog/compare-node-js-logging-winston-bunyan/
  - Remove relaxed eslint checks from .eslintrc.js
+ - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
+ 
+### Longer-term Tech Debt
+ - Chai does not support --use_strict mode.  
+    - This means "use strict"; is needed in all node modules, even though it is redundant
  - When supported by browsers, try replacing RequireJS with ES6 import/export
  - Switch to SASS when Windows makes it easier to install [node-gyp dependencies](https://github.com/nodejs/node-gyp/issues/629)
- - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
  - Spin buttons for admin controls
@@ -76,7 +78,11 @@ Open your web browser to `localhost:3000`
  - Chat
  - Support resolutions lower than 1225x550
  - Smarter bots (prioritize food, don't trap themselves, have a sense for other player movements)
- - Voice chat
+ - Audio
+    - Background music
+    - Sound effects
+    - Volume control
+    - Voice chat
  - Images
     - Store background image on server
     - Food image
@@ -93,7 +99,6 @@ Open your web browser to `localhost:3000`
     - invulnerable
     - length increase
     - width increase
-    - swap positions
     - reverse controls
     - be able to draw on canvas
     - choice of power-up to start with

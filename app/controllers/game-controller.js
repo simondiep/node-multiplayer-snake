@@ -74,7 +74,7 @@ class GameController {
 
     runGameCycle() {
         // Pause and reset the game if there aren't any players
-        if (Object.keys(this.players).length - this.adminService.getBotNames().length === 0) {
+        if (this._getNumberOfPlayers() - this.adminService.getBotNames().length === 0) {
             console.log('Game Paused');
             this.adminService.resetGame();
             this.imageService.resetGame();
@@ -148,6 +148,27 @@ class GameController {
             const food = this.food[foodConsumed.foodId];
             playerWhoConsumedFood.grow(ServerConfig.FOOD[food.type].GROWTH);
             this.playerStatBoard.increaseScore(playerWhoConsumedFood.id, ServerConfig.FOOD[food.type].POINTS);
+
+            if (food.type === ServerConfig.FOOD.SWAP.TYPE && this._getNumberOfPlayers() > 1) {
+                const otherPlayer = this._getAnotherRandomPlayer(playerWhoConsumedFood.id);
+                this.boardOccupancyService.removePlayerOccupancy(otherPlayer.id, otherPlayer.segments);
+                this.boardOccupancyService.removePlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
+                const otherPlayerDirection = otherPlayer.direction;
+                const otherPlayerDirectionBeforeMove = otherPlayer.directionBeforeMove;
+                const otherPlayerSegments = otherPlayer.segments;
+                otherPlayer.moveCounter = 0;
+                otherPlayer.direction = playerWhoConsumedFood.direction;
+                otherPlayer.directionBeforeMove = playerWhoConsumedFood.directionBeforeMove;
+                otherPlayer.segments = playerWhoConsumedFood.segments;
+                playerWhoConsumedFood.moveCounter = 0;
+                playerWhoConsumedFood.direction = otherPlayerDirection;
+                playerWhoConsumedFood.directionBeforeMove = otherPlayerDirectionBeforeMove;
+                playerWhoConsumedFood.segments = otherPlayerSegments;
+
+                this.boardOccupancyService.addPlayerOccupancy(otherPlayer.id, otherPlayer.segments);
+                this.boardOccupancyService.addPlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
+            }
+
             this.removeFood(foodConsumed.foodId);
             foodToRespawn++;
         }
@@ -179,6 +200,8 @@ class GameController {
         let food;
         if (Math.random() < ServerConfig.FOOD.GOLDEN.SPAWN_RATE) {
             food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.GOLDEN.TYPE, ServerConfig.FOOD.GOLDEN.COLOR);
+        } else if (Math.random() < ServerConfig.FOOD.SWAP.SPAWN_RATE) {
+            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.SWAP.TYPE, ServerConfig.FOOD.SWAP.COLOR);
         } else if (Math.random() < ServerConfig.FOOD.SUPER.SPAWN_RATE) {
             food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.SUPER.TYPE, ServerConfig.FOOD.SUPER.COLOR);
         } else {
@@ -237,7 +260,7 @@ class GameController {
         }
 
         // Start game if the first player has joined
-        if (Object.keys(this.players).length === 1) {
+        if (this._getNumberOfPlayers() === 1) {
             console.log('Game Started');
             this.runGameCycle();
         }
@@ -310,6 +333,16 @@ class GameController {
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         player.clearAllSegments();
         this.sendNotificationToPlayers(`${player.name} is now spectating.`, player.color);
+    }
+
+    _getNumberOfPlayers() {
+        return Object.keys(this.players).length;
+    }
+
+    _getAnotherRandomPlayer(excludedPlayerId) {
+        const playerIds = Object.keys(this.players);
+        playerIds.splice(playerIds.indexOf(excludedPlayerId), 1);
+        return this.players[playerIds[playerIds.length * Math.random() << 0]];
     }
 }
 

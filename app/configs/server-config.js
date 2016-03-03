@@ -32,6 +32,13 @@ const ServerConfig = {
             GROWTH: 25,
             SPAWN_RATE: 0.01,
         },
+        SWAP: {
+            TYPE: 'SWAP',
+            COLOR: 'blue',
+            POINTS: 1,
+            GROWTH: 1,
+            SPAWN_RATE: 0.05,
+        },
     },
     IO: {
         DEFAULT_CONNECTION: 'connection',
