@@ -65,6 +65,7 @@ Open your web browser to `localhost:3000`
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Potential Features To Implement
+ - Spin buttons for admin controls
  - Multiple rooms
  - Incremental death (head no longer moves, but tail does)
  - Randomize board to contain walls
@@ -92,7 +93,7 @@ Open your web browser to `localhost:3000`
     - length increase (super food)
     - width increase
     - swap positions
-    - reverse controls,
+    - reverse controls
     - be able to draw on canvas
     - fog of war
     - random walls
@@ -100,3 +101,4 @@ Open your web browser to `localhost:3000`
     - maze
     - Kills steal other player's length
     - Choice of power-up to start with
+    - Head to head fixed spawns

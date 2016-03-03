@@ -131,6 +131,45 @@ describe('BoardOccupancyService', () => {
         done();
     });
 
+    it('should detect a head-to-head collision', done => {
+        const player1 = new Player(1);
+        player1.segments = [new Coordinate(2, 1),
+                            new Coordinate(1, 1)];
+        const player2 = new Player(2);
+        player2.segments = [new Coordinate(2, 1),
+                            new Coordinate(3, 1)];
+
+        boardOccupancyService.addPlayerOccupancy(player1.id, player1.segments);
+        boardOccupancyService.addPlayerOccupancy(player2.id, player2.segments);
+
+        const killReports = boardOccupancyService.getKillReports();
+
+        assert.equal(killReports.length, 1);
+        assert.deepEqual(killReports[0].victimIds, [1, 2]);
+        done();
+    });
+
+    it('should detect a head-to-head collision overlapping multiple coordinates', done => {
+        const player1 = new Player(1);
+        player1.segments = [new Coordinate(2, 1),
+                            new Coordinate(1, 1)];
+        const player2 = new Player(2);
+        player2.segments = [new Coordinate(1, 1),
+                            new Coordinate(2, 1)];
+
+        boardOccupancyService.addPlayerOccupancy(player1.id, player1.segments);
+        boardOccupancyService.addPlayerOccupancy(player2.id, player2.segments);
+
+        const killReports = boardOccupancyService.getKillReports();
+
+        assert.equal(killReports.length, 2);
+        assert.equal(killReports[0].killerId, 1);
+        assert.equal(killReports[0].victimId, 2);
+        assert.equal(killReports[1].killerId, 2);
+        assert.equal(killReports[1].victimId, 1);
+        done();
+    });
+
     it('should determine if a player has collided with itself', done => {
         const player1 = new Player(1);
         player1.segments = [new Coordinate(4, 2),
