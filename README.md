@@ -59,6 +59,9 @@ Open your web browser to `localhost:3000`
     - https://www.loggly.com/ultimate-guide/node-logging-basics/
     - https://strongloop.com/strongblog/compare-node-js-logging-winston-bunyan/
  - Remove relaxed eslint checks from .eslintrc.js
+ - Refactor into more testable code
+ - Higher test coverage
+ - Performance tests
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
  
 ### Longer-term Tech Debt

@@ -7,20 +7,19 @@ const BoardOccupancyService = require('../services/board-occupancy-service');
 const BotDirectionService = require('../services/bot-direction-service');
 const ColorService = require('../services/color-service');
 const CoordinateService = require('../services/coordinate-service');
+const FoodService = require('../services/food-service');
 const GameControlsService = require('../services/game-controls-service');
 const ImageService = require('../services/image-service');
 const NameService = require('../services/name-service');
 const PlayerSpawnService = require('../services/player-spawn-service');
 const ValidationService = require('../services/validation-service');
 
-const Food = require('../models/food');
 const Player = require('../models/player');
 const PlayerStatBoard = require('../models/player-stat-board');
 
 class GameController {
 
     constructor() {
-        this.food = {};
         this.players = {};
         this.boardOccupancyService = new BoardOccupancyService();
         this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
@@ -28,15 +27,12 @@ class GameController {
         this.colorService = new ColorService();
         this.nameService = new NameService();
         this.playerStatBoard = new PlayerStatBoard();
+        this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
+            this.nameService, this.sendNotificationToPlayers.bind(this));
         this.imageService = new ImageService(this.players, this.playerStatBoard, this.sendNotificationToPlayers.bind(this));
-        this.adminService = new AdminService(this.players, this.food, this.playerStatBoard,
-            this.boardOccupancyService, this.colorService, this.nameService, this.playerSpawnService,
-            this.generateFood.bind(this), this.removeFood.bind(this), this._disconnectPlayer.bind(this),
-            this.sendNotificationToPlayers.bind(this));
-
-        for (let i = 0; i < ServerConfig.FOOD.DEFAULT_AMOUNT; i++) {
-            this.generateFood();
-        }
+        this.adminService = new AdminService(this.players, this.playerStatBoard, this.boardOccupancyService,
+            this.colorService, this.foodService, this.nameService, this.playerSpawnService,
+            this._disconnectPlayer.bind(this), this.sendNotificationToPlayers.bind(this));
     }
 
     listen(io) {
@@ -141,45 +137,11 @@ class GameController {
             this.respawnPlayer(player);
         }
 
-        let foodToRespawn = 0;
-        const foodsConsumed = this.boardOccupancyService.getFoodsConsumed();
-        for (const foodConsumed of foodsConsumed) {
-            const playerWhoConsumedFood = this.players[foodConsumed.playerId];
-            const food = this.food[foodConsumed.foodId];
-            playerWhoConsumedFood.grow(ServerConfig.FOOD[food.type].GROWTH);
-            this.playerStatBoard.increaseScore(playerWhoConsumedFood.id, ServerConfig.FOOD[food.type].POINTS);
-
-            if (food.type === ServerConfig.FOOD.SWAP.TYPE && this._getNumberOfPlayers() > 1) {
-                const otherPlayer = this._getAnotherRandomPlayer(playerWhoConsumedFood.id);
-                this.boardOccupancyService.removePlayerOccupancy(otherPlayer.id, otherPlayer.segments);
-                this.boardOccupancyService.removePlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
-                const otherPlayerDirection = otherPlayer.direction;
-                const otherPlayerDirectionBeforeMove = otherPlayer.directionBeforeMove;
-                const otherPlayerSegments = otherPlayer.segments;
-                otherPlayer.moveCounter = 0;
-                otherPlayer.direction = playerWhoConsumedFood.direction;
-                otherPlayer.directionBeforeMove = playerWhoConsumedFood.directionBeforeMove;
-                otherPlayer.segments = playerWhoConsumedFood.segments;
-                playerWhoConsumedFood.moveCounter = 0;
-                playerWhoConsumedFood.direction = otherPlayerDirection;
-                playerWhoConsumedFood.directionBeforeMove = otherPlayerDirectionBeforeMove;
-                playerWhoConsumedFood.segments = otherPlayerSegments;
-
-                this.boardOccupancyService.addPlayerOccupancy(otherPlayer.id, otherPlayer.segments);
-                this.boardOccupancyService.addPlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
-            }
-
-            this.removeFood(foodConsumed.foodId);
-            foodToRespawn++;
-        }
-
-        for (let i = 0; i < foodToRespawn; i++) {
-            this.generateFood();
-        }
+        this.foodService.consumeAndRespawnFood(this.players);
 
         const gameData = {
             players: this.players,
-            food: this.food,
+            food: this.foodService.getFood(),
             playerStats: this.playerStatBoard,
             speed: this.adminService.getGameSpeed(),
             numberOfBots: this.adminService.getBotNames().length,
@@ -188,34 +150,6 @@ class GameController {
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameData);
 
         setTimeout(this.runGameCycle.bind(this), 1000 / this.adminService.getGameSpeed());
-    }
-
-    generateFood() {
-        const randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
-        if (!randomUnoccupiedCoordinate) {
-            this.sendNotificationToPlayers('Could not add more food.  No room left.', 'white');
-            return;
-        }
-        const foodId = this.nameService.getFoodId();
-        let food;
-        if (Math.random() < ServerConfig.FOOD.GOLDEN.SPAWN_RATE) {
-            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.GOLDEN.TYPE, ServerConfig.FOOD.GOLDEN.COLOR);
-        } else if (Math.random() < ServerConfig.FOOD.SWAP.SPAWN_RATE) {
-            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.SWAP.TYPE, ServerConfig.FOOD.SWAP.COLOR);
-        } else if (Math.random() < ServerConfig.FOOD.SUPER.SPAWN_RATE) {
-            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.SUPER.TYPE, ServerConfig.FOOD.SUPER.COLOR);
-        } else {
-            food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.NORMAL.TYPE, ServerConfig.FOOD.NORMAL.COLOR);
-        }
-        this.food[foodId] = food;
-        this.boardOccupancyService.addFoodOccupancy(food.id, food.location);
-    }
-
-    removeFood(foodId) {
-        const foodToRemove = this.food[foodId];
-        this.nameService.returnFoodId(foodId);
-        this.boardOccupancyService.removeFoodOccupancy(foodId, foodToRemove.location);
-        delete this.food[foodId];
     }
 
     respawnPlayer(player) {
@@ -337,12 +271,6 @@ class GameController {
 
     _getNumberOfPlayers() {
         return Object.keys(this.players).length;
-    }
-
-    _getAnotherRandomPlayer(excludedPlayerId) {
-        const playerIds = Object.keys(this.players);
-        playerIds.splice(playerIds.indexOf(excludedPlayerId), 1);
-        return this.players[playerIds[playerIds.length * Math.random() << 0]];
     }
 }
 

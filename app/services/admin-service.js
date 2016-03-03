@@ -4,18 +4,16 @@ const ServerConfig = require('../configs/server-config');
 
 class AdminService {
 
-    constructor(players, food, playerStatBoard, boardOccupancyService, colorService, nameService, playerSpawnService,
-            generateFood, removeFood, disconnectPlayer, sendNotificationToPlayers) {
+    constructor(players, playerStatBoard, boardOccupancyService, colorService, foodService, nameService, playerSpawnService,
+            disconnectPlayer, sendNotificationToPlayers) {
         this.players = players;
-        this.food = food;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
+        this.foodService = foodService;
         this.colorService = colorService;
         this.nameService = nameService;
         this.playerSpawnService = playerSpawnService;
 
-        this.generateFood = generateFood;
-        this.removeFood = removeFood;
         this.disconnectPlayer = disconnectPlayer;
         this.sendNotificationToPlayers = sendNotificationToPlayers;
 
@@ -39,10 +37,10 @@ class AdminService {
         const player = this.players[socket.id];
         let notification = player.name;
         if (foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
-            this.generateFood();
+            this.foodService.generateFood();
             notification += ' has added some food.';
         } else if (foodOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
-            if (Object.keys(this.food).length > 0) {
+            if (this.foodService.getFoodAmount() > 0) {
                 this._removeLastFood();
                 notification += ' has removed some food.';
             } else {
@@ -150,16 +148,15 @@ class AdminService {
     }
 
     _removeLastFood() {
-        const lastFood = this.food[Object.keys(this.food)[Object.keys(this.food).length - 1]];
-        this.removeFood(lastFood.id);
+        this.foodService.removeFood(this.foodService.getLastFoodIdSpawned());
     }
 
     _resetFood() {
-        while (Object.keys(this.food).length > ServerConfig.FOOD.DEFAULT_AMOUNT) {
+        while (this.foodService.getFoodAmount() > ServerConfig.FOOD.DEFAULT_AMOUNT) {
             this._removeLastFood();
         }
-        while (Object.keys(this.food).length < ServerConfig.FOOD.DEFAULT_AMOUNT) {
-            this.generateFood();
+        while (this.foodService.getFoodAmount() < ServerConfig.FOOD.DEFAULT_AMOUNT) {
+            this.foodService.generateFood();
         }
     }
 
