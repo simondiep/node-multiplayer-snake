@@ -5,23 +5,27 @@ class CoordinateAttribute {
         this.wall = false;
         this.foodId = false;
         this.playerIdWithTail = false;
-        this.playerIdsWithHead = [];
+        this._playerIdsWithHead = [];
+    }
+
+    getPlayerIdsWithHead() {
+        return this._playerIdsWithHead.slice(0);
     }
 
     isOccupied() {
-        return this.wall || this.foodId || this.playerIdWithTail || this.playerIdsWithHead.length > 0;
+        return this.wall || this.foodId || this.playerIdWithTail || this._playerIdsWithHead.length > 0;
     }
 
     isOccupiedByFoodAndPlayer() {
-        return this.foodId && this.playerIdsWithHead.length > 0;
+        return this.foodId && this._playerIdsWithHead.length > 0;
     }
 
     isOccupiedByMultiplePlayers() {
-        return this.playerIdsWithHead.length >= 2 || (this.playerIdsWithHead.length === 1 && this.playerIdWithTail);
+        return this._playerIdsWithHead.length >= 2 || (this._playerIdsWithHead.length === 1 && this.playerIdWithTail);
     }
 
     isSafe() {
-        return !this.wall && !this.playerIdWithTail && this.playerIdsWithHead.length === 0;
+        return !this.wall && !this.playerIdWithTail && this._playerIdsWithHead.length === 0;
     }
 
     isWall() {
@@ -29,12 +33,12 @@ class CoordinateAttribute {
     }
 
     addPlayerIdWithHead(playerIdWithHead) {
-        this.playerIdsWithHead.push(playerIdWithHead);
+        this._playerIdsWithHead.push(playerIdWithHead);
     }
 
     removePlayerIdWithHead(playerIdWithHead) {
-        const indexOfHead = this.playerIdsWithHead.indexOf(playerIdWithHead);
-        this.playerIdsWithHead.splice(indexOfHead, 1);
+        const indexOfHead = this._playerIdsWithHead.indexOf(playerIdWithHead);
+        this._playerIdsWithHead.splice(indexOfHead, 1);
     }
 
     setFoodId(foodId) {

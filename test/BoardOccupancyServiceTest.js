@@ -213,4 +213,24 @@ describe('BoardOccupancyService', () => {
         assert.equal(foodsConsumed.length, 0);
         done();
     });
+
+    it('should maintain a consistent kill report when a player occupancy is removed', done => {
+        const player1 = new Player(1);
+        player1.segments = [new Coordinate(2, 1),
+                            new Coordinate(1, 1)];
+        const player2 = new Player(2);
+        player2.segments = [new Coordinate(2, 1),
+                            new Coordinate(3, 1)];
+
+        boardOccupancyService.addPlayerOccupancy(player1.id, player1.segments);
+        boardOccupancyService.addPlayerOccupancy(player2.id, player2.segments);
+
+        const killReports = boardOccupancyService.getKillReports();
+        assert.equal(killReports[0].victimIds.length, 2);
+        const copyOfKillReport = JSON.stringify(killReports[0]);
+        assert.equal(JSON.stringify(killReports[0]), copyOfKillReport);
+        boardOccupancyService.removePlayerOccupancy(player2.id, player2.segments);
+        assert.equal(JSON.stringify(killReports[0]), copyOfKillReport);
+        done();
+    });
 });

@@ -44,7 +44,8 @@ class BoardOccupancyService {
             for (let row = 0; row <= this.maxRow; row++) {
                 const coordinateAttribute = this.board[column][row];
                 if (coordinateAttribute.isOccupiedByFoodAndPlayer()) {
-                    foodsConsumed.push(new FoodConsumed(coordinateAttribute.foodId, coordinateAttribute.playerIdsWithHead[0]));
+                    foodsConsumed.push(new FoodConsumed(coordinateAttribute.foodId,
+                        coordinateAttribute.getPlayerIdsWithHead()[0]));
                 }
             }
         }
@@ -60,12 +61,12 @@ class BoardOccupancyService {
                     const killerId = coordinateAttribute.playerIdWithTail;
                     if (killerId) {
                         // Heads collided with a tail
-                        for (const playerIdWithHead of coordinateAttribute.playerIdsWithHead) {
+                        for (const playerIdWithHead of coordinateAttribute.getPlayerIdsWithHead()) {
                             killReports.push(new KillReport(killerId, playerIdWithHead));
                         }
                     } else {
                         // Heads collided
-                        killReports.push(new KillReport(null, null, coordinateAttribute.playerIdsWithHead));
+                        killReports.push(new KillReport(null, null, coordinateAttribute.getPlayerIdsWithHead()));
                     }
                 }
             }
