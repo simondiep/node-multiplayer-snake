@@ -27,22 +27,19 @@ class FoodService {
 
             if (food.type === ServerConfig.FOOD.SWAP.TYPE && playerContainer.getNumberOfPlayers() > 1) {
                 const otherPlayer = playerContainer.getAnActivePlayer(playerWhoConsumedFood.id);
-                this.boardOccupancyService.removePlayerOccupancy(otherPlayer.id, otherPlayer.segments);
-                this.boardOccupancyService.removePlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
+                this.boardOccupancyService.removePlayerOccupancy(otherPlayer.id, otherPlayer.getSegments());
+                this.boardOccupancyService.removePlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.getSegments());
                 const otherPlayerDirection = otherPlayer.direction;
                 const otherPlayerDirectionBeforeMove = otherPlayer.directionBeforeMove;
-                const otherPlayerSegments = otherPlayer.segments;
-                otherPlayer.moveCounter = 0;
-                otherPlayer.direction = playerWhoConsumedFood.direction;
-                otherPlayer.directionBeforeMove = playerWhoConsumedFood.directionBeforeMove;
-                otherPlayer.segments = playerWhoConsumedFood.segments;
-                playerWhoConsumedFood.moveCounter = 0;
-                playerWhoConsumedFood.direction = otherPlayerDirection;
-                playerWhoConsumedFood.directionBeforeMove = otherPlayerDirectionBeforeMove;
-                playerWhoConsumedFood.segments = otherPlayerSegments;
+                const otherPlayerSegments = otherPlayer.getSegments();
+                const otherPlayerGrowAmount = otherPlayer.growAmount;
+                otherPlayer.swapBodies(playerWhoConsumedFood.getSegments(), playerWhoConsumedFood.direction,
+                    playerWhoConsumedFood.directionBeforeMove, playerWhoConsumedFood.growAmount);
+                playerWhoConsumedFood.swapBodies(otherPlayerSegments, otherPlayerDirection,
+                    otherPlayerDirectionBeforeMove, otherPlayerGrowAmount);
 
-                this.boardOccupancyService.addPlayerOccupancy(otherPlayer.id, otherPlayer.segments);
-                this.boardOccupancyService.addPlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
+                this.boardOccupancyService.addPlayerOccupancy(otherPlayer.id, otherPlayer.getSegments());
+                this.boardOccupancyService.addPlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.getSegments());
             }
 
             this.removeFood(foodConsumed.foodId);

@@ -100,8 +100,8 @@ class PlayerService {
         this.colorService.returnColor(player.color);
         this.nameService.returnPlayerName(player.name);
         this.playerStatBoard.removePlayer(player.id);
-        if (player.segments.length > 0) {
-            this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
+        if (player.hasSegments()) {
+            this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
         }
         this.playerContainer.removePlayer(player.id);
     }
@@ -115,7 +115,7 @@ class PlayerService {
 
     playerSpectateGame(playerId) {
         const player = this.playerContainer.getPlayer(playerId);
-        this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
+        this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
         this.playerContainer.addSpectatingPlayer(player.id);
         player.clearAllSegments();
         this.notificationService.broadcastNotification(`${player.name} is now spectating.`, player.color);

@@ -14,7 +14,7 @@ describe('BotDirectionService', () => {
 
     beforeEach(() => {
         bot = new Player();
-        bot.segments = [new Coordinate(10, 10)];
+        bot._segments = [new Coordinate(10, 10)];
         bot.changeDirection(Direction.RIGHT);
         boardOccupancyService = new BoardOccupancyService();
         botDirectionService = new BotDirectionService(boardOccupancyService);

@@ -14,16 +14,24 @@ class Player {
     }
 
     clearAllSegments() {
-        this.segments = [];
+        this._segments = [];
     }
 
     getHeadLocation() {
-        return this.segments[0];
+        return this._segments[0];
+    }
+
+    getSegments() {
+        return this._segments.slice(0);
     }
 
     // Growing is not done immediately, but on the next turn
     grow(amount) {
         this.growAmount += amount;
+    }
+
+    hasSegments() {
+        return this._segments.length > 0;
     }
 
     move(newHeadLocation) {
@@ -33,9 +41,9 @@ class Player {
             this.growAmount--;
         } else {
             // pop tail and make it the head
-            this.segments.pop();
+            this._segments.pop();
         }
-        this.segments.unshift(newHeadLocation);
+        this._segments.unshift(newHeadLocation);
         this.moveCounter++;
     }
 
@@ -43,7 +51,7 @@ class Player {
         this.direction = newDirection;
         this.directionBeforeMove = newDirection;
         this.growAmount = growAmount;
-        this.segments = [headLocation];
+        this._segments = [headLocation];
         this.moveCounter = 0;
     }
 
@@ -51,12 +59,20 @@ class Player {
         this.base64Image = base64Image;
     }
 
+    swapBodies(segments, direction, directionBeforeMove, growAmount) {
+        this.moveCounter = 0;
+        this._segments = segments;
+        this.direction = direction;
+        this.directionBeforeMove = directionBeforeMove;
+        this.growAmount = growAmount;
+    }
+
     toJSON() {
         return {
             id: this.id,
             name: this.name,
             direction: this.direction,
-            segments: this.segments,
+            segments: this.getSegments(),
             color: this.color,
             moveCounter: this.moveCounter,
             base64Image: this.base64Image,

@@ -103,17 +103,17 @@ class GameController {
         const playersToRespawn = [];
         for (const player of this.playerContainer.getPlayers()) {
             // Check if player is spectating
-            if (player.segments.length === 0) {
+            if (!player.hasSegments()) {
                 continue;
             }
-            this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
+            this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
             CoordinateService.movePlayer(player);
             if (this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) ||
                     this.boardOccupancyService.isWall(player.getHeadLocation())) {
                 player.clearAllSegments();
                 playersToRespawn.push(player);
             } else {
-                this.boardOccupancyService.addPlayerOccupancy(player.id, player.segments);
+                this.boardOccupancyService.addPlayerOccupancy(player.id, player.getSegments());
             }
         }
 
@@ -129,16 +129,16 @@ class GameController {
                     this.playerStatBoard.increaseScore(killReport.killerId);
                     this.playerStatBoard.stealScore(killReport.killerId, victim.id);
                     // Steal victim's length
-                    this.playerContainer.getPlayer(killReport.killerId).grow(victim.segments.length);
+                    this.playerContainer.getPlayer(killReport.killerId).grow(victim.getSegments().length);
                     // TODO Display kill announcement
                 }
-                this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.segments);
+                this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                 victim.clearAllSegments();
                 playersToRespawn.push(victim);
             } else {
                 for (const victimId of killReport.victimIds) {
                     const victim = this.playerContainer.getPlayer(victimId);
-                    this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.segments);
+                    this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                     victim.clearAllSegments();
                     playersToRespawn.push(victim);
                 }
