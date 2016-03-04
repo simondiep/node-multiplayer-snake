@@ -41,6 +41,27 @@ define([
             DomHelper.setCurrentFoodAmountLabelText(foodAmount);
         }
 
+        showKillMessage(killerName, victimName, killerColor, victimColor) {
+            DomHelper.setKillMessagesDivText(`<span style='color: ${killerColor}'>${killerName}</span> killed ` +
+                `<span style='color: ${victimColor}'>${victimName}</span>`);
+        }
+
+        showKilledEachOtherMessage(victimSummaries) {
+            let victims = '';
+            for (const victimSummary of victimSummaries) {
+                victims += `<span style='color: ${victimSummary.color}'>${victimSummary.name}</span> `;
+            }
+            DomHelper.setKillMessagesDivText(`${victims} have killed each other`);
+        }
+
+        showRanIntoWallMessage(playerName, playerColor) {
+            DomHelper.setKillMessagesDivText(`<span style='color: ${playerColor}'>${playerName}</span> ran into a wall`);
+        }
+
+        showSuicideMessage(victimName, victimColor) {
+            DomHelper.setKillMessagesDivText(`<span style='color: ${victimColor}'>${victimName}</span> committed suicide`);
+        }
+
         showNotification(notification, playerColor) {
             const notificationDiv = DomHelper.getNotificationsDiv();
             const formattedNotification = `<div><span class='timelabel'>${new Date().toLocaleTimeString()} - </span>` +

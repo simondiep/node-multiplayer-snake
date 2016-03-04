@@ -44,7 +44,7 @@ describe('socket.io connection', () => {
         player1Socket.emit(ServerConfig.IO.INCOMING.NEW_PLAYER);
 
         let player1Notifications = 0;
-        player1Socket.on(ServerConfig.IO.OUTGOING.NOTIFICATION, notification => {
+        player1Socket.on(ServerConfig.IO.OUTGOING.NOTIFICATION.GENERAL, notification => {
             assert.isString(notification);
             player1Notifications++;
             if (player1Notifications === 3) {
@@ -55,7 +55,7 @@ describe('socket.io connection', () => {
 
         const player2Socket = io.connect(socketURL);
         player2Socket.emit(ServerConfig.IO.INCOMING.NEW_PLAYER);
-        player2Socket.on(ServerConfig.IO.OUTGOING.NOTIFICATION, notification => {
+        player2Socket.on(ServerConfig.IO.OUTGOING.NOTIFICATION.GENERAL, notification => {
             assert.isString(notification);
             player2Socket.disconnect();
         });

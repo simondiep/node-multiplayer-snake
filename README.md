@@ -33,6 +33,7 @@ Open your web browser to `localhost:3000`
  - Player statistics including kills/deaths/score
  - Steal player scores and length by killing them
  - Game notifications
+    - Kill announcements
  - Bots
  - Random, safe spawns
  - Spectate
@@ -42,10 +43,11 @@ Open your web browser to `localhost:3000`
 
 1. Fork the code base
 2. Create a new git branch
-3. Start making changes
-4. Run tests `npm test`
-5. Rebase your changes
-6. Submit a pull request
+3. Find or create an issue with a description of what you will be adding
+4. Start making changes
+5. Run tests `npm test`
+6. Rebase your changes
+7. Submit a pull request
 
 ### Tech Debt
  - Additional Client-side validation to reduce unnecessary emits to server
@@ -97,7 +99,6 @@ Open your web browser to `localhost:3000`
     - Global high score
     - Custom sort stat board
     - More stats (max length)
-    - Kill / Deaths announcement [ A killed B ] , [ B ran into a wall ], [A and B killed each other]
  - Power-ups
     - individual speed (2 or more steps for a player)
     - invulnerable

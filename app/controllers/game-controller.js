@@ -30,7 +30,6 @@ class GameController {
         this.notificationService = new NotificationService();
         this.playerStatBoard = new PlayerStatBoard();
 
-
         this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
             this.nameService, this.notificationService);
         this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
@@ -112,6 +111,7 @@ class GameController {
                     this.boardOccupancyService.isWall(player.getHeadLocation())) {
                 player.clearAllSegments();
                 playersToRespawn.push(player);
+                this.notificationService.broadcastRanIntoWall(player.name, player.color);
             } else {
                 this.boardOccupancyService.addPlayerOccupancy(player.id, player.getSegments());
             }
@@ -123,26 +123,31 @@ class GameController {
             if (killReport.isSingleKill()) {
                 const victim = this.playerContainer.getPlayer(killReport.victimId);
                 if (killReport.killerId === killReport.victimId) {
-                    // TODO Display suicide announcement
+                    this.notificationService.broadcastSuicide(victim.name, victim.color);
                 } else {
                     this.playerStatBoard.addKill(killReport.killerId);
                     this.playerStatBoard.increaseScore(killReport.killerId);
                     this.playerStatBoard.stealScore(killReport.killerId, victim.id);
                     // Steal victim's length
                     this.playerContainer.getPlayer(killReport.killerId).grow(victim.getSegments().length);
-                    // TODO Display kill announcement
+                    const killer = this.playerContainer.getPlayer(killReport.killerId);
+                    this.notificationService.broadcastKill(killer.name, victim.name, killer.color, victim.color);
                 }
                 this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                 victim.clearAllSegments();
                 playersToRespawn.push(victim);
             } else {
-                for (const victimId of killReport.victimIds) {
+                const victimSummaries = [];
+                for (const victimId of killReport.getVictimIds()) {
                     const victim = this.playerContainer.getPlayer(victimId);
                     this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                     victim.clearAllSegments();
                     playersToRespawn.push(victim);
+                    victimSummaries.push({ name: victim.name, color: victim.color });
                 }
-                // TODO Display multideath announcement
+                if (victimSummaries.length > 0) {
+                    this.notificationService.broadcastKillEachOther(victimSummaries);
+                }
             }
         }
 

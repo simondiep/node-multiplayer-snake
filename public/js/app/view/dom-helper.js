@@ -136,6 +136,10 @@ define(() => {
             document.getElementById('currentStartLength').innerHTML = text;
         }
 
+        static setKillMessagesDivText(text) {
+            document.getElementById('killMessages').innerHTML = text;
+        }
+
         static setPlayerNameElementColor(color) {
             this.getPlayerNameElement().style.color = color;
         }

@@ -169,20 +169,16 @@ define([
             this.gameView.showPlayerStats(gameData.playerStats);
         }
 
-        _handleNotification(notification, playerColor) {
-            this.gameView.showNotification(notification, playerColor);
-        }
-
-        _updatePlayerName(playerName, playerColor) {
-            this.gameView.updatePlayerName(playerName, playerColor);
-        }
-
         _initializeSocketIoHandlers() {
-            this.socket.on(ClientConfig.IO.INCOMING.NEW_PLAYER_INFO, this._updatePlayerName.bind(this));
+            this.socket.on(ClientConfig.IO.INCOMING.NEW_PLAYER_INFO, this.gameView.updatePlayerName);
             this.socket.on(ClientConfig.IO.INCOMING.BOARD_INFO, this._createBoard.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NEW_STATE, this._handleNewGameData.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NEW_BACKGROUND_IMAGE, this._handleBackgroundImage.bind(this));
-            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION, this._handleNotification.bind(this));
+            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.GENERAL, this.gameView.showNotification);
+            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILL, this.gameView.showKillMessage);
+            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILLED_EACH_OTHER, this.gameView.showKilledEachOtherMessage);
+            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.RAN_INTO_WALL, this.gameView.showRanIntoWallMessage);
+            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.SUICIDE, this.gameView.showSuicideMessage);
         }
     }
 

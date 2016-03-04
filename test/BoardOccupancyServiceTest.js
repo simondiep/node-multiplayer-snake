@@ -145,7 +145,7 @@ describe('BoardOccupancyService', () => {
         const killReports = boardOccupancyService.getKillReports();
 
         assert.equal(killReports.length, 1);
-        assert.deepEqual(killReports[0].victimIds, [1, 2]);
+        assert.deepEqual(killReports[0].getVictimIds(), [1, 2]);
         done();
     });
 
@@ -226,7 +226,7 @@ describe('BoardOccupancyService', () => {
         boardOccupancyService.addPlayerOccupancy(player2.id, player2.getSegments());
 
         const killReports = boardOccupancyService.getKillReports();
-        assert.equal(killReports[0].victimIds.length, 2);
+        assert.equal(killReports[0].getVictimIds().length, 2);
         const copyOfKillReport = JSON.stringify(killReports[0]);
         assert.equal(JSON.stringify(killReports[0]), copyOfKillReport);
         boardOccupancyService.removePlayerOccupancy(player2.id, player2.getSegments());

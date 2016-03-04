@@ -64,7 +64,13 @@ const ServerConfig = {
             NEW_PLAYER_INFO: 'new player info',
             NEW_BACKGROUND_IMAGE: 'new background image',
             BOARD_INFO: 'board info',
-            NOTIFICATION: 'server notification',
+            NOTIFICATION: {
+                GENERAL: 'general notification',
+                KILL: 'kill notification',
+                KILLED_EACH_OTHER: 'killed each other notification',
+                RAN_INTO_WALL: 'ran into wall notification',
+                SUICIDE: 'suicide notification',
+            },
         },
     },
     INCREMENT_CHANGE: {
@@ -72,7 +78,6 @@ const ServerConfig = {
         DECREASE: 'decrease',
         RESET: 'reset',
     },
-
 };
 
 module.exports = ServerConfig;
