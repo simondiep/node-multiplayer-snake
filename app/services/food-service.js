@@ -4,12 +4,12 @@ const Food = require('../models/food');
 
 class FoodService {
 
-    constructor(playerStatBoard, boardOccupancyService, nameService, sendNotificationToPlayers) {
+    constructor(playerStatBoard, boardOccupancyService, nameService, notificationService) {
         this.food = {};
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
         this.nameService = nameService;
-        this.sendNotificationToPlayers = sendNotificationToPlayers;
+        this.notificationService = notificationService;
 
         for (let i = 0; i < ServerConfig.FOOD.DEFAULT_AMOUNT; i++) {
             this.generateFood();
@@ -57,7 +57,7 @@ class FoodService {
     generateFood() {
         const randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
         if (!randomUnoccupiedCoordinate) {
-            this.sendNotificationToPlayers('Could not add more food.  No room left.', 'white');
+            this.notificationService.broadcastNotification('Could not add more food.  No room left.', 'white');
             return;
         }
         const foodId = this.nameService.getFoodId();

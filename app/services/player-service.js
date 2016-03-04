@@ -8,16 +8,16 @@ const ValidationService = require('../services/validation-service');
 class PlayerService {
 
     constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, imageService,
-            nameService, playerSpawnService, runGameCycle, sendNotificationToPlayers) {
+            nameService, notificationService, playerSpawnService, runGameCycle) {
         this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
         this.colorService = colorService;
         this.imageService = imageService;
         this.nameService = nameService;
+        this.notificationService = notificationService;
         this.playerSpawnService = playerSpawnService;
         this.runGameCycle = runGameCycle;
-        this.sendNotificationToPlayers = sendNotificationToPlayers;
     }
 
     init(getPlayerStartLength) {
@@ -35,7 +35,7 @@ class PlayerService {
         this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
         socket.emit(ServerConfig.IO.OUTGOING.BOARD_INFO, Board);
-        this.sendNotificationToPlayers(`${playerName} has joined!`, playerColor);
+        this.notificationService.broadcastNotification(`${playerName} has joined!`, playerColor);
         const backgroundImage = this.imageService.getBackgroundImage();
         if (backgroundImage) {
             socket.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, backgroundImage);
@@ -63,7 +63,7 @@ class PlayerService {
         player.color = newColor;
         this.playerStatBoard.changePlayerColor(player.id, newColor);
         socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, player.name, newColor);
-        this.sendNotificationToPlayers(`${player.name} has changed colors.`, newColor);
+        this.notificationService.broadcastNotification(`${player.name} has changed colors.`, newColor);
     }
 
     changePlayerName(socket, newPlayerName) {
@@ -79,9 +79,11 @@ class PlayerService {
         }
         if (this.nameService.doesPlayerNameExist(newPlayerNameCleaned)) {
             socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, oldPlayerName, player.color);
-            this.sendNotificationToPlayers(`${player.name} couldn't claim the name ${newPlayerNameCleaned}`, player.color);
+            this.notificationService.broadcastNotification(
+                `${player.name} couldn't claim the name ${newPlayerNameCleaned}`, player.color);
         } else {
-            this.sendNotificationToPlayers(`${oldPlayerName} is now known as ${newPlayerNameCleaned}`, player.color);
+            this.notificationService.broadcastNotification(
+                `${oldPlayerName} is now known as ${newPlayerNameCleaned}`, player.color);
             player.name = newPlayerNameCleaned;
             this.nameService.usePlayerName(newPlayerNameCleaned);
             this.playerStatBoard.changePlayerName(player.id, newPlayerNameCleaned);
@@ -98,7 +100,7 @@ class PlayerService {
         if (!player) {
             return;
         }
-        this.sendNotificationToPlayers(`${player.name} has left.`, player.color);
+        this.notificationService.broadcastNotification(`${player.name} has left.`, player.color);
         this.colorService.returnColor(player.color);
         this.nameService.returnPlayerName(player.name);
         this.playerStatBoard.removePlayer(player.id);
@@ -112,7 +114,7 @@ class PlayerService {
         const player = this.playerContainer.getPlayer(socket.id);
         this.playerContainer.removeSpectatingPlayer(player.id);
         this.respawnPlayer(player);
-        this.sendNotificationToPlayers(`${player.name} has rejoined the game.`, player.color);
+        this.notificationService.broadcastNotification(`${player.name} has rejoined the game.`, player.color);
     }
 
     playerSpectateGame(socket) {
@@ -120,7 +122,7 @@ class PlayerService {
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         this.playerContainer.addSpectatingPlayer(player.id);
         player.clearAllSegments();
-        this.sendNotificationToPlayers(`${player.name} is now spectating.`, player.color);
+        this.notificationService.broadcastNotification(`${player.name} is now spectating.`, player.color);
     }
 
     respawnPlayer(player) {

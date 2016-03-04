@@ -5,17 +5,17 @@ const ServerConfig = require('../configs/server-config');
 class AdminService {
 
     constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, foodService,
-            nameService, playerSpawnService, disconnectPlayer, sendNotificationToPlayers) {
+            nameService, notificationService, playerSpawnService, disconnectPlayer) {
         this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
         this.foodService = foodService;
         this.colorService = colorService;
         this.nameService = nameService;
+        this.notificationService = notificationService;
         this.playerSpawnService = playerSpawnService;
 
         this.disconnectPlayer = disconnectPlayer;
-        this.sendNotificationToPlayers = sendNotificationToPlayers;
 
         this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
         this.currentFPS = ServerConfig.STARTING_FPS;
@@ -50,7 +50,7 @@ class AdminService {
             this._resetFood();
             notification += ' has reset the food.';
         }
-        this.sendNotificationToPlayers(notification, player.color);
+        this.notificationService.broadcastNotification(notification, player.color);
     }
 
     changeSpeed(socket, speedOption) {
@@ -74,7 +74,7 @@ class AdminService {
             this._resetSpeed();
             notification += ' has reset the game speed.';
         }
-        this.sendNotificationToPlayers(notification, player.color);
+        this.notificationService.broadcastNotification(notification, player.color);
     }
 
     changeStartLength(socket, lengthOption) {
@@ -94,7 +94,7 @@ class AdminService {
             this._resetPlayerStartLength();
             notification += ' has reset the player start length.';
         }
-        this.sendNotificationToPlayers(notification, player.color);
+        this.notificationService.broadcastNotification(notification, player.color);
     }
 
     getBotNames() {
@@ -118,8 +118,8 @@ class AdminService {
 
     _addBot(playerRequestingAddition) {
         if (this.botNames.length >= ServerConfig.MAX_BOTS) {
-            this.sendNotificationToPlayers(`${playerRequestingAddition.name} tried to add a bot past the limit.`,
-                playerRequestingAddition.color);
+            this.notificationService.broadcastNotification(
+                `${playerRequestingAddition.name} tried to add a bot past the limit.`, playerRequestingAddition.color);
             return;
         }
         const newBotName = this.nameService.getBotName();
@@ -128,7 +128,7 @@ class AdminService {
         this.playerSpawnService.setupNewSpawn(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
         this.playerContainer.addPlayer(newBot);
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
-        this.sendNotificationToPlayers(`${newBotName} has joined!`, botColor);
+        this.notificationService.broadcastNotification(`${newBotName} has joined!`, botColor);
         this.botNames.push(newBotName);
     }
 
@@ -136,8 +136,8 @@ class AdminService {
         if (this.botNames.length > 0) {
             this.disconnectPlayer(this.botNames.pop());
         } else {
-            this.sendNotificationToPlayers(`${playerRequestingRemoval.name} tried to remove a bot that doesn't exist.`,
-                playerRequestingRemoval.color);
+            this.notificationService.broadcastNotification(
+                `${playerRequestingRemoval.name} tried to remove a bot that doesn't exist.`, playerRequestingRemoval.color);
         }
     }
 

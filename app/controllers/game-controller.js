@@ -11,6 +11,7 @@ const FoodService = require('../services/food-service');
 const GameControlsService = require('../services/game-controls-service');
 const ImageService = require('../services/image-service');
 const NameService = require('../services/name-service');
+const NotificationService = require('../services/notification-service');
 const PlayerService = require('../services/player-service');
 const PlayerSpawnService = require('../services/player-spawn-service');
 
@@ -26,26 +27,25 @@ class GameController {
         this.playerSpawnService = new PlayerSpawnService(this.boardOccupancyService);
         this.colorService = new ColorService();
         this.nameService = new NameService();
+        this.notificationService = new NotificationService();
         this.playerStatBoard = new PlayerStatBoard();
 
         this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
-            this.nameService, this.sendNotificationToPlayers.bind(this));
-        this.imageService = new ImageService(this.playerContainer, this.playerStatBoard,
-            this.sendNotificationToPlayers.bind(this));
+            this.nameService, this.notificationService);
+        this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
         this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard,
-            this.boardOccupancyService, this.colorService, this.imageService, this.nameService, this.playerSpawnService,
-            this.runGameCycle.bind(this), this.sendNotificationToPlayers.bind(this));
+            this.boardOccupancyService, this.colorService, this.imageService, this.nameService, this.notificationService,
+            this.playerSpawnService, this.runGameCycle.bind(this));
         this.adminService = new AdminService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
-            this.colorService, this.foodService, this.nameService, this.playerSpawnService,
-            this.playerService.disconnectPlayer.bind(this.playerService), this.sendNotificationToPlayers.bind(this));
+            this.colorService, this.foodService, this.nameService, this.notificationService, this.playerSpawnService,
+            this.playerService.disconnectPlayer.bind(this.playerService));
         this.playerService.init(this.adminService.getPlayerStartLength.bind(this.adminService));
     }
 
     listen(io) {
-        this.io = io;
-        this.imageService.setIo(this.io);
+        this.notificationService.setSockets(io.sockets);
         const self = this;
-        this.io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
+        io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN,
                 self._keyDown.bind(self, socket));
 
@@ -91,6 +91,7 @@ class GameController {
             return;
         }
 
+        // Change bots' directions
         for (const botName of this.adminService.getBotNames()) {
             const bot = this.playerContainer.getPlayer(botName);
             if (Math.random() <= ServerConfig.BOT_CHANGE_DIRECTION_PERCENT) {
@@ -116,6 +117,7 @@ class GameController {
             }
         }
 
+        // Handle player collisions
         const killReports = this.boardOccupancyService.getKillReports();
         for (const killReport of killReports) {
             if (killReport.isSingleKill()) {
@@ -150,7 +152,7 @@ class GameController {
 
         this.foodService.consumeAndRespawnFood(this.playerContainer);
 
-        const gameData = {
+        const gameState = {
             players: this.playerContainer,
             food: this.foodService.getFood(),
             playerStats: this.playerStatBoard,
@@ -158,14 +160,9 @@ class GameController {
             numberOfBots: this.adminService.getBotNames().length,
             startLength: this.adminService.getPlayerStartLength(),
         };
-        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameData);
+        this.notificationService.broadcastGameState(gameState);
 
         setTimeout(this.runGameCycle.bind(this), 1000 / this.adminService.getGameSpeed());
-    }
-
-    sendNotificationToPlayers(notification, playerColor) {
-        console.log(notification);
-        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION, notification, playerColor);
     }
 
     /*******************************

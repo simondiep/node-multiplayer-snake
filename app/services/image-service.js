@@ -4,10 +4,10 @@ const ValidationService = require('../services/validation-service');
 
 class ImageService {
 
-    constructor(playerContainer, playerStatBoard, sendNotificationToPlayers) {
+    constructor(playerContainer, playerStatBoard, notificationService) {
         this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
-        this.sendNotificationToPlayers = sendNotificationToPlayers;
+        this.notificationService = notificationService;
         this.backgroundImage = false;
     }
 
@@ -20,7 +20,7 @@ class ImageService {
             const player = this.playerContainer.getPlayer(socket.id);
             this.backgroundImage = false;
             this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE);
-            this.sendNotificationToPlayers(`${player.name} has clear the background image.`, player.color);
+            this.notificationService.broadcastNotification(`${player.name} has clear the background image.`, player.color);
         }
     }
 
@@ -28,7 +28,7 @@ class ImageService {
         const player = this.playerContainer.getPlayer(socket.id);
         delete player.base64Image;
         this.playerStatBoard.clearPlayerImage(player.id);
-        this.sendNotificationToPlayers(`${player.name} has removed their image.`, player.color);
+        this.notificationService.broadcastNotification(`${player.name} has removed their image.`, player.color);
     }
 
     updateBackgroundImage(socket, base64Image) {
@@ -39,7 +39,7 @@ class ImageService {
         }
         this.backgroundImage = base64Image;
         this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, this.backgroundImage);
-        this.sendNotificationToPlayers(`${player.name} has updated the background image.`, player.color);
+        this.notificationService.broadcastNotification(`${player.name} has updated the background image.`, player.color);
     }
 
     updatePlayerImage(socket, base64Image) {
@@ -50,7 +50,7 @@ class ImageService {
         }
         player.setBase64Image(base64Image);
         this.playerStatBoard.setBase64Image(player.id, base64Image);
-        this.sendNotificationToPlayers(`${player.name} has uploaded a new image.`, player.color);
+        this.notificationService.broadcastNotification(`${player.name} has uploaded a new image.`, player.color);
     }
 
     getBackgroundImage() {
