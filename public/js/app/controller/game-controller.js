@@ -23,7 +23,7 @@ define([
                                          this.startLengthChangeCallback.bind(this),
                                          this.toggleGridLinesCallback.bind(this)
                                          );
-            this.players = {};
+            this.players = [];
             this.food = {};
         }
 
@@ -43,24 +43,21 @@ define([
                     this.canvasView.drawSquare(food.location, food.color);
                 }
             }
-            for (const playerId in this.players) {
-                if ({}.hasOwnProperty.call(this.players, playerId)) {
-                    const player = this.players[playerId];
-                    if (player.segments.length === 0) {
-                        continue;
-                    }
-                    // Flash around where you have just spawned
-                    if (`/#${this.socket.id}` === playerId &&
-                            player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN &&
-                            player.moveCounter % 2 === 0) {
-                        this.canvasView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
-                    }
+            for (const player of this.players) {
+                if (player.segments.length === 0) {
+                    continue;
+                }
+                // Flash around where you have just spawned
+                if (`/#${this.socket.id}` === player.id &&
+                        player.moveCounter <= ClientConfig.TURNS_TO_FLASH_AFTER_SPAWN &&
+                        player.moveCounter % 2 === 0) {
+                    this.canvasView.drawSquareAround(player.segments[0], ClientConfig.SPAWN_FLASH_COLOR);
+                }
 
-                    if (player.base64Image) {
-                        this.canvasView.drawImages(player.segments, player.base64Image);
-                    } else {
-                        this.canvasView.drawSquares(player.segments, player.color);
-                    }
+                if (player.base64Image) {
+                    this.canvasView.drawImages(player.segments, player.base64Image);
+                } else {
+                    this.canvasView.drawSquares(player.segments, player.color);
                 }
             }
 

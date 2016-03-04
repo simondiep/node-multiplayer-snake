@@ -16,17 +16,17 @@ class FoodService {
         }
     }
 
-    consumeAndRespawnFood(players) {
+    consumeAndRespawnFood(playerContainer) {
         let foodToRespawn = 0;
         const foodsConsumed = this.boardOccupancyService.getFoodsConsumed();
         for (const foodConsumed of foodsConsumed) {
-            const playerWhoConsumedFood = players[foodConsumed.playerId];
+            const playerWhoConsumedFood = playerContainer.getPlayer(foodConsumed.playerId);
             const food = this.food[foodConsumed.foodId];
             playerWhoConsumedFood.grow(ServerConfig.FOOD[food.type].GROWTH);
             this.playerStatBoard.increaseScore(playerWhoConsumedFood.id, ServerConfig.FOOD[food.type].POINTS);
 
-            if (food.type === ServerConfig.FOOD.SWAP.TYPE && Object.keys(players).length > 1) {
-                const otherPlayer = this._getAnotherRandomPlayer(players, playerWhoConsumedFood.id);
+            if (food.type === ServerConfig.FOOD.SWAP.TYPE && playerContainer.getNumberOfPlayers() > 1) {
+                const otherPlayer = playerContainer.getAnActivePlayer(playerWhoConsumedFood.id);
                 this.boardOccupancyService.removePlayerOccupancy(otherPlayer.id, otherPlayer.segments);
                 this.boardOccupancyService.removePlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.segments);
                 const otherPlayerDirection = otherPlayer.direction;
@@ -92,12 +92,6 @@ class FoodService {
         this.nameService.returnFoodId(foodId);
         this.boardOccupancyService.removeFoodOccupancy(foodId, foodToRemove.location);
         delete this.food[foodId];
-    }
-
-    _getAnotherRandomPlayer(players, excludedPlayerId) {
-        const playerIds = Object.keys(players);
-        playerIds.splice(playerIds.indexOf(excludedPlayerId), 1);
-        return players[playerIds[playerIds.length * Math.random() << 0]];
     }
 }
 

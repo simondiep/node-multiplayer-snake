@@ -4,9 +4,9 @@ const ServerConfig = require('../configs/server-config');
 
 class AdminService {
 
-    constructor(players, playerStatBoard, boardOccupancyService, colorService, foodService, nameService, playerSpawnService,
-            disconnectPlayer, sendNotificationToPlayers) {
-        this.players = players;
+    constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, foodService,
+            nameService, playerSpawnService, disconnectPlayer, sendNotificationToPlayers) {
+        this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
         this.foodService = foodService;
@@ -23,7 +23,7 @@ class AdminService {
     }
 
     changeBots(socket, botOption) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         if (botOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this._addBot(player);
         } else if (botOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
@@ -34,7 +34,7 @@ class AdminService {
     }
 
     changeFood(socket, foodOption) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         let notification = player.name;
         if (foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this.foodService.generateFood();
@@ -54,7 +54,7 @@ class AdminService {
     }
 
     changeSpeed(socket, speedOption) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         let notification = player.name;
         if (speedOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             if (this.currentFPS < ServerConfig.MAX_FPS) {
@@ -78,7 +78,7 @@ class AdminService {
     }
 
     changeStartLength(socket, lengthOption) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         let notification = player.name;
         if (lengthOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             notification += ' has increased the player start length.';
@@ -126,7 +126,7 @@ class AdminService {
         const botColor = this.colorService.getColor();
         const newBot = new Player(newBotName, newBotName, botColor);
         this.playerSpawnService.setupNewSpawn(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
-        this.players[newBotName] = newBot;
+        this.playerContainer.addPlayer(newBot);
         this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
         this.sendNotificationToPlayers(`${newBotName} has joined!`, botColor);
         this.botNames.push(newBotName);

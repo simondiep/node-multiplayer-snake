@@ -4,8 +4,8 @@ const ValidationService = require('../services/validation-service');
 
 class ImageService {
 
-    constructor(players, playerStatBoard, sendNotificationToPlayers) {
-        this.players = players;
+    constructor(playerContainer, playerStatBoard, sendNotificationToPlayers) {
+        this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.sendNotificationToPlayers = sendNotificationToPlayers;
         this.backgroundImage = false;
@@ -17,7 +17,7 @@ class ImageService {
 
     clearBackgroundImage(socket) {
         if (this.backgroundImage) {
-            const player = this.players[socket.id];
+            const player = this.playerContainer.getPlayer(socket.id);
             this.backgroundImage = false;
             this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE);
             this.sendNotificationToPlayers(`${player.name} has clear the background image.`, player.color);
@@ -25,14 +25,14 @@ class ImageService {
     }
 
     clearPlayerImage(socket) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         delete player.base64Image;
         this.playerStatBoard.clearPlayerImage(player.id);
         this.sendNotificationToPlayers(`${player.name} has removed their image.`, player.color);
     }
 
     updateBackgroundImage(socket, base64Image) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         if (!ValidationService.isValidBase64DataURI(base64Image)) {
             console.log(`${player.name} tried uploading an invalid background image`);
             return;
@@ -43,7 +43,7 @@ class ImageService {
     }
 
     updatePlayerImage(socket, base64Image) {
-        const player = this.players[socket.id];
+        const player = this.playerContainer.getPlayer(socket.id);
         if (!ValidationService.isValidBase64DataURI(base64Image)) {
             console.log(`${player.name} tried uploading an invalid player image`);
             return;
