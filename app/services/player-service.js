@@ -91,10 +91,6 @@ class PlayerService {
         }
     }
 
-    disconnect(socket) {
-        this.disconnectPlayer(socket.id);
-    }
-
     disconnectPlayer(playerId) {
         const player = this.playerContainer.getPlayer(playerId);
         if (!player) {
@@ -110,15 +106,15 @@ class PlayerService {
         this.playerContainer.removePlayer(player.id);
     }
 
-    playerJoinGame(socket) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    playerJoinGame(playerId) {
+        const player = this.playerContainer.getPlayer(playerId);
         this.playerContainer.removeSpectatingPlayer(player.id);
         this.respawnPlayer(player);
         this.notificationService.broadcastNotification(`${player.name} has rejoined the game.`, player.color);
     }
 
-    playerSpectateGame(socket) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    playerSpectateGame(playerId) {
+        const player = this.playerContainer.getPlayer(playerId);
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.segments);
         this.playerContainer.addSpectatingPlayer(player.id);
         player.clearAllSegments();

@@ -1,5 +1,4 @@
 'use strict';
-const ServerConfig = require('../configs/server-config');
 const ValidationService = require('../services/validation-service');
 
 class ImageService {
@@ -11,39 +10,35 @@ class ImageService {
         this.backgroundImage = false;
     }
 
-    setIo(io) {
-        this.io = io;
-    }
-
-    clearBackgroundImage(socket) {
+    clearBackgroundImage(playerId) {
         if (this.backgroundImage) {
-            const player = this.playerContainer.getPlayer(socket.id);
+            const player = this.playerContainer.getPlayer(playerId);
             this.backgroundImage = false;
-            this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE);
+            this.notificationService.broadcastClearBackgroundImage();
             this.notificationService.broadcastNotification(`${player.name} has clear the background image.`, player.color);
         }
     }
 
-    clearPlayerImage(socket) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    clearPlayerImage(playerId) {
+        const player = this.playerContainer.getPlayer(playerId);
         delete player.base64Image;
         this.playerStatBoard.clearPlayerImage(player.id);
         this.notificationService.broadcastNotification(`${player.name} has removed their image.`, player.color);
     }
 
-    updateBackgroundImage(socket, base64Image) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    updateBackgroundImage(playerId, base64Image) {
+        const player = this.playerContainer.getPlayer(playerId);
         if (!ValidationService.isValidBase64DataURI(base64Image)) {
             console.log(`${player.name} tried uploading an invalid background image`);
             return;
         }
         this.backgroundImage = base64Image;
-        this.io.sockets.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, this.backgroundImage);
+        this.notificationService.broadcastNewBackgroundImage(this.backgroundImage);
         this.notificationService.broadcastNotification(`${player.name} has updated the background image.`, player.color);
     }
 
-    updatePlayerImage(socket, base64Image) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    updatePlayerImage(playerId, base64Image) {
+        const player = this.playerContainer.getPlayer(playerId);
         if (!ValidationService.isValidBase64DataURI(base64Image)) {
             console.log(`${player.name} tried uploading an invalid player image`);
             return;

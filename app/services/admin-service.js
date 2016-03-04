@@ -5,7 +5,7 @@ const ServerConfig = require('../configs/server-config');
 class AdminService {
 
     constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, foodService,
-            nameService, notificationService, playerSpawnService, disconnectPlayer) {
+            nameService, notificationService, playerService, playerSpawnService) {
         this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
@@ -15,15 +15,15 @@ class AdminService {
         this.notificationService = notificationService;
         this.playerSpawnService = playerSpawnService;
 
-        this.disconnectPlayer = disconnectPlayer;
+        this.playerService = playerService;
 
         this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
         this.currentFPS = ServerConfig.STARTING_FPS;
         this.botNames = [];
     }
 
-    changeBots(socket, botOption) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    changeBots(playerId, botOption) {
+        const player = this.playerContainer.getPlayer(playerId);
         if (botOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this._addBot(player);
         } else if (botOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
@@ -33,8 +33,8 @@ class AdminService {
         }
     }
 
-    changeFood(socket, foodOption) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    changeFood(playerId, foodOption) {
+        const player = this.playerContainer.getPlayer(playerId);
         let notification = player.name;
         if (foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             this.foodService.generateFood();
@@ -53,8 +53,8 @@ class AdminService {
         this.notificationService.broadcastNotification(notification, player.color);
     }
 
-    changeSpeed(socket, speedOption) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    changeSpeed(playerId, speedOption) {
+        const player = this.playerContainer.getPlayer(playerId);
         let notification = player.name;
         if (speedOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             if (this.currentFPS < ServerConfig.MAX_FPS) {
@@ -77,8 +77,8 @@ class AdminService {
         this.notificationService.broadcastNotification(notification, player.color);
     }
 
-    changeStartLength(socket, lengthOption) {
-        const player = this.playerContainer.getPlayer(socket.id);
+    changeStartLength(playerId, lengthOption) {
+        const player = this.playerContainer.getPlayer(playerId);
         let notification = player.name;
         if (lengthOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
             notification += ' has increased the player start length.';
@@ -134,7 +134,7 @@ class AdminService {
 
     _removeBot(playerRequestingRemoval) {
         if (this.botNames.length > 0) {
-            this.disconnectPlayer(this.botNames.pop());
+            this.playerService.disconnectPlayer(this.botNames.pop());
         } else {
             this.notificationService.broadcastNotification(
                 `${playerRequestingRemoval.name} tried to remove a bot that doesn't exist.`, playerRequestingRemoval.color);

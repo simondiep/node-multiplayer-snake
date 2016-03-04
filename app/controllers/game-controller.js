@@ -30,6 +30,7 @@ class GameController {
         this.notificationService = new NotificationService();
         this.playerStatBoard = new PlayerStatBoard();
 
+
         this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
             this.nameService, this.notificationService);
         this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
@@ -37,8 +38,8 @@ class GameController {
             this.boardOccupancyService, this.colorService, this.imageService, this.nameService, this.notificationService,
             this.playerSpawnService, this.runGameCycle.bind(this));
         this.adminService = new AdminService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
-            this.colorService, this.foodService, this.nameService, this.notificationService, this.playerSpawnService,
-            this.playerService.disconnectPlayer.bind(this.playerService));
+            this.colorService, this.foodService, this.nameService, this.notificationService, this.playerService,
+            this.playerSpawnService);
         this.playerService.init(this.adminService.getPlayerStartLength.bind(this.adminService));
     }
 
@@ -46,8 +47,7 @@ class GameController {
         this.notificationService.setSockets(io.sockets);
         const self = this;
         io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
-            socket.on(ServerConfig.IO.INCOMING.KEY_DOWN,
-                self._keyDown.bind(self, socket));
+            socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket.id));
 
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER,
                 self.playerService.addPlayer.bind(self.playerService, socket));
@@ -56,29 +56,29 @@ class GameController {
             socket.on(ServerConfig.IO.INCOMING.COLOR_CHANGE,
                 self.playerService.changeColor.bind(self.playerService, socket));
             socket.on(ServerConfig.IO.INCOMING.JOIN_GAME,
-                self.playerService.playerJoinGame.bind(self.playerService, socket));
+                self.playerService.playerJoinGame.bind(self.playerService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.SPECTATE_GAME,
-                self.playerService.playerSpectateGame.bind(self.playerService, socket));
+                self.playerService.playerSpectateGame.bind(self.playerService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT,
-                self.playerService.disconnect.bind(self.playerService, socket));
+                self.playerService.disconnectPlayer.bind(self.playerService, socket.id));
 
             socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_BACKGROUND_IMAGE,
-                self.imageService.clearBackgroundImage.bind(self.imageService, socket));
+                self.imageService.clearBackgroundImage.bind(self.imageService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.BACKGROUND_IMAGE_UPLOAD,
-                self.imageService.updateBackgroundImage.bind(self.imageService, socket));
+                self.imageService.updateBackgroundImage.bind(self.imageService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_IMAGE,
-                self.imageService.clearPlayerImage.bind(self.imageService, socket));
+                self.imageService.clearPlayerImage.bind(self.imageService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD,
-                self.imageService.updatePlayerImage.bind(self.imageService, socket));
+                self.imageService.updatePlayerImage.bind(self.imageService, socket.id));
 
             socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE,
-                self.adminService.changeBots.bind(self.adminService, socket));
+                self.adminService.changeBots.bind(self.adminService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE,
-                self.adminService.changeFood.bind(self.adminService, socket));
+                self.adminService.changeFood.bind(self.adminService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.SPEED_CHANGE,
-                self.adminService.changeSpeed.bind(self.adminService, socket));
+                self.adminService.changeSpeed.bind(self.adminService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.START_LENGTH_CHANGE,
-                self.adminService.changeStartLength.bind(self.adminService, socket));
+                self.adminService.changeStartLength.bind(self.adminService, socket.id));
         });
     }
 
@@ -169,8 +169,8 @@ class GameController {
      *  socket.io handling methods *
      *******************************/
 
-    _keyDown(socket, keyCode) {
-        GameControlsService.handleKeyDown(this.playerContainer.getPlayer(socket.id), keyCode);
+    _keyDown(playerId, keyCode) {
+        GameControlsService.handleKeyDown(this.playerContainer.getPlayer(playerId), keyCode);
     }
 }
 
