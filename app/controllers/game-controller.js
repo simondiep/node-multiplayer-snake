@@ -131,7 +131,8 @@ class GameController {
                     // Steal victim's length
                     this.playerContainer.getPlayer(killReport.killerId).grow(victim.getSegments().length);
                     const killer = this.playerContainer.getPlayer(killReport.killerId);
-                    this.notificationService.broadcastKill(killer.name, victim.name, killer.color, victim.color);
+                    this.notificationService.broadcastKill(killer.name, victim.name, killer.color, victim.color,
+                        victim.getSegments().length);
                 }
                 this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                 victim.clearAllSegments();

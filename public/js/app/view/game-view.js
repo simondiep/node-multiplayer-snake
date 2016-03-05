@@ -41,9 +41,10 @@ define([
             DomHelper.setCurrentFoodAmountLabelText(foodAmount);
         }
 
-        showKillMessage(killerName, victimName, killerColor, victimColor) {
+        showKillMessage(killerName, victimName, killerColor, victimColor, victimLength) {
             DomHelper.setKillMessagesDivText(`<span style='color: ${killerColor}'>${killerName}</span> killed ` +
-                `<span style='color: ${victimColor}'>${victimName}</span>`);
+                `<span style='color: ${victimColor}'>${victimName}</span>` +
+                ` and grew by <span style='color: ${killerColor}'>${victimLength}</span>`);
         }
 
         showKilledEachOtherMessage(victimSummaries) {

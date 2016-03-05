@@ -15,8 +15,9 @@ class NotificationService {
         this.sockets.emit(ServerConfig.IO.OUTGOING.NEW_STATE, gameState);
     }
 
-    broadcastKill(killerName, victimName, killerColor, victimColor) {
-        this.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.KILL, killerName, victimName, killerColor, victimColor);
+    broadcastKill(killerName, victimName, killerColor, victimColor, victimLength) {
+        this.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.KILL, killerName, victimName,
+            killerColor, victimColor, victimLength);
     }
 
     broadcastKillEachOther(victimSummaries) {

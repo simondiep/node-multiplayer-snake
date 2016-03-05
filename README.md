@@ -102,7 +102,6 @@ Open your web browser to `localhost:3000`
  - Power-ups
     - individual speed (2 or more steps for a player)
     - invulnerable
-    - length increase
     - width increase
     - reverse controls
     - be able to draw on canvas
