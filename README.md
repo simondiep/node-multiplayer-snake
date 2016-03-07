@@ -84,6 +84,7 @@ Open your web browser to `localhost:3000`
  - Chat
  - Support resolutions lower than 1225x550
  - Smarter bots (prioritize food, don't trap themselves, have a sense for other player movements)
+ - Visual confirmation of food power ups (+1 score, +10 score, swap!) - possibly as a toast
  - Audio
     - Background music
     - Sound effects

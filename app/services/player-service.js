@@ -46,7 +46,7 @@ class PlayerService {
             this.changePlayerName(socket, previousName);
         }
         if (previousImage) {
-            this.imageService.updatePlayerImage(socket, previousImage);
+            this.imageService.updatePlayerImage(newPlayer.id, previousImage);
         }
 
         // Start game if the first player has joined
