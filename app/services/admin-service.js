@@ -1,25 +1,18 @@
 'use strict';
-const Player = require('../models/player');
 const ServerConfig = require('../configs/server-config');
 
 class AdminService {
 
-    constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, foodService,
-            nameService, notificationService, playerService, playerSpawnService) {
+    constructor(playerContainer, foodService, nameService, notificationService, playerService) {
         this.playerContainer = playerContainer;
-        this.playerStatBoard = playerStatBoard;
-        this.boardOccupancyService = boardOccupancyService;
         this.foodService = foodService;
-        this.colorService = colorService;
         this.nameService = nameService;
         this.notificationService = notificationService;
-        this.playerSpawnService = playerSpawnService;
-
         this.playerService = playerService;
 
         this.playerStartLength = ServerConfig.PLAYER_STARTING_LENGTH;
         this.currentFPS = ServerConfig.STARTING_FPS;
-        this.botNames = [];
+        this.botIds = [];
     }
 
     changeBots(playerId, botOption) {
@@ -97,8 +90,8 @@ class AdminService {
         this.notificationService.broadcastNotification(notification, player.color);
     }
 
-    getBotNames() {
-        return this.botNames;
+    getBotIds() {
+        return this.botIds;
     }
 
     getGameSpeed() {
@@ -117,24 +110,20 @@ class AdminService {
     }
 
     _addBot(playerRequestingAddition) {
-        if (this.botNames.length >= ServerConfig.MAX_BOTS) {
+        if (this.botIds.length >= ServerConfig.MAX_BOTS) {
             this.notificationService.broadcastNotification(
                 `${playerRequestingAddition.name} tried to add a bot past the limit.`, playerRequestingAddition.color);
             return;
         }
-        const newBotName = this.nameService.getBotName();
-        const botColor = this.colorService.getColor();
-        const newBot = new Player(newBotName, newBotName, botColor);
-        this.playerSpawnService.setupNewSpawn(newBot, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
-        this.playerContainer.addPlayer(newBot);
-        this.playerStatBoard.addPlayer(newBot.id, newBotName, botColor);
-        this.notificationService.broadcastNotification(`${newBotName} has joined!`, botColor);
-        this.botNames.push(newBotName);
+        const newBotId = this.nameService.getBotId();
+        const newBot = this.playerService.createPlayer(newBotId, newBotId);
+        this.notificationService.broadcastNotification(`${newBot.name} has joined!`, newBot.color);
+        this.botIds.push(newBot.id);
     }
 
     _removeBot(playerRequestingRemoval) {
-        if (this.botNames.length > 0) {
-            this.playerService.disconnectPlayer(this.botNames.pop());
+        if (this.botIds.length > 0) {
+            this.playerService.disconnectPlayer(this.botIds.pop());
         } else {
             this.notificationService.broadcastNotification(
                 `${playerRequestingRemoval.name} tried to remove a bot that doesn't exist.`, playerRequestingRemoval.color);
@@ -142,7 +131,7 @@ class AdminService {
     }
 
     _resetBots(player) {
-        while (this.botNames.length > ServerConfig.DEFAULT_STARTING_BOTS) {
+        while (this.botIds.length > ServerConfig.DEFAULT_STARTING_BOTS) {
             this._removeBot(player);
         }
     }

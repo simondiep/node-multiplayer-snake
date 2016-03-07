@@ -11,7 +11,7 @@ describe('PlayerContainer', () => {
         const player2 = new Player(2);
         playerContainer.addPlayer(player1);
         playerContainer.addPlayer(player2);
-        playerContainer.addSpectatingPlayer(3);
+        playerContainer.addSpectatingPlayerId(3);
         assert.equal(playerContainer.getAnActivePlayer(player1.id).id, player2.id);
         assert.equal(playerContainer.getAnActivePlayer(player2.id).id, player1.id);
         const player4 = new Player(4);

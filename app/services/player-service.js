@@ -3,12 +3,13 @@ const Board = require('../configs/board');
 const ServerConfig = require('../configs/server-config');
 const Player = require('../models/player');
 
+const PlayerSpawnService = require('../services/player-spawn-service');
 const ValidationService = require('../services/validation-service');
 
 class PlayerService {
 
     constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, imageService,
-            nameService, notificationService, playerSpawnService, runGameCycle) {
+            nameService, notificationService, runGameCycle) {
         this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
@@ -16,8 +17,9 @@ class PlayerService {
         this.imageService = imageService;
         this.nameService = nameService;
         this.notificationService = notificationService;
-        this.playerSpawnService = playerSpawnService;
         this.runGameCycle = runGameCycle;
+
+        this.playerSpawnService = new PlayerSpawnService(this.boardOccupancyService);
     }
 
     init(getPlayerStartLength) {
@@ -27,15 +29,10 @@ class PlayerService {
     // previousName and previousImage are optional
     addPlayer(socket, previousName, previousImage) {
         const playerName = this.nameService.getPlayerName();
-        const playerColor = this.colorService.getColor();
-        const newPlayer = new Player(socket.id, playerName, playerColor);
-        this.playerSpawnService.setupNewSpawn(newPlayer, this.getPlayerStartLength(),
-            ServerConfig.SPAWN_TURN_LEEWAY);
-        this.playerContainer.addPlayer(newPlayer);
-        this.playerStatBoard.addPlayer(newPlayer.id, playerName, playerColor);
-        socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, playerColor);
+        const newPlayer = this.createPlayer(socket.id, playerName);
+        socket.emit(ServerConfig.IO.OUTGOING.NEW_PLAYER_INFO, playerName, newPlayer.color);
         socket.emit(ServerConfig.IO.OUTGOING.BOARD_INFO, Board);
-        this.notificationService.broadcastNotification(`${playerName} has joined!`, playerColor);
+        this.notificationService.broadcastNotification(`${playerName} has joined!`, newPlayer.color);
         const backgroundImage = this.imageService.getBackgroundImage();
         if (backgroundImage) {
             socket.emit(ServerConfig.IO.OUTGOING.NEW_BACKGROUND_IMAGE, backgroundImage);
@@ -54,6 +51,14 @@ class PlayerService {
             console.log('Game Started');
             this.runGameCycle();
         }
+    }
+
+    createPlayer(id, name) {
+        const player = new Player(id, name, this.colorService.getColor());
+        this.playerSpawnService.setupNewSpawn(player, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
+        this.playerContainer.addPlayer(player);
+        this.playerStatBoard.addPlayer(player.id, player.name, player.color);
+        return player;
     }
 
     changeColor(socket) {
@@ -108,7 +113,7 @@ class PlayerService {
 
     playerJoinGame(playerId) {
         const player = this.playerContainer.getPlayer(playerId);
-        this.playerContainer.removeSpectatingPlayer(player.id);
+        this.playerContainer.removeSpectatingPlayerId(player.id);
         this.respawnPlayer(player);
         this.notificationService.broadcastNotification(`${player.name} has rejoined the game.`, player.color);
     }
@@ -116,16 +121,24 @@ class PlayerService {
     playerSpectateGame(playerId) {
         const player = this.playerContainer.getPlayer(playerId);
         this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
-        this.playerContainer.addSpectatingPlayer(player.id);
+        this.playerContainer.addSpectatingPlayerId(player.id);
         player.clearAllSegments();
         this.notificationService.broadcastNotification(`${player.name} is now spectating.`, player.color);
     }
 
-    respawnPlayer(player) {
+    respawnPlayer(playerId) {
+        const player = this.playerContainer.getPlayer(playerId);
         this.playerSpawnService.setupNewSpawn(player, this.getPlayerStartLength(),
             ServerConfig.SPAWN_TURN_LEEWAY);
         this.playerStatBoard.resetScore(player.id);
         this.playerStatBoard.addDeath(player.id);
+        this.playerContainer.removePlayerIdToRespawn(player.id);
+    }
+
+    respawnPlayers() {
+        for (const playerId of this.playerContainer.getPlayerIdsToRespawn()) {
+            this.respawnPlayer(playerId);
+        }
     }
 }
 

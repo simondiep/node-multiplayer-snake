@@ -13,7 +13,6 @@ const ImageService = require('../services/image-service');
 const NameService = require('../services/name-service');
 const NotificationService = require('../services/notification-service');
 const PlayerService = require('../services/player-service');
-const PlayerSpawnService = require('../services/player-spawn-service');
 
 const PlayerContainer = require('../models/player-container');
 const PlayerStatBoard = require('../models/player-stat-board');
@@ -21,33 +20,33 @@ const PlayerStatBoard = require('../models/player-stat-board');
 class GameController {
 
     constructor() {
+        // Model Containers
         this.playerContainer = new PlayerContainer();
+        this.playerStatBoard = new PlayerStatBoard();
+
+        // Services
         this.boardOccupancyService = new BoardOccupancyService();
-        this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
-        this.playerSpawnService = new PlayerSpawnService(this.boardOccupancyService);
         this.colorService = new ColorService();
         this.nameService = new NameService();
         this.notificationService = new NotificationService();
-        this.playerStatBoard = new PlayerStatBoard();
-
+        this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
         this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
             this.nameService, this.notificationService);
         this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
-        this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard,
-            this.boardOccupancyService, this.colorService, this.imageService, this.nameService, this.notificationService,
-            this.playerSpawnService, this.runGameCycle.bind(this));
-        this.adminService = new AdminService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
-            this.colorService, this.foodService, this.nameService, this.notificationService, this.playerService,
-            this.playerSpawnService);
+        this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
+            this.colorService, this.imageService, this.nameService, this.notificationService, this.runGameCycle.bind(this));
+        this.adminService = new AdminService(this.playerContainer, this.foodService, this.nameService,
+            this.notificationService, this.playerService);
         this.playerService.init(this.adminService.getPlayerStartLength.bind(this.adminService));
     }
 
+    // Listen for Socket IO events
     listen(io) {
         this.notificationService.setSockets(io.sockets);
         const self = this;
         io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket.id));
-
+            // Player Service
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER,
                 self.playerService.addPlayer.bind(self.playerService, socket));
             socket.on(ServerConfig.IO.INCOMING.NAME_CHANGE,
@@ -60,7 +59,7 @@ class GameController {
                 self.playerService.playerSpectateGame.bind(self.playerService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.DISCONNECT,
                 self.playerService.disconnectPlayer.bind(self.playerService, socket.id));
-
+            // Image Service
             socket.on(ServerConfig.IO.INCOMING.CLEAR_UPLOADED_BACKGROUND_IMAGE,
                 self.imageService.clearBackgroundImage.bind(self.imageService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.BACKGROUND_IMAGE_UPLOAD,
@@ -69,7 +68,7 @@ class GameController {
                 self.imageService.clearPlayerImage.bind(self.imageService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.IMAGE_UPLOAD,
                 self.imageService.updatePlayerImage.bind(self.imageService, socket.id));
-
+            // Admin Service
             socket.on(ServerConfig.IO.INCOMING.BOT_CHANGE,
                 self.adminService.changeBots.bind(self.adminService, socket.id));
             socket.on(ServerConfig.IO.INCOMING.FOOD_CHANGE,
@@ -83,7 +82,7 @@ class GameController {
 
     runGameCycle() {
         // Pause and reset the game if there aren't any players
-        if (this.playerContainer.getNumberOfPlayers() - this.adminService.getBotNames().length === 0) {
+        if (this.playerContainer.getNumberOfPlayers() - this.adminService.getBotIds().length === 0) {
             console.log('Game Paused');
             this.adminService.resetGame();
             this.imageService.resetGame();
@@ -91,18 +90,16 @@ class GameController {
         }
 
         // Change bots' directions
-        for (const botName of this.adminService.getBotNames()) {
-            const bot = this.playerContainer.getPlayer(botName);
+        for (const botId of this.adminService.getBotIds()) {
+            const bot = this.playerContainer.getPlayer(botId);
             if (Math.random() <= ServerConfig.BOT_CHANGE_DIRECTION_PERCENT) {
                 this.botDirectionService.changeToRandomDirection(bot);
             }
             this.botDirectionService.changeDirectionIfInDanger(bot);
         }
 
-        const playersToRespawn = [];
         for (const player of this.playerContainer.getPlayers()) {
-            // Check if player is spectating
-            if (!player.hasSegments()) {
+            if (this.playerContainer.isSpectating(player.id)) {
                 continue;
             }
             this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
@@ -110,7 +107,7 @@ class GameController {
             if (this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) ||
                     this.boardOccupancyService.isWall(player.getHeadLocation())) {
                 player.clearAllSegments();
-                playersToRespawn.push(player);
+                this.playerContainer.addPlayerIdToRespawn(player.id);
                 this.notificationService.broadcastRanIntoWall(player.name, player.color);
             } else {
                 this.boardOccupancyService.addPlayerOccupancy(player.id, player.getSegments());
@@ -136,14 +133,14 @@ class GameController {
                 }
                 this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                 victim.clearAllSegments();
-                playersToRespawn.push(victim);
+                this.playerContainer.addPlayerIdToRespawn(victim.id);
             } else {
                 const victimSummaries = [];
                 for (const victimId of killReport.getVictimIds()) {
                     const victim = this.playerContainer.getPlayer(victimId);
                     this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
                     victim.clearAllSegments();
-                    playersToRespawn.push(victim);
+                    this.playerContainer.addPlayerIdToRespawn(victim.id);
                     victimSummaries.push({ name: victim.name, color: victim.color });
                 }
                 if (victimSummaries.length > 0) {
@@ -152,9 +149,7 @@ class GameController {
             }
         }
 
-        for (const player of playersToRespawn) {
-            this.playerService.respawnPlayer(player);
-        }
+        this.playerService.respawnPlayers();
 
         this.foodService.consumeAndRespawnFood(this.playerContainer);
 
@@ -163,7 +158,7 @@ class GameController {
             food: this.foodService.getFood(),
             playerStats: this.playerStatBoard,
             speed: this.adminService.getGameSpeed(),
-            numberOfBots: this.adminService.getBotNames().length,
+            numberOfBots: this.adminService.getBotIds().length,
             startLength: this.adminService.getPlayerStartLength(),
         };
         this.notificationService.broadcastGameState(gameState);

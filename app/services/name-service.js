@@ -11,13 +11,13 @@ class NameService {
         return this.usedPlayerNames.has(name);
     }
 
-    getBotName() {
-        let newBotName;
+    getBotId() {
+        let newBotId;
         do {
-            newBotName = this._generateBotName();
-        } while (this.usedPlayerNames.has(newBotName));
-        this.usedPlayerNames.add(newBotName);
-        return newBotName;
+            newBotId = this._generateBotName();
+        } while (this.usedPlayerNames.has(newBotId));
+        this.usedPlayerNames.add(newBotId);
+        return newBotId;
     }
 
     getFoodId() {
