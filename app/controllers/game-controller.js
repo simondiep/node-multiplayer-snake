@@ -5,8 +5,6 @@ const ServerConfig = require('../configs/server-config');
 const AdminService = require('../services/admin-service');
 const BoardOccupancyService = require('../services/board-occupancy-service');
 const BotDirectionService = require('../services/bot-direction-service');
-const ColorService = require('../services/color-service');
-const CoordinateService = require('../services/coordinate-service');
 const FoodService = require('../services/food-service');
 const GameControlsService = require('../services/game-controls-service');
 const ImageService = require('../services/image-service');
@@ -25,17 +23,16 @@ class GameController {
         this.playerStatBoard = new PlayerStatBoard();
 
         // Services
-        this.boardOccupancyService = new BoardOccupancyService();
-        this.colorService = new ColorService();
-        this.nameService = new NameService();
+        const boardOccupancyService = new BoardOccupancyService();
+        const nameService = new NameService();
         this.notificationService = new NotificationService();
-        this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
-        this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
-            this.nameService, this.notificationService);
+        this.botDirectionService = new BotDirectionService(boardOccupancyService);
+        this.foodService = new FoodService(this.playerStatBoard, boardOccupancyService,
+            nameService, this.notificationService);
         this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
-        this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
-            this.colorService, this.imageService, this.nameService, this.notificationService, this.runGameCycle.bind(this));
-        this.adminService = new AdminService(this.playerContainer, this.foodService, this.nameService,
+        this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard, boardOccupancyService,
+            this.imageService, nameService, this.notificationService, this.runGameCycle.bind(this));
+        this.adminService = new AdminService(this.playerContainer, this.foodService, nameService,
             this.notificationService, this.playerService);
         this.playerService.init(this.adminService.getPlayerStartLength.bind(this.adminService));
     }
@@ -98,57 +95,8 @@ class GameController {
             this.botDirectionService.changeDirectionIfInDanger(bot);
         }
 
-        for (const player of this.playerContainer.getPlayers()) {
-            if (this.playerContainer.isSpectating(player.id)) {
-                continue;
-            }
-            this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
-            CoordinateService.movePlayer(player);
-            if (this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) ||
-                    this.boardOccupancyService.isWall(player.getHeadLocation())) {
-                player.clearAllSegments();
-                this.playerContainer.addPlayerIdToRespawn(player.id);
-                this.notificationService.broadcastRanIntoWall(player.name, player.color);
-            } else {
-                this.boardOccupancyService.addPlayerOccupancy(player.id, player.getSegments());
-            }
-        }
-
-        // Handle player collisions
-        const killReports = this.boardOccupancyService.getKillReports();
-        for (const killReport of killReports) {
-            if (killReport.isSingleKill()) {
-                const victim = this.playerContainer.getPlayer(killReport.victimId);
-                if (killReport.killerId === killReport.victimId) {
-                    this.notificationService.broadcastSuicide(victim.name, victim.color);
-                } else {
-                    this.playerStatBoard.addKill(killReport.killerId);
-                    this.playerStatBoard.increaseScore(killReport.killerId);
-                    this.playerStatBoard.stealScore(killReport.killerId, victim.id);
-                    // Steal victim's length
-                    this.playerContainer.getPlayer(killReport.killerId).grow(victim.getSegments().length);
-                    const killer = this.playerContainer.getPlayer(killReport.killerId);
-                    this.notificationService.broadcastKill(killer.name, victim.name, killer.color, victim.color,
-                        victim.getSegments().length);
-                }
-                this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
-                victim.clearAllSegments();
-                this.playerContainer.addPlayerIdToRespawn(victim.id);
-            } else {
-                const victimSummaries = [];
-                for (const victimId of killReport.getVictimIds()) {
-                    const victim = this.playerContainer.getPlayer(victimId);
-                    this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
-                    victim.clearAllSegments();
-                    this.playerContainer.addPlayerIdToRespawn(victim.id);
-                    victimSummaries.push({ name: victim.name, color: victim.color });
-                }
-                if (victimSummaries.length > 0) {
-                    this.notificationService.broadcastKillEachOther(victimSummaries);
-                }
-            }
-        }
-
+        this.playerService.movePlayers();
+        this.playerService.handlePlayerCollisions();
         this.playerService.respawnPlayers();
 
         this.foodService.consumeAndRespawnFood(this.playerContainer);

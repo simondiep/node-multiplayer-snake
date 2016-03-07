@@ -3,22 +3,24 @@ const Board = require('../configs/board');
 const ServerConfig = require('../configs/server-config');
 const Player = require('../models/player');
 
+const ColorService = require('../services/color-service');
+const CoordinateService = require('../services/coordinate-service');
 const PlayerSpawnService = require('../services/player-spawn-service');
 const ValidationService = require('../services/validation-service');
 
 class PlayerService {
 
-    constructor(playerContainer, playerStatBoard, boardOccupancyService, colorService, imageService,
+    constructor(playerContainer, playerStatBoard, boardOccupancyService, imageService,
             nameService, notificationService, runGameCycle) {
         this.playerContainer = playerContainer;
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
-        this.colorService = colorService;
         this.imageService = imageService;
         this.nameService = nameService;
         this.notificationService = notificationService;
         this.runGameCycle = runGameCycle;
 
+        this.colorService = new ColorService();
         this.playerSpawnService = new PlayerSpawnService(this.boardOccupancyService);
     }
 
@@ -55,7 +57,7 @@ class PlayerService {
 
     createPlayer(id, name) {
         const player = new Player(id, name, this.colorService.getColor());
-        this.playerSpawnService.setupNewSpawn(player, this.playerStartLength, ServerConfig.SPAWN_TURN_LEEWAY);
+        this.playerSpawnService.setupNewSpawn(player, this.getPlayerStartLength(), ServerConfig.SPAWN_TURN_LEEWAY);
         this.playerContainer.addPlayer(player);
         this.playerStatBoard.addPlayer(player.id, player.name, player.color);
         return player;
@@ -109,6 +111,60 @@ class PlayerService {
             this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
         }
         this.playerContainer.removePlayer(player.id);
+    }
+
+    handlePlayerCollisions() {
+        const killReports = this.boardOccupancyService.getKillReports();
+        for (const killReport of killReports) {
+            if (killReport.isSingleKill()) {
+                const victim = this.playerContainer.getPlayer(killReport.victimId);
+                if (killReport.killerId === killReport.victimId) {
+                    this.notificationService.broadcastSuicide(victim.name, victim.color);
+                } else {
+                    this.playerStatBoard.addKill(killReport.killerId);
+                    this.playerStatBoard.increaseScore(killReport.killerId);
+                    this.playerStatBoard.stealScore(killReport.killerId, victim.id);
+                    // Steal victim's length
+                    this.playerContainer.getPlayer(killReport.killerId).grow(victim.getSegments().length);
+                    const killer = this.playerContainer.getPlayer(killReport.killerId);
+                    this.notificationService.broadcastKill(killer.name, victim.name, killer.color, victim.color,
+                        victim.getSegments().length);
+                }
+                this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
+                victim.clearAllSegments();
+                this.playerContainer.addPlayerIdToRespawn(victim.id);
+            } else {
+                const victimSummaries = [];
+                for (const victimId of killReport.getVictimIds()) {
+                    const victim = this.playerContainer.getPlayer(victimId);
+                    this.boardOccupancyService.removePlayerOccupancy(victim.id, victim.getSegments());
+                    victim.clearAllSegments();
+                    this.playerContainer.addPlayerIdToRespawn(victim.id);
+                    victimSummaries.push({ name: victim.name, color: victim.color });
+                }
+                if (victimSummaries.length > 0) {
+                    this.notificationService.broadcastKillEachOther(victimSummaries);
+                }
+            }
+        }
+    }
+
+    movePlayers() {
+        for (const player of this.playerContainer.getPlayers()) {
+            if (this.playerContainer.isSpectating(player.id)) {
+                continue;
+            }
+            this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
+            CoordinateService.movePlayer(player);
+            if (this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) ||
+                    this.boardOccupancyService.isWall(player.getHeadLocation())) {
+                player.clearAllSegments();
+                this.playerContainer.addPlayerIdToRespawn(player.id);
+                this.notificationService.broadcastRanIntoWall(player.name, player.color);
+            } else {
+                this.boardOccupancyService.addPlayerOccupancy(player.id, player.getSegments());
+            }
+        }
     }
 
     playerJoinGame(playerId) {
