@@ -40,6 +40,13 @@ class NotificationService {
     broadcastSuicide(victimName, victimColor) {
         this.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.SUICIDE, victimName, victimColor);
     }
+
+    notifyPlayerFoodCollected(playerId, text, coordinate, color) {
+        const playerSocket = this.sockets.connected[playerId];
+        if (playerSocket) {
+            playerSocket.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.FOOD_COLLECTED, text, coordinate, color);
+        }
+    }
 }
 
 module.exports = NotificationService;

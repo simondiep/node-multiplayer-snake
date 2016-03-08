@@ -23,7 +23,8 @@ class FoodService {
             const playerWhoConsumedFood = playerContainer.getPlayer(foodConsumed.playerId);
             const food = this.food[foodConsumed.foodId];
             playerWhoConsumedFood.grow(ServerConfig.FOOD[food.type].GROWTH);
-            this.playerStatBoard.increaseScore(playerWhoConsumedFood.id, ServerConfig.FOOD[food.type].POINTS);
+            const points = ServerConfig.FOOD[food.type].POINTS;
+            this.playerStatBoard.increaseScore(playerWhoConsumedFood.id, points);
 
             if (food.type === ServerConfig.FOOD.SWAP.TYPE && playerContainer.getNumberOfPlayers() > 1) {
                 const otherPlayer = playerContainer.getAnActivePlayer(playerWhoConsumedFood.id);
@@ -40,6 +41,13 @@ class FoodService {
 
                 this.boardOccupancyService.addPlayerOccupancy(otherPlayer.id, otherPlayer.getSegments());
                 this.boardOccupancyService.addPlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.getSegments());
+                this.notificationService.notifyPlayerFoodCollected(playerWhoConsumedFood.id,
+                    'Swap!', food.location, food.color);
+                this.notificationService.notifyPlayerFoodCollected(otherPlayer.id,
+                    'Swap!', playerWhoConsumedFood.getHeadLocation(), food.color);
+            } else {
+                this.notificationService.notifyPlayerFoodCollected(playerWhoConsumedFood.id,
+                    `+${points}`, food.location, food.color);
             }
 
             this.removeFood(foodConsumed.foodId);

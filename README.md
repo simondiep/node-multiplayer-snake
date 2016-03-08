@@ -88,10 +88,10 @@ Open your web browser to `localhost:3000`
  - Allow players to skip across the screen if they visit an edge without a wall
  - Increase game speed based on different conditions (faster if 1v1) or random
  - Choose your own color
+ - Show a glowing outline when player is growing
  - Chat
  - Support resolutions lower than 1225x550
  - Smarter bots (prioritize food, don't trap themselves, have a sense for other player movements)
- - Visual confirmation of food power ups (+1 score, +10 score, swap!) - possibly as a toast
  - Audio
     - Background music
     - Sound effects
@@ -121,3 +121,4 @@ Open your web browser to `localhost:3000`
     - random walls
     - elimination
     - maze
+    - diagonal movement

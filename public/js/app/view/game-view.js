@@ -18,18 +18,13 @@ define([
             speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
             this.isChangingName = false;
             this.backgroundImageUploadCallback = backgroundImageUploadCallback;
-            this.botChangeCallback = botChangeCallback;
-            this.foodChangeCallback = foodChangeCallback;
             this.imageUploadCallback = imageUploadCallback;
             this.joinGameCallback = joinGameCallback;
             this.keyDownCallback = keyDownCallback;
-            this.playerColorChangeCallback = playerColorChangeCallback;
             this.playerNameUpdatedCallback = playerNameUpdatedCallback;
             this.spectateGameCallback = spectateGameCallback;
-            this.speedChangeCallback = speedChangeCallback;
-            this.startLengthChangeCallback = startLengthChangeCallback;
-            this.toggleGridLinesCallback = toggleGridLinesCallback;
-            this._setUpEventHandling();
+            this._setUpEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
+                startLengthChangeCallback, toggleGridLinesCallback);
         }
 
         ready() {
@@ -115,10 +110,6 @@ define([
          *  Event handling *
          *******************/
 
-        _handleChangeColorButtonClick() {
-            this.playerColorChangeCallback();
-        }
-
         _handleChangeNameButtonClick() {
             if (this.isChangingName) {
                 this._saveNewPlayerName();
@@ -147,62 +138,6 @@ define([
             if (!this.isChangingName) {
                 this.keyDownCallback(e.keyCode);
             }
-        }
-
-        _handleDecreaseBotsButtonClick() {
-            this.botChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
-        }
-
-        _handleIncreaseBotsButtonClick() {
-            this.botChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
-        }
-
-        _handleResetBotsButtonClick() {
-            this.botChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
-        }
-
-        _handleDecreaseFoodButtonClick() {
-            this.foodChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
-        }
-
-        _handleIncreaseFoodButtonClick() {
-            this.foodChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
-        }
-
-        _handleResetFoodButtonClick() {
-            this.foodChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
-        }
-
-        _handleDecreaseSpeedButtonClick() {
-            this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
-        }
-
-        _handleIncreaseSpeedButtonClick() {
-            this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
-        }
-
-        _handleResetSpeedButtonClick() {
-            this.speedChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
-        }
-
-        _handleDecreaseStartLengthButtonClick() {
-            this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.DECREASE);
-        }
-
-        _handleIncreaseStartLengthButtonClick() {
-            this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.INCREASE);
-        }
-
-        _handleResetStartLengthButtonClick() {
-            this.startLengthChangeCallback(ClientConfig.INCREMENT_CHANGE.RESET);
-        }
-
-        _handleClearUploadedBackgroundImageButtonClick() {
-            this.backgroundImageUploadCallback();
-        }
-
-        _handleClearUploadedImageButtonClick() {
-            this.imageUploadCallback();
         }
 
         _handleBackgroundImageUpload() {
@@ -242,10 +177,6 @@ define([
             }
         }
 
-        _handleToggleGridLinesButtonClick() {
-            this.toggleGridLinesCallback();
-        }
-
         _saveNewPlayerName() {
             const playerName = DomHelper.getPlayerNameElement().value;
             if (playerName && playerName.trim().length > 0 && playerName.length <= ClientConfig.MAX_NAME_LENGTH) {
@@ -259,49 +190,45 @@ define([
             }
         }
 
-        _setUpEventHandling() {
-            DomHelper.getChangeColorButton().addEventListener('click',
-                this._handleChangeColorButtonClick.bind(this), false);
-            DomHelper.getChangeNameButton().addEventListener('click',
-                this._handleChangeNameButtonClick.bind(this), false);
-            DomHelper.getIncreaseBotsButton().addEventListener('click',
-                this._handleIncreaseBotsButtonClick.bind(this), false);
-            DomHelper.getDecreaseBotsButton().addEventListener('click',
-                this._handleDecreaseBotsButtonClick.bind(this), false);
-            DomHelper.getResetBotsButton().addEventListener('click',
-                this._handleResetBotsButtonClick.bind(this), false);
-            DomHelper.getIncreaseFoodButton().addEventListener('click',
-                this._handleIncreaseFoodButtonClick.bind(this), false);
-            DomHelper.getDecreaseFoodButton().addEventListener('click',
-                this._handleDecreaseFoodButtonClick.bind(this), false);
-            DomHelper.getResetFoodButton().addEventListener('click',
-                this._handleResetFoodButtonClick.bind(this), false);
-            DomHelper.getIncreaseSpeedButton().addEventListener('click',
-                this._handleIncreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getDecreaseSpeedButton().addEventListener('click',
-                this._handleDecreaseSpeedButtonClick.bind(this), false);
-            DomHelper.getResetSpeedButton().addEventListener('click',
-                this._handleResetSpeedButtonClick.bind(this), false);
-            DomHelper.getIncreaseStartLengthButton().addEventListener('click',
-                this._handleIncreaseStartLengthButtonClick.bind(this), false);
-            DomHelper.getDecreaseStartLengthButton().addEventListener('click',
-                this._handleDecreaseStartLengthButtonClick.bind(this), false);
-            DomHelper.getResetStartLengthButton().addEventListener('click',
-                this._handleResetStartLengthButtonClick.bind(this), false);
-            DomHelper.getImageUploadElement().addEventListener('change',
-                this._handleImageUpload.bind(this));
-            DomHelper.getClearUploadedImageButton().addEventListener('click',
-                this._handleClearUploadedImageButtonClick.bind(this));
-            DomHelper.getBackgroundImageUploadElement().addEventListener('change',
-                this._handleBackgroundImageUpload.bind(this));
-            DomHelper.getClearUploadedBackgroundImageButton().addEventListener('click',
-                this._handleClearUploadedBackgroundImageButtonClick.bind(this));
-            DomHelper.getPlayOrWatchButton().addEventListener('click',
-                this._handlePlayOrWatchButtonClick.bind(this), false);
-            DomHelper.getToggleGridLinesButton().addEventListener('click',
-                this._handleToggleGridLinesButtonClick.bind(this), false);
-            DomHelper.getFullScreenButton().addEventListener('click', DomHelper.toggleFullScreenMode, false);
+        _setUpEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
+            startLengthChangeCallback, toggleGridLinesCallback) {
+            // Player controls
+            DomHelper.getChangeColorButton().addEventListener('click', playerColorChangeCallback);
+            DomHelper.getChangeNameButton().addEventListener('click', this._handleChangeNameButtonClick.bind(this));
+            DomHelper.getImageUploadElement().addEventListener('change', this._handleImageUpload.bind(this));
+            DomHelper.getClearUploadedImageButton().addEventListener('click', this.imageUploadCallback);
+            DomHelper.getBackgroundImageUploadElement().addEventListener('change', this._handleBackgroundImageUpload.bind(this));
+            DomHelper.getClearUploadedBackgroundImageButton().addEventListener('click', this.backgroundImageUploadCallback);
+            DomHelper.getPlayOrWatchButton().addEventListener('click', this._handlePlayOrWatchButtonClick.bind(this));
+            DomHelper.getToggleGridLinesButton().addEventListener('click', toggleGridLinesCallback);
+            DomHelper.getFullScreenButton().addEventListener('click', DomHelper.toggleFullScreenMode);
             window.addEventListener('keydown', this._handleKeyDown.bind(this), true);
+
+            // Admin controls
+            DomHelper.getIncreaseBotsButton().addEventListener('click',
+                botChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.INCREASE));
+            DomHelper.getDecreaseBotsButton().addEventListener('click',
+                botChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.DECREASE));
+            DomHelper.getResetBotsButton().addEventListener('click',
+                botChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.RESET));
+            DomHelper.getIncreaseFoodButton().addEventListener('click',
+                foodChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.INCREASE));
+            DomHelper.getDecreaseFoodButton().addEventListener('click',
+                foodChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.DECREASE));
+            DomHelper.getResetFoodButton().addEventListener('click',
+                foodChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.RESET));
+            DomHelper.getIncreaseSpeedButton().addEventListener('click',
+                speedChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.INCREASE));
+            DomHelper.getDecreaseSpeedButton().addEventListener('click',
+                speedChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.DECREASE));
+            DomHelper.getResetSpeedButton().addEventListener('click',
+                speedChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.RESET));
+            DomHelper.getIncreaseStartLengthButton().addEventListener('click',
+                startLengthChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.INCREASE));
+            DomHelper.getDecreaseStartLengthButton().addEventListener('click',
+                startLengthChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.DECREASE));
+            DomHelper.getResetStartLengthButton().addEventListener('click',
+                startLengthChangeCallback.bind(this, ClientConfig.INCREMENT_CHANGE.RESET));
         }
     }
 

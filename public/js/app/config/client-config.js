@@ -4,6 +4,8 @@ define(() => {
     const ClientConfig = {
         FPS: 60,
         TURNS_TO_FLASH_AFTER_SPAWN: 10,
+        TURNS_TO_SHOW_FOOD_TEXT: 20,
+        CANVAS_TEXT_STYLE: 'bold 24px PressStart2P',
         SPAWN_FLASH_COLOR: 'white',
         IO: {
             INCOMING: {
@@ -13,6 +15,7 @@ define(() => {
                 BOARD_INFO: 'board info',
                 NOTIFICATION: {
                     GENERAL: 'general notification',
+                    FOOD_COLLECTED: 'food collected',
                     KILL: 'kill notification',
                     KILLED_EACH_OTHER: 'killed each other notification',
                     RAN_INTO_WALL: 'ran into wall notification',

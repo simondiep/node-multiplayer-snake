@@ -1,4 +1,8 @@
-define(() => {
+define([
+    'config/client-config',
+],
+
+(ClientConfig) => {
     'use strict';
 
     class CanvasView {
@@ -90,6 +94,34 @@ define(() => {
             this.context.stroke();
         }
 
+        drawFadingText(textToDraw, turnsToShow) {
+            this.context.save();
+            this.context.globalAlpha = this._getOpacityFromCounter(textToDraw.counter, turnsToShow);
+            this.context.lineWidth = 1;
+            this.context.strokeStyle = 'black';
+            this.context.fillStyle = textToDraw.color;
+            this.context.font = ClientConfig.CANVAS_TEXT_STYLE;
+
+            const textWidth = this.context.measureText(textToDraw.text).width;
+            const textHeight = 24;
+            let x = textToDraw.coordinate.x * this.squareSizeInPixels - textWidth / 2;
+            let y = textToDraw.coordinate.y * this.squareSizeInPixels + textHeight / 2;
+            if (x < 0) {
+                x = 0;
+            } else if (x > (this.width - textWidth)) {
+                x = this.width - textWidth;
+            }
+            if (y < textHeight) {
+                y = textHeight;
+            } else if (y > this.height) {
+                y = this.height;
+            }
+            // Draw text specifying the bottom left corner
+            this.context.strokeText(textToDraw.text, x, y);
+            this.context.fillText(textToDraw.text, x, y);
+            this.context.restore();
+        }
+
         clearBackgroundImage() {
             delete this.backgroundImage;
         }
@@ -135,6 +167,16 @@ define(() => {
 
         toggleGridLines() {
             this.showGridLines = !this.showGridLines;
+        }
+
+        // Gets a fade-in/fade-out opacity
+        _getOpacityFromCounter(counter, turnsToShow) {
+            if (counter < turnsToShow * 0.1 || counter > turnsToShow * 0.9) {
+                return 0.33;
+            } else if (counter < turnsToShow * 0.2 || counter > turnsToShow * 0.8) {
+                return 0.66;
+            }
+            return 1;
         }
     }
 

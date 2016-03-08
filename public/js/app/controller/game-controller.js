@@ -1,10 +1,11 @@
 define([
     'config/client-config',
+    'model/text-to-draw',
     'view/canvas-factory',
     'view/game-view',
 ],
 
-(ClientConfig, CanvasFactory, GameView) => {
+(ClientConfig, TextToDraw, CanvasFactory, GameView) => {
     'use strict';
 
     class GameController {
@@ -25,6 +26,7 @@ define([
                                          );
             this.players = [];
             this.food = {};
+            this.textsToDraw = [];
         }
 
         connect(io) {
@@ -58,6 +60,16 @@ define([
                     this.canvasView.drawImages(player.segments, player.base64Image);
                 } else {
                     this.canvasView.drawSquares(player.segments, player.color);
+                }
+            }
+
+            for (let i = this.textsToDraw.length - 1; i >= 0; i--) {
+                const textToDraw = this.textsToDraw[i];
+                if (textToDraw.counter === ClientConfig.TURNS_TO_SHOW_FOOD_TEXT) {
+                    this.textsToDraw.splice(i, 1);
+                } else {
+                    this.canvasView.drawFadingText(textToDraw, ClientConfig.TURNS_TO_SHOW_FOOD_TEXT);
+                    textToDraw.incrementCounter();
                 }
             }
 
@@ -169,11 +181,16 @@ define([
             this.gameView.showPlayerStats(gameData.playerStats);
         }
 
+        _storeTextToDraw(text, coordinate, color) {
+            this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
+        }
+
         _initializeSocketIoHandlers() {
             this.socket.on(ClientConfig.IO.INCOMING.NEW_PLAYER_INFO, this.gameView.updatePlayerName);
             this.socket.on(ClientConfig.IO.INCOMING.BOARD_INFO, this._createBoard.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NEW_STATE, this._handleNewGameData.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NEW_BACKGROUND_IMAGE, this._handleBackgroundImage.bind(this));
+            this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.FOOD_COLLECTED, this._storeTextToDraw.bind(this));
             this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.GENERAL, this.gameView.showNotification);
             this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILL, this.gameView.showKillMessage);
             this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILLED_EACH_OTHER, this.gameView.showKilledEachOtherMessage);

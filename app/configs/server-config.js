@@ -1,7 +1,6 @@
 'use strict';
 
 const ServerConfig = {
-    DEFAULT_FOOD_AMOUNT: 10,
     MIN_FPS: 8,
     STARTING_FPS: 8,
     MAX_FPS: 60,
@@ -11,7 +10,7 @@ const ServerConfig = {
     MAX_BOTS: 20,
     BOT_CHANGE_DIRECTION_PERCENT: 0.1,
     FOOD: {
-        DEFAULT_AMOUNT: 10,
+        DEFAULT_AMOUNT: 25,
         NORMAL: {
             TYPE: 'NORMAL',
             COLOR: 'red',
@@ -66,6 +65,7 @@ const ServerConfig = {
             BOARD_INFO: 'board info',
             NOTIFICATION: {
                 GENERAL: 'general notification',
+                FOOD_COLLECTED: 'food collected',
                 KILL: 'kill notification',
                 KILLED_EACH_OTHER: 'killed each other notification',
                 RAN_INTO_WALL: 'ran into wall notification',
