@@ -52,6 +52,7 @@ Open your web browser to `localhost:3000`
 ### Tech Debt
  - Additional Client-side validation to reduce unnecessary emits to server
  - Additional Server-side optimization to reduce unnecessary emits to client
+ - Validate sizes of base64 Strings
  - Add a description for what 'Upload Image' does and any restrictions
  - Toggle view of admin options as a menu item
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
@@ -77,6 +78,7 @@ Open your web browser to `localhost:3000`
  - Performance testing tools
  - Lightweight unit testing frameworks, such as [Tape](https://github.com/substack/tape)
  - Babel and Traceur
+ - ES7
  
 ### Potential Features To Implement
  - Spin buttons for admin controls
@@ -99,7 +101,7 @@ Open your web browser to `localhost:3000`
     - Store background image on server
     - Food image
     - Support animated gifs (snake and food)
-    - Upload head image vs body images
+    - Upload head image vs body images (head, body, L-turn, tail)
     - Preset images for use
  - Stats
     - Global high score
