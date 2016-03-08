@@ -56,6 +56,7 @@ const ServerConfig = {
             NEW_PLAYER: 'new player',
             NAME_CHANGE: 'player changed name',
             KEY_DOWN: 'key down',
+            CANVAS_CLICKED: 'canvas clicked',
             DISCONNECT: 'disconnect',
         },
         OUTGOING: {

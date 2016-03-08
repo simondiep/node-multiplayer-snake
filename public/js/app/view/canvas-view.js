@@ -7,7 +7,7 @@ define([
 
     class CanvasView {
 
-        constructor(canvas, squareSizeInPixels, imageUploadCanvas) {
+        constructor(canvas, squareSizeInPixels, imageUploadCanvas, canvasClickHandler) {
             this.height = canvas.height;
             this.width = canvas.width;
             this.context = canvas.getContext('2d');
@@ -15,6 +15,7 @@ define([
             this.backgroundImageUploadCanvas = canvas;
             this.imageUploadCanvas = imageUploadCanvas;
             this.showGridLines = false;
+            this._initializeClickListeners(canvas, canvasClickHandler);
         }
 
         clear() {
@@ -25,10 +26,6 @@ define([
             if (this.backgroundImage) {
                 this.context.drawImage(this.backgroundImage, 0, 0);
             }
-
-            this.context.lineWidth = this.squareSizeInPixels;
-            this.context.strokeStyle = 'gray';
-            this.context.strokeRect(0, 0, this.width, this.height);
 
             if (this.showGridLines) {
                 this.context.strokeStyle = '#2a2a2a';
@@ -177,6 +174,17 @@ define([
                 return 0.66;
             }
             return 1;
+        }
+
+        _initializeClickListeners(canvas, canvasClickHandler) {
+            const self = this;
+            canvas.addEventListener('click', event => {
+                const x = event.pageX - canvas.offsetLeft;
+                const y = event.pageY - canvas.offsetTop;
+                const xCoord = Math.round(x / self.squareSizeInPixels);
+                const yCoord = Math.round(y / self.squareSizeInPixels);
+                canvasClickHandler(xCoord, yCoord);
+            }, false);
         }
     }
 

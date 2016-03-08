@@ -8,6 +8,7 @@ const KillReport = require('../models/kill-report');
 const FOOD_TYPE = 'food';
 const HEAD_TYPE = 'head';
 const TAIL_TYPE = 'tail';
+const WALL_TYPE = 'wall';
 
 class BoardOccupancyService {
     constructor() {
@@ -20,7 +21,7 @@ class BoardOccupancyService {
             for (let row = 0; row <= this.maxRow; row++) {
                 this.board[column][row] = new CoordinateAttribute();
                 if (column === 0 || row === 0 || column === this.maxColumn || row === this.maxRow) {
-                    this.board[column][row].setWall();
+                    this.board[column][row].setPermanentWall(true);
                 }
             }
         }
@@ -36,6 +37,10 @@ class BoardOccupancyService {
         for (let i = 1; i < playerCoordinates.length; i++) {
             this._addOccupancy(playerId, playerCoordinates[i], TAIL_TYPE);
         }
+    }
+
+    addWall(coordinate) {
+        this._addOccupancy(null, coordinate, WALL_TYPE);
     }
 
     getFoodsConsumed() {
@@ -234,6 +239,19 @@ class BoardOccupancyService {
         return [];
     }
 
+    getWallCoordinates() {
+        const wallCoordinates = [];
+        for (let column = 0; column <= this.maxColumn; column++) {
+            for (let row = 0; row <= this.maxRow; row++) {
+                const coordinateAttribute = this.board[column][row];
+                if (coordinateAttribute.isWall()) {
+                    wallCoordinates.push(new Coordinate(column, row));
+                }
+            }
+        }
+        return wallCoordinates;
+    }
+
     isOutOfBounds(coordinate) {
         return coordinate.x < 0 || coordinate.x > this.maxColumn || coordinate.y < 0 || coordinate.y > this.maxRow;
     }
@@ -241,6 +259,11 @@ class BoardOccupancyService {
     isSafe(coordinate) {
         const coordinateAttribute = this.board[coordinate.x][coordinate.y];
         return coordinateAttribute.isSafe();
+    }
+
+    isPermanentWall(coordinate) {
+        const coordinateAttribute = this.board[coordinate.x][coordinate.y];
+        return coordinateAttribute.isPermanentWall();
     }
 
     isWall(coordinate) {
@@ -259,6 +282,10 @@ class BoardOccupancyService {
         }
     }
 
+    removeWall(coordinate) {
+        this._removeOccupancy(null, coordinate, WALL_TYPE);
+    }
+
     _addOccupancy(id, coordinate, type) {
         const coordinateAttribute = this.board[coordinate.x][coordinate.y];
         if (type === FOOD_TYPE) {
@@ -267,6 +294,8 @@ class BoardOccupancyService {
             coordinateAttribute.addPlayerIdWithHead(id);
         } else if (type === TAIL_TYPE) {
             coordinateAttribute.setPlayerIdWithTail(id);
+        } else if (type === WALL_TYPE) {
+            coordinateAttribute.setWall(true);
         }
     }
 
@@ -279,6 +308,8 @@ class BoardOccupancyService {
             coordinateAttribute.removePlayerIdWithHead(id);
         } else if (type === TAIL_TYPE) {
             coordinateAttribute.setPlayerIdWithTail(false);
+        } else if (type === WALL_TYPE) {
+            coordinateAttribute.setWall(false);
         }
     }
 }

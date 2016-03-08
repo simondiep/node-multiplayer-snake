@@ -73,6 +73,7 @@ class Player {
             name: this.name,
             direction: this.direction,
             segments: this.getSegments(),
+            growAmount: this.growAmount,
             color: this.color,
             moveCounter: this.moveCounter,
             base64Image: this.base64Image,

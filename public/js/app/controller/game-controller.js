@@ -27,6 +27,7 @@ define([
             this.players = [];
             this.food = {};
             this.textsToDraw = [];
+            this.walls = [];
         }
 
         connect(io) {
@@ -45,6 +46,9 @@ define([
                     this.canvasView.drawSquare(food.location, food.color);
                 }
             }
+
+            this.canvasView.drawSquares(this.walls, ClientConfig.WALL_COLOR);
+
             for (const player of this.players) {
                 if (player.segments.length === 0) {
                     continue;
@@ -99,6 +103,10 @@ define([
             }
             const resizedBase64Image = this.canvasView.resizeUploadedBackgroundImageAndBase64(image, imageType);
             this.socket.emit(ClientConfig.IO.OUTGOING.BACKGROUND_IMAGE_UPLOAD, resizedBase64Image);
+        }
+
+        canvasClicked(x, y) {
+            this.socket.emit(ClientConfig.IO.OUTGOING.CANVAS_CLICKED, x, y);
         }
 
         // optional resizedBase64Image
@@ -157,7 +165,8 @@ define([
 
         _createBoard(board) {
             this.canvasView =
-                CanvasFactory.createCanvasView(board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES);
+                CanvasFactory.createCanvasView(
+                    board.SQUARE_SIZE_IN_PIXELS, board.HORIZONTAL_SQUARES, board.VERTICAL_SQUARES, this.canvasClicked.bind(this));
             this.canvasView.clear();
             this.gameView.ready();
             this.renderGame();
@@ -174,6 +183,7 @@ define([
         _handleNewGameData(gameData) {
             this.players = gameData.players;
             this.food = gameData.food;
+            this.walls = gameData.walls;
             this.gameView.showFoodAmount(Object.keys(gameData.food).length);
             this.gameView.showSpeed(gameData.speed);
             this.gameView.showStartLength(gameData.startLength);

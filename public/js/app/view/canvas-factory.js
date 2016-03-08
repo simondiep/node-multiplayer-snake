@@ -8,7 +8,7 @@ define([
 
     class CanvasFactory {
 
-        static createCanvasView(squareSizeInPixels, horizontalSquares, verticalSquares) {
+        static createCanvasView(squareSizeInPixels, horizontalSquares, verticalSquares, canvasClickHandler) {
             const canvas = DomHelper.createElement('canvas');
             canvas.width = horizontalSquares * squareSizeInPixels;
             canvas.height = verticalSquares * squareSizeInPixels;
@@ -16,7 +16,7 @@ define([
             canvas.style.height = `${canvas.height}px`;
             DomHelper.getGameBoardDiv().appendChild(canvas);
             const imageUploadCanvas = this._createImageUploadCanvas(squareSizeInPixels);
-            return new CanvasView(canvas, squareSizeInPixels, imageUploadCanvas);
+            return new CanvasView(canvas, squareSizeInPixels, imageUploadCanvas, canvasClickHandler);
         }
 
         static _createImageUploadCanvas(squareSizeInPixels) {

@@ -12,6 +12,7 @@ const NameService = require('../services/name-service');
 const NotificationService = require('../services/notification-service');
 const PlayerService = require('../services/player-service');
 
+const Coordinate = require('../models/coordinate');
 const PlayerContainer = require('../models/player-container');
 const PlayerStatBoard = require('../models/player-stat-board');
 
@@ -23,14 +24,14 @@ class GameController {
         this.playerStatBoard = new PlayerStatBoard();
 
         // Services
-        const boardOccupancyService = new BoardOccupancyService();
         const nameService = new NameService();
+        this.boardOccupancyService = new BoardOccupancyService();
         this.notificationService = new NotificationService();
-        this.botDirectionService = new BotDirectionService(boardOccupancyService);
-        this.foodService = new FoodService(this.playerStatBoard, boardOccupancyService,
+        this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
+        this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
             nameService, this.notificationService);
         this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
-        this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard, boardOccupancyService,
+        this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
             this.imageService, nameService, this.notificationService, this.runGameCycle.bind(this));
         this.adminService = new AdminService(this.playerContainer, this.foodService, nameService,
             this.notificationService, this.playerService);
@@ -42,7 +43,9 @@ class GameController {
         this.notificationService.setSockets(io.sockets);
         const self = this;
         io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
+            socket.on(ServerConfig.IO.INCOMING.CANVAS_CLICKED, self._canvasClicked.bind(self, socket));
             socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket.id));
+
             // Player Service
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER,
                 self.playerService.addPlayer.bind(self.playerService, socket));
@@ -105,6 +108,7 @@ class GameController {
             players: this.playerContainer,
             food: this.foodService.getFood(),
             playerStats: this.playerStatBoard,
+            walls: this.boardOccupancyService.getWallCoordinates(),
             speed: this.adminService.getGameSpeed(),
             numberOfBots: this.adminService.getBotIds().length,
             startLength: this.adminService.getPlayerStartLength(),
@@ -117,6 +121,21 @@ class GameController {
     /*******************************
      *  socket.io handling methods *
      *******************************/
+
+    _canvasClicked(socket, x, y) {
+        const player = this.playerContainer.getPlayer(socket.id);
+        const coordinate = new Coordinate(x, y);
+        if (this.boardOccupancyService.isPermanentWall(coordinate)) {
+            return;
+        }
+        if (this.boardOccupancyService.isWall(coordinate)) {
+            this.boardOccupancyService.removeWall(coordinate);
+            this.notificationService.broadcastNotification(`${player.name} has removed a wall`, player.color);
+        } else {
+            this.boardOccupancyService.addWall(coordinate);
+            this.notificationService.broadcastNotification(`${player.name} has added a wall`, player.color);
+        }
+    }
 
     _keyDown(playerId, keyCode) {
         GameControlsService.handleKeyDown(this.playerContainer.getPlayer(playerId), keyCode);

@@ -38,6 +38,7 @@ Open your web browser to `localhost:3000`
  - Random, safe spawns
  - Spectate
  - Local storage of name and image
+ - Add and remove walls by clicking
 
 ### Contributing
 

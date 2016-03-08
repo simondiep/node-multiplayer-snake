@@ -7,6 +7,7 @@ define(() => {
         TURNS_TO_SHOW_FOOD_TEXT: 20,
         CANVAS_TEXT_STYLE: 'bold 24px PressStart2P',
         SPAWN_FLASH_COLOR: 'white',
+        WALL_COLOR: 'gray',
         IO: {
             INCOMING: {
                 NEW_STATE: 'game update',
@@ -37,6 +38,7 @@ define(() => {
                 NEW_PLAYER: 'new player',
                 NAME_CHANGE: 'player changed name',
                 KEY_DOWN: 'key down',
+                CANVAS_CLICKED: 'canvas clicked',
             },
         },
         MAX_NAME_LENGTH: 10,

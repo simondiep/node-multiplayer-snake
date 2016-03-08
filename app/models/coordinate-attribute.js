@@ -3,6 +3,7 @@
 class CoordinateAttribute {
     constructor() {
         this.wall = false;
+        this.permanentWall = false;
         this.foodId = false;
         this.playerIdWithTail = false;
         this._playerIdsWithHead = [];
@@ -28,6 +29,10 @@ class CoordinateAttribute {
         return !this.wall && !this.playerIdWithTail && this._playerIdsWithHead.length === 0;
     }
 
+    isPermanentWall() {
+        return this.permanentWall;
+    }
+
     isWall() {
         return this.wall;
     }
@@ -49,8 +54,15 @@ class CoordinateAttribute {
         this.playerIdWithTail = playerIdWithTail;
     }
 
-    setWall() {
+    setPermanentWall() {
+        this.permanentWall = true;
         this.wall = true;
+    }
+
+    setWall(isWall) {
+        if (!this.permanentWall) {
+            this.wall = isWall;
+        }
     }
 }
 
