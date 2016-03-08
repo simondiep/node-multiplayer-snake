@@ -170,7 +170,7 @@ class PlayerService {
     playerJoinGame(playerId) {
         const player = this.playerContainer.getPlayer(playerId);
         this.playerContainer.removeSpectatingPlayerId(player.id);
-        this.respawnPlayer(player);
+        this.respawnPlayer(playerId);
         this.notificationService.broadcastNotification(`${player.name} has rejoined the game.`, player.color);
     }
 
