@@ -14,6 +14,10 @@ class BoardOccupancyService {
     constructor() {
         this.maxColumn = Board.HORIZONTAL_SQUARES;
         this.maxRow = Board.VERTICAL_SQUARES;
+        this.initializeBoard();
+    }
+
+    initializeBoard() {
         // initialize 2d array
         this.board = new Array(this.maxColumn);
         for (let column = 0; column <= this.maxColumn; column++) {

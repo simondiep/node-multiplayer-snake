@@ -24,16 +24,16 @@ class GameController {
         this.playerStatBoard = new PlayerStatBoard();
 
         // Services
-        const nameService = new NameService();
+        this.nameService = new NameService();
         this.boardOccupancyService = new BoardOccupancyService();
         this.notificationService = new NotificationService();
         this.botDirectionService = new BotDirectionService(this.boardOccupancyService);
         this.foodService = new FoodService(this.playerStatBoard, this.boardOccupancyService,
-            nameService, this.notificationService);
+            this.nameService, this.notificationService);
         this.imageService = new ImageService(this.playerContainer, this.playerStatBoard, this.notificationService);
         this.playerService = new PlayerService(this.playerContainer, this.playerStatBoard, this.boardOccupancyService,
-            this.imageService, nameService, this.notificationService, this.runGameCycle.bind(this));
-        this.adminService = new AdminService(this.playerContainer, this.foodService, nameService,
+            this.imageService, this.nameService, this.notificationService, this.runGameCycle.bind(this));
+        this.adminService = new AdminService(this.playerContainer, this.foodService, this.nameService,
             this.notificationService, this.playerService);
         this.playerService.init(this.adminService.getPlayerStartLength.bind(this.adminService));
     }
@@ -84,8 +84,13 @@ class GameController {
         // Pause and reset the game if there aren't any players
         if (this.playerContainer.getNumberOfPlayers() - this.adminService.getBotIds().length === 0) {
             console.log('Game Paused');
+            this.boardOccupancyService.initializeBoard();
             this.adminService.resetGame();
-            this.imageService.resetGame();
+            this.nameService.reinitialize();
+            this.imageService.resetBackgroundImage();
+            this.foodService.reinitialize();
+            this.playerContainer.reinitialize();
+            this.playerStatBoard.reinitialize();
             return;
         }
 

@@ -30,7 +30,7 @@ class AdminService {
         const player = this.playerContainer.getPlayer(playerId);
         let notification = player.name;
         if (foodOption === ServerConfig.INCREMENT_CHANGE.INCREASE) {
-            this.foodService.generateFood();
+            this.foodService.generateSingleFood();
             notification += ' has added some food.';
         } else if (foodOption === ServerConfig.INCREMENT_CHANGE.DECREASE) {
             if (this.foodService.getFoodAmount() > 0) {
@@ -145,7 +145,7 @@ class AdminService {
             this._removeLastFood();
         }
         while (this.foodService.getFoodAmount() < ServerConfig.FOOD.DEFAULT_AMOUNT) {
-            this.foodService.generateFood();
+            this.foodService.generateSingleFood();
         }
     }
 

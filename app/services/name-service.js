@@ -7,6 +7,11 @@ class NameService {
         this.usedFoodIds = new Set();
     }
 
+    reinitialize() {
+        this.usedPlayerNames.clear();
+        this.usedFoodIds.clear();
+    }
+
     doesPlayerNameExist(name) {
         return this.usedPlayerNames.has(name);
     }

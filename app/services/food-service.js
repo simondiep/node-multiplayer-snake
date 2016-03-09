@@ -5,15 +5,17 @@ const Food = require('../models/food');
 class FoodService {
 
     constructor(playerStatBoard, boardOccupancyService, nameService, notificationService) {
-        this.food = {};
         this.playerStatBoard = playerStatBoard;
         this.boardOccupancyService = boardOccupancyService;
         this.nameService = nameService;
         this.notificationService = notificationService;
+        this.reinitialize();
+    }
 
-        for (let i = 0; i < ServerConfig.FOOD.DEFAULT_AMOUNT; i++) {
-            this.generateFood();
-        }
+    // Only use this alongside clearing boardOccupancyService
+    reinitialize() {
+        this.food = {};
+        this.generateDefaultFood();
     }
 
     consumeAndRespawnFood(playerContainer) {
@@ -54,12 +56,20 @@ class FoodService {
             foodToRespawn++;
         }
 
-        for (let i = 0; i < foodToRespawn; i++) {
-            this.generateFood();
+        this.generateFood(foodToRespawn);
+    }
+
+    generateDefaultFood() {
+        this.generateFood(ServerConfig.FOOD.DEFAULT_AMOUNT);
+    }
+
+    generateFood(amount) {
+        for (let i = 0; i < amount; i++) {
+            this.generateSingleFood();
         }
     }
 
-    generateFood() {
+    generateSingleFood() {
         const randomUnoccupiedCoordinate = this.boardOccupancyService.getRandomUnoccupiedCoordinate();
         if (!randomUnoccupiedCoordinate) {
             this.notificationService.broadcastNotification('Could not add more food.  No room left.', 'white');

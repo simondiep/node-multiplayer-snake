@@ -8,6 +8,12 @@ class PlayerContainer {
         this._spectatingPlayerIds = new Set();
     }
 
+    reinitialize() {
+        this._players.clear();
+        this._playerIdsToRespawn.clear();
+        this._spectatingPlayerIds.clear();
+    }
+
     addPlayer(player) {
         this._players.set(player.id, player);
     }

@@ -52,7 +52,7 @@ class ImageService {
         return this.backgroundImage;
     }
 
-    resetGame() {
+    resetBackgroundImage() {
         this.backgroundImage = false;
     }
 }
