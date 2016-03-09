@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/simondiep/node-multiplayer-snake.svg?branch=master)](https://travis-ci.org/simondiep/node-multiplayer-snake)
 [![Dependency Status](https://david-dm.org/simondiep/node-multiplayer-snake/status.svg?style=flat)](https://david-dm.org/simondiep/node-multiplayer-snake)  
 
-A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and RequireJs.  
+A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and jspm.  
 Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
 ### Getting Started

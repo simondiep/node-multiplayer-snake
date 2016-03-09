@@ -1,3 +1,6 @@
 coverage/
 node_modules/
-public/js/vendor/
+public/js/build.js
+public/js/build.js.map
+public/js/config.js
+public/js/jspm_packages/

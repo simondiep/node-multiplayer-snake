@@ -88,12 +88,10 @@
                 </div> 
             </div>            
         </div>
-        <script src="js/vendor/socket.io.js"></script>
-        <script src="js/vendor/require.js"></script>
-        <script type="text/javascript">
-            require(['./js/common'], function (common) {
-              require(['main']);
-            });
+        <script src="js/jspm_packages/system.js"></script>
+        <script src="js/config.js"></script>
+        <script>
+            System.import('main.js');
         </script>
     </body>
 </html>

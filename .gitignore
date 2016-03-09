@@ -49,3 +49,6 @@ Temporary Items
 node_modules
 coverage
 *.css
+public/js/build.js
+public/js/build.js.map
+public/js/jspm_packages
