@@ -52,3 +52,4 @@ coverage
 public/js/build.js
 public/js/build.js.map
 public/js/jspm_packages
+npm-debug.log

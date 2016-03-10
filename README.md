@@ -16,7 +16,9 @@ Install the latest [Node.js](http://nodejs.org) 5.60 Stable
 
 `npm install`
 
-`node app`
+`npm run unbundle` This puts you into development mode, where hot deployments are possible.
+
+`npm start`
 
 Open your web browser to `localhost:3000`
 
@@ -40,6 +42,13 @@ Open your web browser to `localhost:3000`
  - Local storage of name and image
  - Add and remove walls by clicking
 
+### jspm notes
+ - `npm run bundle` will bundle all of the js files together for a production environment
+   - This updates `public/js/config.js` with an injected entry to load build.js
+     - Don't check in the bundle changes to `public/js/config.js`
+   - Any changes to javascript files after this will not be read, unless you bundle again or unbundle
+ - Transpiling ES6 to ES5 is done on application load
+ 
 ### Contributing
 
 1. Fork the code base

@@ -7,12 +7,13 @@
     "url": "https://github.com/simondiep/node-multiplayer-snake.git"
   },
   "scripts": {
-    "postinstall": "jspm install && npm run build",
+    "postinstall": "jspm install && npm run bundle",
     "start": "node app.js",
     "pretest": "eslint .",
     "test": "mocha",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
-    "build": "jspm bundle main --inject"
+    "bundle": "jspm bundle main --inject",
+    "unbundle": "jspm unbundle"
   },
   "devDependencies": {
     "chai": "^3.5.0",
