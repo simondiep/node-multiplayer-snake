@@ -62,6 +62,25 @@ Open your web browser to `localhost:3000`
  - Remove relaxed eslint checks from .eslintrc.js
  - Refactor into more testable code
  - Higher test coverage
+ - Create separate build steps (dev vs prod)
+ - Try to lower page load time for jspm (https://github.com/jspm/jspm-cli/issues/872)
+ - [uglify and minify](https://www.npmjs.com/package/uglify-js2)
+   - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
+ - dash naming convention for css
+ - extract all reused colors in css to top, use hex #s
+ - change name on focus lost submit
+ - tooltips for buttons
+ - input type=number to replace buttons
+ - animate scrolling 
+ - timer to clear death messages
+ - separate css into separate files based on nearby widgets, also globals, like button
+ - sprite-maker (convert all images into one)
+ - high level jsdoc
+ - convert innerHtml to templates (handlebars or mustache)
+ - e.keyCode and other more reused values should be cached (stored in a local variable) to increase performance
+   - such as 'click'
+ - use init instead of setup (naming)
+ - DomHelper extract all strings into an Object
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Longer-term Tech Debt
