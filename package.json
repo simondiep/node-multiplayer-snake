@@ -1,16 +1,19 @@
 {
   "name": "node-multiplayer-snake",
   "version": "1.0.3",
-  "description": "A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and RequireJs.",
+  "description": "A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and jspm.",
   "repository": {
     "type": "git",
     "url": "https://github.com/simondiep/node-multiplayer-snake.git"
   },
   "scripts": {
+    "postinstall": "jspm install && npm run bundle",
     "start": "node app.js",
     "pretest": "eslint .",
     "test": "mocha",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha"
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
+    "bundle": "jspm bundle main --inject",
+    "unbundle": "jspm unbundle"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -24,10 +27,24 @@
   },
   "dependencies": {
     "express": "^4.13.4",
+    "jspm": "^0.16.30",
     "less-middleware": "^2.1.0",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.5",
     "validator": "^5.1.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "jspm": {
+    "directories": {
+      "baseURL": "public/js"
+    },
+    "dependencies": {
+      "socket.io-client": "npm:socket.io-client@^1.4.5"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
 }
