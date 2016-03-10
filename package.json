@@ -7,7 +7,7 @@
     "url": "https://github.com/simondiep/node-multiplayer-snake.git"
   },
   "scripts": {
-    "postinstall": "jspm install",
+    "postinstall": "jspm install && npm run build",
     "start": "node app.js",
     "pretest": "eslint .",
     "test": "mocha",
