@@ -97,7 +97,7 @@ define([
         }
 
         backgroundImageUploadCallback(image, imageType) {
-            if (!image && !imageType) {
+            if (!(image && imageType)) {
                 this.socket.emit(ClientConfig.IO.OUTGOING.CLEAR_UPLOADED_BACKGROUND_IMAGE);
                 return;
             }
@@ -111,7 +111,7 @@ define([
 
         // optional resizedBase64Image
         imageUploadCallback(image, imageType, resizedBase64Image) {
-            if (!image && !imageType) {
+            if (!(image && imageType)) {
                 this.socket.emit(ClientConfig.IO.OUTGOING.CLEAR_UPLOADED_IMAGE);
                 localStorage.removeItem(ClientConfig.LOCAL_STORAGE.PLAYER_IMAGE);
                 return;
