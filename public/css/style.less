@@ -7,160 +7,18 @@
 @information-box-height: 250px;
 @game-content-height: 500px;
 
+@background-color: #000000;
+
 @font-face {
     font-family: PressStart2P;
     src: url('../fonts/PressStart2P.ttf');
 }
 body {
-    background-color: black;
+    background-color: @background-color;
     color: @text-color;
     font-family: PressStart2P;
     margin: 0;
     padding: @navbar-height 0 0 0;
-}
-a.anchor {
-    display: block;
-    position: relative;
-    top: -@navbar-height;
-    visibility: hidden;
-}
-.bodyContent {
-    display: table;
-    margin: 0 auto;
-}
-.mainContainer {
-    height: @game-content-height;
-}
-.leftContent {
-    float: left;
-}
-.rightContent {
-    background-color: black;
-    float: left;
-    height: @game-content-height;
-    width: 600px;
-}
-.settingsMenu {
-    padding: 10px;
-}
-.playerInfo {
-    cursor: default;
-    font-size: @button-font-size;
-    padding: 10px;
-    width: 100%;
-}
-.optionsControls {
-    cursor: default;
-    font-size: @button-font-size;
-    padding: 5px;
-}
-.optionsLabel {
-    display: inline-block;
-    padding-top: 9px;
-    width:140px;
-}
-.optionsValue {
-    display: inline-block;
-    padding-top: 9px;
-    width:70px;
-}
-.timelabel {
-    color: gray;
-}
-.playerStatsHeader {
-    color: gray;
-    &:extend(.playerStatsContent);
-    .image {
-        &:extend(.playerStatsContent .image);
-    }
-    .name {
-        &:extend(.playerStatsContent .name);
-    }
-    .stat {
-        &:extend(.playerStatsContent .stat);
-    }
-}
-.playerStatsContent {
-    font-size: 14px;
-    .image {
-        display: inline-block;
-        width: 20px;
-    }
-    .name {
-        display: inline-block;
-        width: 160px;
-    }
-    .stat {
-        display: inline-block;
-        width: 90px;
-    }
-}
-.playerStatsImage {
-    height: 12px;
-    padding-bottom: 3px;
-    width: 12px;
-}
-.minusButton {
-    background: url(../assets/minus-icon.png) no-repeat;
-    &:extend(.iconButton);
-    &:hover {
-        &:extend(.iconButton:hover);
-        background: url(../assets/minus-icon-hover.png) no-repeat;
-    }
-}
-.plusButton {
-    background: url(../assets/plus-icon.png) no-repeat;
-    &:extend(.iconButton);
-    &:hover {
-        &:extend(.iconButton:hover);
-        background: url(../assets/plus-icon-hover.png) no-repeat;
-    }
-}
-.resetButton {
-    background: url(../assets/reset-icon.png) no-repeat;
-    &:extend(.iconButton);
-    &:hover {
-        &:extend(.iconButton:hover);
-        background: url(../assets/reset-icon-hover.png) no-repeat;
-    }
-}
-.iconButton {
-    border: none;
-    height: 36px;
-    text-indent:-9999px;
-    vertical-align: top;
-    width: 36px;
-    &:hover {
-        border: none;
-        cursor: pointer;
-    }
-}
-.imageUploadLabel {
-    -moz-border-radius: 10;
-    -webkit-border-radius: 10;
-    background: @button-background-color;
-    border-color: transparent;
-    border-radius: 5px;
-    color: @text-color;
-    cursor: pointer;
-    font-size: 20px;
-    padding: 12px;
-    &:hover {
-        background: @button-background-hover-color;
-        cursor: pointer;
-        text-decoration: none;
-    }
-}
-.optionsTextButton {
-    font-size: 20px;
-    padding: 10px;
-    width: 270px;
-}
-#imageUpload {
-    display: none;
-}
-#backgroundImageUpload {
-    display: none;
 }
 button {
     -moz-border-radius: 10;
@@ -177,69 +35,57 @@ button {
         text-decoration: none;
     }
 }
-#fullScreenButton {
-    background: url(../assets/fullscreen-icon.png) no-repeat;
-    background-color: @button-background-color;
+fieldset {
+    max-width: 1175px;
+}
+* {
+    &:focus {
+        outline: none;
+    }
+}
+.body-content {
+    display: table;
+    margin: 0 auto;
+}
+.main-container {
+    height: @game-content-height;
+}
+.left-content {
+    float: left;
+}
+.right-content {
+    background-color: @background-color;
+    float: left;
+    height: @game-content-height;
+    width: 600px;
+}
+.icon-button {
     border: none;
-    height: 54px;
-    width: 60px;
-    vertical-align: top;
-    margin-top: -13px;
-    text-indent:-9999px;
+    height: 36px;
+    width: 36px;
+    margin-left: 5px;
+    margin-right: 5px;
+    &:hover {
+        border: none;
+        cursor: pointer;
+    }
+}
+.image-upload-label {
+    &:extend(.options-text-button);
+    -moz-border-radius: 10;
+    -webkit-border-radius: 10;
+    background: @button-background-color;
+    border-color: transparent;
+    border-radius: 5px;
+    color: @text-color;
     cursor: pointer;
     &:hover {
-        background: url(../assets/fullscreen-icon-hover.png) no-repeat;
-        background-color: @button-background-hover-color;
-        border: none;
+        background: @button-background-hover-color;
+        cursor: pointer;
+        text-decoration: none;
     }
 }
-#notifications {
-    border-color: grey;
-    border-style: solid;
-    border-width: 0 7px 7px 0;
-    box-sizing: border-box;
-    font-size: 12px;
-    height: @information-box-height;
-    overflow: auto;
-    padding: 5px;
-    div {
-        padding-bottom: 8px;
-    }
-}
-#playerStats {
-    &:extend(#notifications);
-    border-width: 7px 7px 7px 0;
-    div {
-        &:extend(#notifications div);
-    }
-}
-#playerName {
-    background-color: @button-background-color;
-    border: 1px solid @button-background-color;
-    font-family: PressStart2P;
-    font-size: @button-font-size;
-    padding-left: 5px;
-    width: 300px;
-    &:read-only {
-        background-color: black;
-        border: 1px solid rgba(0, 0, 0, 0);
-        color: @text-color;
-    }
-}
-#invalidPlayerNameLabel {
-    color: red;
-    display: none;
-}
-#toggleGridLinesButton {
-    width: 350px;
-}
-#cover {
-    visibility: hidden;
-}
-#gameBoard {
-    cursor: pointer;
-}
-#navigation {
+.navigation {
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
@@ -247,8 +93,6 @@ button {
     color: @text-color;
     cursor: default;
     font-size: @button-font-size;
-    height: 35px;
-    padding-top: 15px;
     position: fixed;
     text-align: center;
     top: 0;
@@ -265,14 +109,177 @@ button {
         }
     }
 }
-#killMessages {
+.nav-button-bar {
+    display: inline-block;
+}
+.nav-button-bar a{
+    display: inline-block;
+}
+.nav-label {
+    display: inline-block;
+    padding-top: 15px;
+}
+.options-controls {
+    cursor: default;
+    font-size: @button-font-size;
+    padding: 5px;
+}
+.options-label {
+    display: inline-block;
+    padding-top: 9px;
+    width:140px;
+}
+.options-text-button {
+    font-size: 20px;
+    padding: 10px;
+}
+.options-value {
+    display: inline-block;
+    padding-top: 9px;
+    width:70px;
+
+}
+.player-stats-header {
+    color: gray;
+    &:extend(.player-stats-content);
+    .image {
+        &:extend(.player-stats-content .image);
+    }
+    .name {
+        &:extend(.player-stats-content .name);
+    }
+    .stat {
+        &:extend(.player-stats-content .stat);
+    }
+}
+.player-stats-content {
+    font-size: 14px;
+    .image {
+        display: inline-block;
+        width: 20px;
+    }
+    .name {
+        display: inline-block;
+        width: 160px;
+    }
+    .stat {
+        display: inline-block;
+        width: 90px;
+    }
+}
+.player-stats-image {
+    height: 12px;
+    padding-bottom: 3px;
+    width: 12px;
+}
+.settings-menu {
+    padding: 10px;
+}
+.text-button-list {
+    margin: 0;
+    padding: 0;
+}
+.text-button-list li {
+    display: inline-block;
+    padding: 10px;
+}
+.time-label {
+    color: gray;
+}
+.minus-button {
+    background: url(../assets/minus-icon.png) no-repeat;
+    &:extend(.icon-button);
+    &:hover {
+        &:extend(.icon-button:hover);
+        background: url(../assets/minus-icon-hover.png) no-repeat;
+    }
+}
+.plus-button {
+    background: url(../assets/plus-icon.png) no-repeat;
+    &:extend(.icon-button);
+    &:hover {
+        &:extend(.icon-button:hover);
+        background: url(../assets/plus-icon-hover.png) no-repeat;
+    }
+}
+.reset-button {
+    background: url(../assets/reset-icon.png) no-repeat;
+    &:extend(.icon-button);
+    &:hover {
+        &:extend(.icon-button:hover);
+        background: url(../assets/reset-icon-hover.png) no-repeat;
+    }
+}
+#cover {
+    visibility: hidden;
+}
+#background-image-upload {
+    display: none;
+}
+#image-upload {
+    display: none;
+}
+#full-screen-button {
+    background: url(../assets/fullscreen-icon.png) no-repeat;
+    background-color: @button-background-color;
+    border: none;
+    border-radius: 0;
+    height: 54px;
+    width: 60px;
+    vertical-align: top;
+    cursor: pointer;
+    &:hover {
+        background: url(../assets/fullscreen-icon-hover.png) no-repeat;
+        background-color: @button-background-hover-color;
+    }
+}
+#notifications {
+    border-color: grey;
+    border-style: solid;
+    border-width: 0 7px 7px 0;
+    box-sizing: border-box;
+    font-size: 12px;
+    height: @information-box-height;
+    overflow: auto;
+    padding: 5px;
+    div {
+        padding-bottom: 8px;
+    }
+}
+#play-or-watch-button {
+    display: inline-block;
+    width: 150px;
+}
+#player-stats {
+    &:extend(#notifications);
+    border-width: 7px 7px 7px 0;
+    div {
+        &:extend(#notifications div);
+    }
+}
+#player-name {
+    background-color: @button-background-color;
+    border: 1px solid @button-background-color;
+    font-family: PressStart2P;
+    font-size: @button-font-size;
+    padding-left: 5px;
+    width: 300px;
+    &:read-only {
+        background-color: black;
+        border: 1px solid rgba(0, 0, 0, 0);
+        color: @text-color;
+    }
+}
+#invalid-player-name-label {
+    color: red;
+    display: none;
+}
+#game-board {
+    cursor: pointer;
+}
+#kill-messages {
     height: 35px;
     padding-top: 15px;
     font-size: 20px;
     text-align: center;
-}
-* {
-    &:focus {
-        outline: none;
-    }
 }

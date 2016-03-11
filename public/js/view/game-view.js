@@ -54,7 +54,7 @@ export default class GameView {
 
     showNotification(notification, playerColor) {
         const notificationDiv = DomHelper.getNotificationsDiv();
-        const formattedNotification = `<div><span class='timelabel'>${new Date().toLocaleTimeString()} - </span>` +
+        const formattedNotification = `<div><span class='time-label'>${new Date().toLocaleTimeString()} - </span>` +
             `<span style='color: ${playerColor}'>${notification}<span/></div>`;
         notificationDiv.innerHTML = formattedNotification + notificationDiv.innerHTML;
     }
@@ -64,7 +64,7 @@ export default class GameView {
     }
 
     showPlayerStats(playerStats) {
-        let formattedScores = '<div class="playerStatsHeader"><span class="image"></span>' +
+        let formattedScores = '<div class="player-stats-header"><span class="image"></span>' +
             '<span class="name">Name</span>' +
             '<span class="stat">Score</span>' +
             '<span class="stat">High</span>' +
@@ -73,9 +73,9 @@ export default class GameView {
         for (const playerStat of playerStats) {
             let playerImageElement = '';
             if (playerStat.base64Image) {
-                playerImageElement = `<img src=${playerStat.base64Image} class='playerStatsImage'></img>`;
+                playerImageElement = `<img src=${playerStat.base64Image} class='player-stats-image'></img>`;
             }
-            formattedScores += `<div class='playerStatsContent'><span class='image'>${playerImageElement}</span>` +
+            formattedScores += `<div class='player-stats-content'><span class='image'>${playerImageElement}</span>` +
                 `<span class='name' style='color: ${playerStat.color}'>${playerStat.name}</span>` +
                 `<span class='stat'>${playerStat.score}</span>` +
                 `<span class='stat'>${playerStat.highScore}</span>` +

@@ -8,7 +8,7 @@ export default class DomHelper {
     }
 
     static getBackgroundImageUploadElement() {
-        return document.getElementById('backgroundImageUpload');
+        return document.getElementById('background-image-upload');
     }
 
     static getBody() {
@@ -48,15 +48,15 @@ export default class DomHelper {
     }
 
     static getFullScreenButton() {
-        return document.getElementById('fullScreenButton');
+        return document.getElementById('full-screen-button');
     }
 
     static getGameBoardDiv() {
-        return document.getElementById('gameBoard');
+        return document.getElementById('game-board');
     }
 
     static getImageUploadElement() {
-        return document.getElementById('imageUpload');
+        return document.getElementById('image-upload');
     }
 
     static getIncreaseBotsButton() {
@@ -80,11 +80,11 @@ export default class DomHelper {
     }
 
     static getPlayerNameElement() {
-        return document.getElementById('playerName');
+        return document.getElementById('player-name');
     }
 
     static getPlayOrWatchButton() {
-        return document.getElementById('playOrWatchButton');
+        return document.getElementById('play-or-watch-button');
     }
 
     static getResetBotsButton() {
@@ -108,7 +108,7 @@ export default class DomHelper {
     }
 
     static hideInvalidPlayerNameLabel() {
-        document.getElementById('invalidPlayerNameLabel').style.display = 'none';
+        document.getElementById('invalid-player-name-label').style.display = 'none';
     }
 
     static setChangeNameButtonText(text) {
@@ -133,7 +133,7 @@ export default class DomHelper {
     }
 
     static setKillMessagesDivText(text) {
-        document.getElementById('killMessages').innerHTML = text;
+        document.getElementById('kill-messages').innerHTML = text;
     }
 
     static setPlayerNameElementColor(color) {
@@ -149,7 +149,7 @@ export default class DomHelper {
     }
 
     static setPlayerStatsDivText(text) {
-        document.getElementById('playerStats').innerHTML = text;
+        document.getElementById('player-stats').innerHTML = text;
     }
 
     static setPlayOrWatchButtonText(text) {
@@ -161,7 +161,7 @@ export default class DomHelper {
     }
 
     static showInvalidPlayerNameLabel() {
-        document.getElementById('invalidPlayerNameLabel').style.display = 'inline';
+        document.getElementById('invalid-player-name-label').style.display = 'inline';
     }
 
     static toggleFullScreenMode() {

@@ -6,83 +6,76 @@
     <body>
         <a class="anchor" id="top"></a>
         <div id="cover">
-            <div id="navigation">
-                <label>You are </label>
-                <input id="playerName" readonly="readonly" maxlength="10"></input>
-                <a href="#top" id="playOrWatchButton">Watch</a>
-                <a href="#playerSettings">Settings</a>
-                <input id="fullScreenButton" type="submit"/>
+            <div class="navigation">
+                <label class="nav-label">You are <input id="player-name" readonly="readonly" maxlength="10"></input></label>
+                <div class="nav-button-bar">
+                    <a href="#top" id="play-or-watch-button">Watch</a>
+                    <a href="#playerSettings">Settings</a>
+                    <button id="full-screen-button"/>
+                </div>
             </div>
-            <div id="killMessages">
+            <div id="kill-messages">
             </div>
-            <div class="bodyContent">
-                <div class="mainContainer">
-                    <div class="leftContent">
-                        <div id="gameBoard"></div>
+            <div class="body-content">
+                <div class="main-container">
+                    <div class="left-content">
+                        <div id="game-board"></div>
                     </div>
-                    <div class="rightContent">
-                        <div id="playerStats">
+                    <div class="right-content">
+                        <div id="player-stats">
                         </div>
                         <div id="notifications">
                         </div>
                     </div>
                 </div>
-                <div id="playerSettings" class="settingsMenu">
+                <div id="playerSettings" class="settings-menu">
                     <fieldset>
                         <legend>Player Settings</legend>
-                        <label id="invalidPlayerNameLabel">Please Enter a Valid Name (10 Characters Max)</label>
-                        <div class="playerInfo">
-                            <button id="changePlayerNameButton" class="optionsTextButton">Change Name</button>
-                            <button id="changePlayerColorButton" class="optionsTextButton">Change Color</button>
-                            <button id="toggleGridLinesButton" class="optionsTextButton">Toggle GridLines</button>
-                        </div>
-                        <div class="settingsMenu">
-                            <label for="imageUpload" class="imageUploadLabel">Change Snake Image</label>
-                            <input type="file" id="imageUpload" accept="image/*"/>
-                            <button id="clearUploadedImageButton" class="optionsTextButton">Clear Image</button>
-                        </div>
-                        <div class="settingsMenu">
-                            <label>Customize your snake by uploading an image (Will be scaled down to size)</label>
-                         </div>
-                         <div class="settingsMenu">
-                            <label for="backgroundImageUpload" class="imageUploadLabel">Change Background Image</label>
-                            <input type="file" id="backgroundImageUpload" accept="image/*"/>
-                            <button id="clearUploadedBackgroundImageButton" class="optionsTextButton">Clear Image</button>
-                        </div>
+                        <label id="invalid-player-name-label">Please Enter a Valid Name (10 Characters Max)</label>
+                        <ul class="text-button-list">
+                            <li><button id="changePlayerNameButton" class="options-text-button">Change Name</button></li>
+                            <li><button id="changePlayerColorButton" class="options-text-button">Change Color</button></li>
+                            <li><button id="toggleGridLinesButton" class="options-text-button">Toggle GridLines</button></li>
+                            <li><label for="image-upload" class="image-upload-label">Change Snake Image<input type="file" id="image-upload" accept="image/*"/></label></li>
+                            <li><button id="clearUploadedImageButton" class="options-text-button">Clear Image</button></li>
+                            <li><label>Customize your snake by uploading an image (Will be scaled down to size)</label></li>
+                            <li><label for="background-image-upload" class="image-upload-label">Change Background Image<input type="file" id="background-image-upload" accept="image/*"/></label></li>
+                            <li><button id="clearUploadedBackgroundImageButton" class="options-text-button">Clear Image</button></li>
+                        </ul>
                     </fieldset>
                 </div>
                 
                 
-                <div id="adminControls" class="settingsMenu">
+                <div id="adminControls" class="settings-menu">
                     <fieldset>
                         <legend>Admin Controls</legend>
-                        <div class="optionsControls" class="settingsMenu">
-                            <label class="optionsLabel">Speed: </label>
-                            <label id="currentSpeed" class="optionsValue"></label>
-                            <input id="decreaseSpeedButton" type="submit" class="minusButton"/>
-                            <input id="increaseSpeedButton" type="submit" class="plusButton"/>
-                            <input id="resetSpeedButton" type="submit" class="resetButton"/>
+                        <div class="options-controls" class="settings-menu">
+                            <label class="options-label">Speed: </label>
+                            <label id="currentSpeed" class="options-value"></label>
+                            <button id="decreaseSpeedButton" class="minus-button"/>
+                            <button id="increaseSpeedButton" class="plus-button"/>
+                            <button id="resetSpeedButton" class="reset-button"/>
                         </div>
-                        <div class="optionsControls" class="settingsMenu">
-                            <label class="optionsLabel">Food: </label>
-                            <label id="currentFoodAmount" class="optionsValue"></label>
-                            <input id="decreaseFoodButton" type="submit" class="minusButton"/>
-                            <input id="increaseFoodButton" type="submit" class="plusButton"/>
-                            <input id="resetFoodButton" type="submit" class="resetButton"/>
+                        <div class="options-controls" class="settings-menu">
+                            <label class="options-label">Food: </label>
+                            <label id="currentFoodAmount" class="options-value"></label>
+                            <button id="decreaseFoodButton" class="minus-button"/>
+                            <button id="increaseFoodButton" class="plus-button"/>
+                            <button id="resetFoodButton" class="reset-button"/>
                         </div>
-                        <div class="optionsControls">
-                            <label class="optionsLabel">Bots: </label>
-                            <label id="currentNumberOfBots" class="optionsValue"></label>
-                            <input id="decreaseBotsButton" type="submit" class="minusButton"/>
-                            <input id="increaseBotsButton" type="submit" class="plusButton"/>
-                            <input id="resetBotsButton" type="submit" class="resetButton"/>
+                        <div class="options-controls">
+                            <label class="options-label">Bots: </label>
+                            <label id="currentNumberOfBots" class="options-value"></label>
+                            <button id="decreaseBotsButton" class="minus-button"/>
+                            <button id="increaseBotsButton" class="plus-button"/>
+                            <button id="resetBotsButton" class="reset-button"/>
                         </div>
-                        <div class="optionsControls">
-                            <label class="optionsLabel">Start Length: </label>
-                            <label id="currentStartLength" class="optionsValue"></label>
-                            <input id="decreaseStartLengthButton" type="submit" class="minusButton"/>
-                            <input id="increaseStartLengthButton" type="submit" class="plusButton"/>
-                            <input id="resetStartLengthButton" type="submit" class="resetButton"/>
+                        <div class="options-controls">
+                            <label class="options-label">Start Length: </label>
+                            <label id="currentStartLength" class="options-value"></label>
+                            <button id="decreaseStartLengthButton" class="minus-button"/>
+                            <button id="increaseStartLengthButton" class="plus-button"/>
+                            <button id="resetStartLengthButton" class="reset-button"/>
                         </div>
                     </fieldset>
                 </div> 

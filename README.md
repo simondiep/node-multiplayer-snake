@@ -75,7 +75,6 @@ Open your web browser to `localhost:3000`
  - Try to lower page load time for jspm (https://github.com/jspm/jspm-cli/issues/872)
  - [uglify and minify](https://www.npmjs.com/package/uglify-js2)
    - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
- - dash naming convention for css
  - extract all reused colors in css to top, use hex #s
  - change name on focus lost submit
  - tooltips for buttons
