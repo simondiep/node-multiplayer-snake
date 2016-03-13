@@ -1,0 +1,89 @@
+@import "global.less";
+
+.icon-button {
+    border: none;
+    height: 36px;
+    width: 36px;
+    margin-left: 5px;
+    margin-right: 5px;
+    &:hover {
+        border: none;
+        cursor: pointer;
+    }
+}
+.image-upload-label {
+    &:extend(.options-text-button);
+    -moz-border-radius: 10;
+    -webkit-border-radius: 10;
+    background: @button-background-color;
+    border-color: transparent;
+    border-radius: 5px;
+    color: @text-color;
+    cursor: pointer;
+    &:hover {
+        background: @button-background-hover-color;
+        cursor: pointer;
+        text-decoration: none;
+    }
+}
+.options-controls {
+    cursor: default;
+    padding: 5px;
+}
+.options-label {
+    display: inline-block;
+    padding-top: 9px;
+    width:140px;
+    font-size: @label-font-size;
+}
+.options-text-button {
+    font-size: 20px;
+    padding: 10px;
+}
+.options-value {
+    display: inline-block;
+    padding-top: 9px;
+    width:70px;
+    font-size: @label-font-size;
+}
+.settings-menu {
+    padding: 10px;
+}
+.text-button-list {
+    margin: 0;
+    padding: 0;
+}
+.text-button-list li {
+    display: inline-block;
+    padding: 10px;
+}
+.minus-button {
+    background: url(../assets/minus-icon.png) no-repeat;
+    &:extend(.icon-button);
+    &:hover {
+        &:extend(.icon-button:hover);
+        background: url(../assets/minus-icon-hover.png) no-repeat;
+    }
+}
+.plus-button {
+    background: url(../assets/plus-icon.png) no-repeat;
+    &:extend(.icon-button);
+    &:hover {
+        &:extend(.icon-button:hover);
+        background: url(../assets/plus-icon-hover.png) no-repeat;
+    }
+}
+.reset-button {
+    background: url(../assets/reset-icon.png) no-repeat;
+    &:extend(.icon-button);
+    &:hover {
+        &:extend(.icon-button:hover);
+        background: url(../assets/reset-icon-hover.png) no-repeat;
+    }
+}
+#background-image-upload {
+    display: none;
+}
+#image-upload {
+    display: none;
+}

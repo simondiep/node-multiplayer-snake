@@ -1,17 +1,19 @@
 <html>
     <head>
         <title>Snake</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/global.css">
+        <link rel="stylesheet" type="text/css" href="css/game.css">
+        <link rel="stylesheet" type="text/css" href="css/settings.css">
     </head>
     <body>
-        <a class="anchor" id="top"></a>
+        <a id="top"></a>
         <div id="cover">
             <div class="navigation">
                 <label class="nav-label">You are <input id="player-name" readonly="readonly" maxlength="10"></input></label>
                 <div class="nav-button-bar">
-                    <a href="#top" id="play-or-watch-button">Watch</a>
-                    <a href="#playerSettings">Settings</a>
-                    <button id="full-screen-button"/>
+                    <a href="#top" id="play-or-watch-button" title="Spectate or rejoin game">Watch</a>
+                    <a href="#playerSettings" title="Go to settings">Settings</a>
+                    <button id="full-screen-button" title="Go into full-screen mode"/>
                 </div>
             </div>
             <div id="kill-messages">
@@ -33,14 +35,13 @@
                         <legend>Player Settings</legend>
                         <label id="invalid-player-name-label">Please Enter a Valid Name (10 Characters Max)</label>
                         <ul class="text-button-list">
-                            <li><button id="changePlayerNameButton" class="options-text-button">Change Name</button></li>
-                            <li><button id="changePlayerColorButton" class="options-text-button">Change Color</button></li>
-                            <li><button id="toggleGridLinesButton" class="options-text-button">Toggle GridLines</button></li>
-                            <li><label for="image-upload" class="image-upload-label">Change Snake Image<input type="file" id="image-upload" accept="image/*"/></label></li>
-                            <li><button id="clearUploadedImageButton" class="options-text-button">Clear Image</button></li>
-                            <li><label>Customize your snake by uploading an image (Will be scaled down to size)</label></li>
-                            <li><label for="background-image-upload" class="image-upload-label">Change Background Image<input type="file" id="background-image-upload" accept="image/*"/></label></li>
-                            <li><button id="clearUploadedBackgroundImageButton" class="options-text-button">Clear Image</button></li>
+                            <li><button id="changePlayerNameButton" class="options-text-button" title="Change your name">Change Name</button></li>
+                            <li><button id="changePlayerColorButton" class="options-text-button" title="Change your snake's color">Change Color</button></li>
+                            <li><button id="toggleGridLinesButton" class="options-text-button" title="Show or hide grid lines">Toggle GridLines</button></li>
+                            <li><label for="image-upload" class="image-upload-label" title="Customize your snake by uploading an image (Will be scaled down to size)">Change Snake Image<input type="file" id="image-upload" accept="image/*"/></label></li>
+                            <li><button id="clearUploadedImageButton" class="options-text-button" title="Clear uploaded snake image">Clear Image</button></li>
+                            <li><label for="background-image-upload" class="image-upload-label" title="Upload a background image">Change Background Image<input type="file" id="background-image-upload" accept="image/*"/></label></li>
+                            <li><button id="clearUploadedBackgroundImageButton" class="options-text-button"  title="Clear uploaded background image">Clear Image</button></li>
                         </ul>
                     </fieldset>
                 </div>
@@ -52,30 +53,30 @@
                         <div class="options-controls" class="settings-menu">
                             <label class="options-label">Speed: </label>
                             <label id="currentSpeed" class="options-value"></label>
-                            <button id="decreaseSpeedButton" class="minus-button"/>
-                            <button id="increaseSpeedButton" class="plus-button"/>
-                            <button id="resetSpeedButton" class="reset-button"/>
+                            <button id="decreaseSpeedButton" class="minus-button" title="-1"/>
+                            <button id="increaseSpeedButton" class="plus-button" title="+1"/>
+                            <button id="resetSpeedButton" class="reset-button" title="Reset to Default"/>
                         </div>
                         <div class="options-controls" class="settings-menu">
                             <label class="options-label">Food: </label>
                             <label id="currentFoodAmount" class="options-value"></label>
-                            <button id="decreaseFoodButton" class="minus-button"/>
-                            <button id="increaseFoodButton" class="plus-button"/>
-                            <button id="resetFoodButton" class="reset-button"/>
+                            <button id="decreaseFoodButton" class="minus-button" title="-1"/>
+                            <button id="increaseFoodButton" class="plus-button" title="+1"/>
+                            <button id="resetFoodButton" class="reset-button" title="Reset to Default"/>
                         </div>
                         <div class="options-controls">
                             <label class="options-label">Bots: </label>
                             <label id="currentNumberOfBots" class="options-value"></label>
-                            <button id="decreaseBotsButton" class="minus-button"/>
-                            <button id="increaseBotsButton" class="plus-button"/>
-                            <button id="resetBotsButton" class="reset-button"/>
+                            <button id="decreaseBotsButton" class="minus-button" title="-1"/>
+                            <button id="increaseBotsButton" class="plus-button" title="+1"/>
+                            <button id="resetBotsButton" class="reset-button" title="Reset to Default"/>
                         </div>
                         <div class="options-controls">
                             <label class="options-label">Start Length: </label>
                             <label id="currentStartLength" class="options-value"></label>
-                            <button id="decreaseStartLengthButton" class="minus-button"/>
-                            <button id="increaseStartLengthButton" class="plus-button"/>
-                            <button id="resetStartLengthButton" class="reset-button"/>
+                            <button id="decreaseStartLengthButton" class="minus-button" title="-1"/>
+                            <button id="increaseStartLengthButton" class="plus-button" title="+1"/>
+                            <button id="resetStartLengthButton" class="reset-button" title="Reset to Default"/>
                         </div>
                     </fieldset>
                 </div> 

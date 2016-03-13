@@ -1,0 +1,40 @@
+@background-color: #000000;
+@button-background-color: #383838;
+@button-background-hover-color: #808080;
+@font-family: PressStart2P;
+@label-font-size: 24px;
+@navbar-height: 60px;
+@text-color: #ffffff;
+
+@font-face {
+    font-family: @font-family;
+    src: url('../fonts/PressStart2P.ttf');
+}
+body {
+    background-color: @background-color;
+    color: @text-color;
+    font-family: @font-family;
+    margin: 0;
+    padding: @navbar-height 0 0 0;
+}
+button {
+    background: @button-background-color;
+    border-color: transparent;
+    border-radius: 5px;
+    color: @text-color;
+    font-family: @font-family;
+    text-decoration: none;
+    &:hover {
+        background: @button-background-hover-color;
+        cursor: pointer;
+        text-decoration: none;
+    }
+}
+fieldset {
+    max-width: 1175px;
+}
+* {
+    &:focus {
+        outline: none;
+    }
+}

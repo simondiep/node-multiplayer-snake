@@ -1,0 +1,167 @@
+@import "global.less";
+@border-color: #808080;
+@game-content-height: 500px;
+@information-box-height: 250px;
+
+.body-content {
+    display: table;
+    margin: 0 auto;
+}
+.main-container {
+    height: @game-content-height;
+}
+.left-content {
+    float: left;
+}
+.right-content {
+    background-color: @background-color;
+    float: left;
+    height: @game-content-height;
+    width: 600px;
+}
+.navigation {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    background-color: rgba(1, 1, 1, 0.8);
+    color: @text-color;
+    cursor: default;
+    font-size: @label-font-size;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    a {
+        background: @button-background-color;
+        color: @text-color;
+        padding: 15px;
+        text-decoration: none;
+        &:hover {
+            background: @button-background-hover-color;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    }
+}
+.nav-button-bar {
+    display: inline-block;
+}
+.nav-button-bar a{
+    display: inline-block;
+}
+.nav-label {
+    display: inline-block;
+    padding-top: 15px;
+}
+.player-stats-header {
+    color: @border-color;
+    &:extend(.player-stats-content);
+    .image {
+        &:extend(.player-stats-content .image);
+    }
+    .name {
+        &:extend(.player-stats-content .name);
+    }
+    .stat {
+        &:extend(.player-stats-content .stat);
+    }
+}
+.player-stats-content {
+    font-size: 14px;
+    .image {
+        display: inline-block;
+        width: 20px;
+    }
+    .name {
+        display: inline-block;
+        width: 160px;
+    }
+    .stat {
+        display: inline-block;
+        width: 90px;
+    }
+}
+.player-stats-image {
+    height: 12px;
+    padding-bottom: 3px;
+    width: 12px;
+}
+.time-label {
+    color: @border-color;
+}
+#changePlayerNameButton {
+    width: 244px;
+}
+#cover {
+    visibility: hidden;
+}
+#full-screen-button {
+    background: url(../assets/fullscreen-icon.png) no-repeat;
+    background-color: @button-background-color;
+    border: none;
+    border-radius: 0;
+    height: 54px;
+    width: 60px;
+    vertical-align: top;
+    cursor: pointer;
+    &:hover {
+        background: url(../assets/fullscreen-icon-hover.png) no-repeat;
+        background-color: @button-background-hover-color;
+    }
+}
+#game-board {
+    cursor: pointer;
+}
+#invalid-player-name-label {
+    color: red;
+    display: none;
+}
+#kill-messages {
+    height: 35px;
+    padding-top: 15px;
+    font-size: 20px;
+    text-align: center;
+}
+#notifications {
+    border-color: @border-color;
+    border-style: solid;
+    border-width: 0 7px 7px 0;
+    box-sizing: border-box;
+    font-size: 12px;
+    height: @information-box-height;
+    overflow: auto;
+    padding: 5px;
+    div {
+        padding-bottom: 8px;
+    }
+}
+#play-or-watch-button {
+    display: inline-block;
+    width: 150px;
+}
+#player-stats {
+    &:extend(#notifications);
+    border-width: 7px 7px 7px 0;
+    div {
+        &:extend(#notifications div);
+    }
+}
+#player-name {
+    background-color: @button-background-color;
+    border: 1px solid @button-background-color;
+    font-family: @font-family;
+    font-size: @label-font-size;
+    padding-left: 5px;
+    width: 300px;
+    &:read-only {
+        background-color: @background-color;
+        border: 1px solid rgba(0, 0, 0, 0);
+        color: @text-color;
+    }
+}
+#top {
+    display: block;
+    position: relative;
+    top: -@navbar-height;
+    visibility: hidden;
+}
