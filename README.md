@@ -75,10 +75,8 @@ Open your web browser to `localhost:3000`
  - Try to lower page load time for jspm (https://github.com/jspm/jspm-cli/issues/872)
  - [uglify and minify](https://www.npmjs.com/package/uglify-js2)
    - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
- - change name on focus lost submit
  - input type=number to replace buttons
  - animate scrolling 
- - timer to clear death messages
  - sprite-maker (convert all images into one)
  - high level jsdoc
  - convert innerHtml to templates (handlebars or mustache)
@@ -95,14 +93,13 @@ Open your web browser to `localhost:3000`
  - Switch to SASS when Windows makes it easier to install [node-gyp dependencies](https://github.com/nodejs/node-gyp/issues/629)
 
 ### Technologies to look into
- - requirejs vs browserify vs webpack vs jspm [Comparison](https://webpack.github.io/docs/comparison.html)
+ - webpack vs jspm [Comparison](https://webpack.github.io/docs/comparison.html)
  - Replace console.log with logging framework
     - https://www.loggly.com/ultimate-guide/node-logging-basics/
     - https://strongloop.com/strongblog/compare-node-js-logging-winston-bunyan/
  - Unit test mocking frameworks for ES6 classes
  - Performance testing tools
  - Lightweight unit testing frameworks, such as [Tape](https://github.com/substack/tape)
- - Babel and Traceur
  - ES7
  
 ### Potential Features To Implement

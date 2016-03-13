@@ -6,6 +6,9 @@ const SPACE_BAR_KEYCODE = 32;
 const UP_ARROW_KEYCODE = 38;
 const DOWN_ARROW_KEYCODE = 40;
 
+/**
+ * Handles all requests related to the display of the game, not including the canvas
+ */
 export default class GameView {
     constructor(backgroundImageUploadCallback, botChangeCallback, foodChangeCallback, imageUploadCallback,
         joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback,
@@ -26,12 +29,21 @@ export default class GameView {
         DomHelper.showAllContent();
     }
 
+    setKillMessageWithTimer(message) {
+        DomHelper.setKillMessagesDivText(message);
+        if (this.killMessagesTimeout) {
+            clearTimeout(this.killMessagesTimeout);
+        }
+        this.killMessagesTimeout = setTimeout(DomHelper.clearKillMessagesDivText.bind(DomHelper),
+            ClientConfig.TIME_TO_SHOW_KILL_MESSAGE_IN_MS);
+    }
+
     showFoodAmount(foodAmount) {
         DomHelper.setCurrentFoodAmountLabelText(foodAmount);
     }
 
     showKillMessage(killerName, victimName, killerColor, victimColor, victimLength) {
-        DomHelper.setKillMessagesDivText(`<span style='color: ${killerColor}'>${killerName}</span> killed ` +
+        this.setKillMessageWithTimer(`<span style='color: ${killerColor}'>${killerName}</span> killed ` +
             `<span style='color: ${victimColor}'>${victimName}</span>` +
             ` and grew by <span style='color: ${killerColor}'>${victimLength}</span>`);
     }
@@ -41,15 +53,15 @@ export default class GameView {
         for (const victimSummary of victimSummaries) {
             victims += `<span style='color: ${victimSummary.color}'>${victimSummary.name}</span> `;
         }
-        DomHelper.setKillMessagesDivText(`${victims} have killed each other`);
+        this.setKillMessageWithTimer(`${victims} have killed each other`);
     }
 
     showRanIntoWallMessage(playerName, playerColor) {
-        DomHelper.setKillMessagesDivText(`<span style='color: ${playerColor}'>${playerName}</span> ran into a wall`);
+        this.setKillMessageWithTimer(`<span style='color: ${playerColor}'>${playerName}</span> ran into a wall`);
     }
 
     showSuicideMessage(victimName, victimColor) {
-        DomHelper.setKillMessagesDivText(`<span style='color: ${victimColor}'>${victimName}</span> committed suicide`);
+        this.setKillMessageWithTimer(`<span style='color: ${victimColor}'>${victimName}</span> committed suicide`);
     }
 
     showNotification(notification, playerColor) {
@@ -189,6 +201,7 @@ export default class GameView {
         // Player controls
         DomHelper.getChangeColorButton().addEventListener('click', playerColorChangeCallback);
         DomHelper.getChangeNameButton().addEventListener('click', this._handleChangeNameButtonClick.bind(this));
+        DomHelper.getPlayerNameElement().addEventListener('blur', this._saveNewPlayerName.bind(this));
         DomHelper.getImageUploadElement().addEventListener('change', this._handleImageUpload.bind(this));
         DomHelper.getClearUploadedImageButton().addEventListener('click', this.imageUploadCallback);
         DomHelper.getBackgroundImageUploadElement().addEventListener('change', this._handleBackgroundImageUpload.bind(this));

@@ -20,9 +20,7 @@
     width: 600px;
 }
 .navigation {
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
+    &:extend(.non-selectable);
     background-color: rgba(1, 1, 1, 0.8);
     color: @text-color;
     cursor: default;
@@ -54,6 +52,7 @@
     padding-top: 15px;
 }
 .player-stats-header {
+    &:extend(.non-selectable);
     color: @border-color;
     &:extend(.player-stats-content);
     .image {
@@ -67,6 +66,7 @@
     }
 }
 .player-stats-content {
+    &:extend(.non-selectable);
     font-size: 14px;
     .image {
         display: inline-block;

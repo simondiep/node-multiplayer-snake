@@ -3,6 +3,9 @@ import TextToDraw from 'model/text-to-draw';
 import CanvasFactory from 'view/canvas-factory';
 import GameView from 'view/game-view';
 
+/**
+ * Controls all game logic
+ */
 export default class GameController {
     constructor() {
         this.gameView = new GameView(this.backgroundImageUploadCallback.bind(this),
@@ -196,9 +199,11 @@ export default class GameController {
         this.socket.on(ClientConfig.IO.INCOMING.NEW_BACKGROUND_IMAGE, this._handleBackgroundImage.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.FOOD_COLLECTED, this._storeTextToDraw.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.GENERAL, this.gameView.showNotification);
-        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILL, this.gameView.showKillMessage);
-        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILLED_EACH_OTHER, this.gameView.showKilledEachOtherMessage);
-        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.RAN_INTO_WALL, this.gameView.showRanIntoWallMessage);
-        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.SUICIDE, this.gameView.showSuicideMessage);
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILL, this.gameView.showKillMessage.bind(this.gameView));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILLED_EACH_OTHER,
+            this.gameView.showKilledEachOtherMessage.bind(this.gameView));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.RAN_INTO_WALL,
+            this.gameView.showRanIntoWallMessage.bind(this.gameView));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.SUICIDE, this.gameView.showSuicideMessage.bind(this.gameView));
     }
 }

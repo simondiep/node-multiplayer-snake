@@ -1,5 +1,8 @@
 import ClientConfig from 'config/client-config';
 
+/**
+ * Handles all requests related to the canvas
+ */
 export default class CanvasView {
     constructor(canvas, squareSizeInPixels, imageUploadCanvas, canvasClickHandler) {
         this.height = canvas.height;

@@ -1,6 +1,9 @@
 import CanvasView from 'view/canvas-view';
 import DomHelper from 'view/dom-helper';
 
+/**
+ * Constructs CanvasView
+ */
 export default class CanvasFactory {
     static createCanvasView(squareSizeInPixels, horizontalSquares, verticalSquares, canvasClickHandler) {
         const canvas = DomHelper.createElement('canvas');

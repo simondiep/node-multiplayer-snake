@@ -1,6 +1,13 @@
+/**
+ * DOM manipulation helper
+ */
 export default class DomHelper {
     static blurActiveElement() {
         document.activeElement.blur();
+    }
+
+    static clearKillMessagesDivText() {
+        this.setKillMessagesDivText('');
     }
 
     static createElement(elementName) {
