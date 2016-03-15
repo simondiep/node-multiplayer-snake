@@ -2,6 +2,9 @@
 const CoordinateService = require('../services/coordinate-service');
 const GameControlsService = require('../services/game-controls-service');
 
+/**
+ * Bot-direction changing logic
+ */
 class BotDirectionService {
 
     constructor(boardOccupancyService) {
@@ -14,27 +17,27 @@ class BotDirectionService {
      * Then check the adjacent left and right spaces
      */
     changeDirectionIfInDanger(bot) {
-        if (!this.isBotInDanger(bot.getHeadLocation(), bot.direction, 2)) {
+        if (!this.isBotInDanger(bot.getHeadCoordinate(), bot.direction, 2)) {
             return;
         }
         const zeroOrOne = this._getRandomIntegerInRange(0, 1);
         const newDirectionOptions = GameControlsService.getValidNextMove(bot.direction);
         const newDirection = newDirectionOptions[zeroOrOne];
-        if (!this.isBotInDanger(bot.getHeadLocation(), newDirection, 2)) {
+        if (!this.isBotInDanger(bot.getHeadCoordinate(), newDirection, 2)) {
             bot.changeDirection(newDirection);
             return;
         }
         newDirectionOptions.splice(zeroOrOne, 1);
         const otherNewDirection = newDirectionOptions[0];
-        if (!this.isBotInDanger(bot.getHeadLocation(), otherNewDirection, 2)) {
+        if (!this.isBotInDanger(bot.getHeadCoordinate(), otherNewDirection, 2)) {
             bot.changeDirection(otherNewDirection);
             return;
         }
-        if (!this.isBotInDanger(bot.getHeadLocation(), newDirection, 1)) {
+        if (!this.isBotInDanger(bot.getHeadCoordinate(), newDirection, 1)) {
             bot.changeDirection(newDirection);
             return;
         }
-        if (!this.isBotInDanger(bot.getHeadLocation(), otherNewDirection, 1)) {
+        if (!this.isBotInDanger(bot.getHeadCoordinate(), otherNewDirection, 1)) {
             bot.changeDirection(otherNewDirection);
             return;
         }

@@ -8,6 +8,9 @@ const CoordinateService = require('../services/coordinate-service');
 const PlayerSpawnService = require('../services/player-spawn-service');
 const ValidationService = require('../services/validation-service');
 
+/**
+ * Player-related changes
+ */
 class PlayerService {
 
     constructor(playerContainer, playerStatBoard, boardOccupancyService, imageService,
@@ -156,8 +159,8 @@ class PlayerService {
             }
             this.boardOccupancyService.removePlayerOccupancy(player.id, player.getSegments());
             CoordinateService.movePlayer(player);
-            if (this.boardOccupancyService.isOutOfBounds(player.getHeadLocation()) ||
-                    this.boardOccupancyService.isWall(player.getHeadLocation())) {
+            if (this.boardOccupancyService.isOutOfBounds(player.getHeadCoordinate()) ||
+                    this.boardOccupancyService.isWall(player.getHeadCoordinate())) {
                 player.clearAllSegments();
                 this.playerContainer.addPlayerIdToRespawn(player.id);
                 this.notificationService.broadcastRanIntoWall(player.name, player.color);

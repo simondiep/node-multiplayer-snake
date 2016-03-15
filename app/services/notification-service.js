@@ -1,6 +1,9 @@
 'use strict';
 const ServerConfig = require('../configs/server-config');
 
+/**
+ * Data broadcasts to all players or a specific player
+ */
 class NotificationService {
 
     setSockets(sockets) {

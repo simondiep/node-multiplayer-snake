@@ -7,7 +7,7 @@ const CoordinateService = require('../app/services/coordinate-service');
 describe('CoordinateService', () => {
     'use strict';
 
-    it('should move player to the next location based on current direction', done => {
+    it('should move player to the next coordinate based on current direction', done => {
         const player = new Player();
         player._segments = [new Coordinate(5, 1),
                            new Coordinate(4, 1),

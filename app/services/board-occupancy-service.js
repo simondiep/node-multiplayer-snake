@@ -10,6 +10,9 @@ const HEAD_TYPE = 'head';
 const TAIL_TYPE = 'tail';
 const WALL_TYPE = 'wall';
 
+/**
+ * Keeps track of where everything is located on a board
+ */
 class BoardOccupancyService {
     constructor() {
         this.maxColumn = Board.HORIZONTAL_SQUARES;
@@ -275,8 +278,8 @@ class BoardOccupancyService {
         return coordinateAttribute.isWall();
     }
 
-    removeFoodOccupancy(foodId, foodLocation) {
-        this._removeOccupancy(foodId, foodLocation, FOOD_TYPE);
+    removeFoodOccupancy(foodId, foodCoordinate) {
+        this._removeOccupancy(foodId, foodCoordinate, FOOD_TYPE);
     }
 
     removePlayerOccupancy(playerId, playerCoordinates) {

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- *  Generates new unused colors
+ *  Generates new unused colors and stores used colors
  */
 class ColorService {
 

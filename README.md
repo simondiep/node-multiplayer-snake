@@ -67,7 +67,6 @@ Open your web browser to `localhost:3000`
  - Toggle view of admin options as a menu item
  - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
  - Add a report bug menu item
- - More consistent names: pick either location or coordinate and stick with it
  - Remove relaxed eslint checks from .eslintrc.js
  - Refactor into more testable code
  - Higher test coverage
@@ -82,7 +81,6 @@ Open your web browser to `localhost:3000`
  - convert innerHtml to templates (handlebars or mustache)
  - e.keyCode and other more reused values should be cached (stored in a local variable) to increase performance
    - such as 'click'
- - use init instead of setup (naming)
  - DomHelper extract all strings into an Object
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 

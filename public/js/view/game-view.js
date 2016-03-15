@@ -20,7 +20,7 @@ export default class GameView {
         this.keyDownCallback = keyDownCallback;
         this.playerNameUpdatedCallback = playerNameUpdatedCallback;
         this.spectateGameCallback = spectateGameCallback;
-        this._setUpEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
+        this._initEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
             startLengthChangeCallback, toggleGridLinesCallback);
     }
 
@@ -196,7 +196,7 @@ export default class GameView {
         }
     }
 
-    _setUpEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
+    _initEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
         startLengthChangeCallback, toggleGridLinesCallback) {
         // Player controls
         DomHelper.getChangeColorButton().addEventListener('click', playerColorChangeCallback);

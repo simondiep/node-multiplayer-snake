@@ -31,7 +31,7 @@ describe('PlayerSpawnService', () => {
             playerSpawnService.setupNewSpawn(player, playerLength, requiredFreeLength);
             assert.equal(player.getSegments().length + player.growAmount, playerLength);
 
-            let currentCoordinate = player.getHeadLocation();
+            let currentCoordinate = player.getHeadCoordinate();
             for (let spacesAhead = 0; spacesAhead < requiredFreeLength - 1; spacesAhead++) {
                 currentCoordinate = CoordinateService.getNextCoordinate(currentCoordinate, player.direction);
                 assert.isTrue(boardOccupancyService.isSafe(currentCoordinate));

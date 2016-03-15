@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Generates names and ids, and stores them so they aren't reused
+ */
 class NameService {
 
     constructor() {

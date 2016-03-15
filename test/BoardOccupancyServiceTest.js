@@ -188,9 +188,9 @@ describe('BoardOccupancyService', () => {
 
     it('should detect food consumed by player', done => {
         const foodId = 'food1';
-        const foodLocation = new Coordinate(4, 2);
+        const foodCoordinate = new Coordinate(4, 2);
 
-        boardOccupancyService.addFoodOccupancy(foodId, foodLocation);
+        boardOccupancyService.addFoodOccupancy(foodId, foodCoordinate);
 
         const player1 = new Player(1);
         player1._segments = [new Coordinate(4, 2),
@@ -207,7 +207,7 @@ describe('BoardOccupancyService', () => {
         assert.equal(foodsConsumed[0].foodId, foodId);
         assert.equal(foodsConsumed[0].playerId, player1.id);
 
-        boardOccupancyService.removeFoodOccupancy(foodId, foodLocation);
+        boardOccupancyService.removeFoodOccupancy(foodId, foodCoordinate);
         foodsConsumed = boardOccupancyService.getFoodsConsumed();
 
         assert.equal(foodsConsumed.length, 0);

@@ -2,6 +2,9 @@
 const ServerConfig = require('../configs/server-config');
 const Food = require('../models/food');
 
+/**
+ * Creation and removal of food
+ */
 class FoodService {
 
     constructor(playerStatBoard, boardOccupancyService, nameService, notificationService) {
@@ -44,12 +47,12 @@ class FoodService {
                 this.boardOccupancyService.addPlayerOccupancy(otherPlayer.id, otherPlayer.getSegments());
                 this.boardOccupancyService.addPlayerOccupancy(playerWhoConsumedFood.id, playerWhoConsumedFood.getSegments());
                 this.notificationService.notifyPlayerFoodCollected(playerWhoConsumedFood.id,
-                    'Swap!', food.location, food.color);
+                    'Swap!', food.coordinate, food.color);
                 this.notificationService.notifyPlayerFoodCollected(otherPlayer.id,
-                    'Swap!', playerWhoConsumedFood.getHeadLocation(), food.color);
+                    'Swap!', playerWhoConsumedFood.getHeadCoordinate(), food.color);
             } else {
                 this.notificationService.notifyPlayerFoodCollected(playerWhoConsumedFood.id,
-                    `+${points}`, food.location, food.color);
+                    `+${points}`, food.coordinate, food.color);
             }
 
             this.removeFood(foodConsumed.foodId);
@@ -87,7 +90,7 @@ class FoodService {
             food = new Food(foodId, randomUnoccupiedCoordinate, ServerConfig.FOOD.NORMAL.TYPE, ServerConfig.FOOD.NORMAL.COLOR);
         }
         this.food[foodId] = food;
-        this.boardOccupancyService.addFoodOccupancy(food.id, food.location);
+        this.boardOccupancyService.addFoodOccupancy(food.id, food.coordinate);
     }
 
     getFood() {
@@ -105,7 +108,7 @@ class FoodService {
     removeFood(foodId) {
         const foodToRemove = this.food[foodId];
         this.nameService.returnFoodId(foodId);
-        this.boardOccupancyService.removeFoodOccupancy(foodId, foodToRemove.location);
+        this.boardOccupancyService.removeFoodOccupancy(foodId, foodToRemove.coordinate);
         delete this.food[foodId];
     }
 }

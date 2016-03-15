@@ -3,13 +3,13 @@
 class Food {
     constructor(id, coordinate, type, color) {
         this.id = id;
-        this.location = coordinate;
+        this.coordinate = coordinate;
         this.type = type;
         this.color = color;
     }
 
-    setLocation(coordinate) {
-        this.location = coordinate;
+    setCoordinate(coordinate) {
+        this.coordinate = coordinate;
     }
 }
 

@@ -13,6 +13,9 @@ const KEYCODE_TO_DIRECTION = {
     39: Direction.RIGHT,
 };
 
+/**
+ * Handles client inputs
+ */
 class GameControlsService {
 
     static getValidNextMove(currentDirection) {

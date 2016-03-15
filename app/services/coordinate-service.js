@@ -1,5 +1,9 @@
 'use strict';
 const Coordinate = require('../models/coordinate');
+
+/**
+ * Coordinate arithmetics
+ */
 class CoordinateService {
 
     static getNextCoordinate(currentCoordinate, direction) {
@@ -8,7 +12,7 @@ class CoordinateService {
     }
 
     static movePlayer(player) {
-        player.move(this.getNextCoordinate(player.getHeadLocation(), player.direction));
+        player.move(this.getNextCoordinate(player.getHeadCoordinate(), player.direction));
     }
 }
 

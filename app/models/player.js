@@ -17,7 +17,7 @@ class Player {
         this._segments = [];
     }
 
-    getHeadLocation() {
+    getHeadCoordinate() {
         return this._segments[0];
     }
 
@@ -34,7 +34,7 @@ class Player {
         return this._segments.length > 0;
     }
 
-    move(newHeadLocation) {
+    move(newHeadCoordinate) {
         // Record the last drawn player direction, to limit the player from moving too quickly back into themselves
         this.directionBeforeMove = this.direction;
         if (this.growAmount > 0) {
@@ -43,15 +43,15 @@ class Player {
             // pop tail and make it the head
             this._segments.pop();
         }
-        this._segments.unshift(newHeadLocation);
+        this._segments.unshift(newHeadCoordinate);
         this.moveCounter++;
     }
 
-    setStartingSpawn(newDirection, headLocation, growAmount) {
+    setStartingSpawn(newDirection, headCoordinate, growAmount) {
         this.direction = newDirection;
         this.directionBeforeMove = newDirection;
         this.growAmount = growAmount;
-        this._segments = [headLocation];
+        this._segments = [headCoordinate];
         this.moveCounter = 0;
     }
 

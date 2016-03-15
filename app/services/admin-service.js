@@ -1,6 +1,9 @@
 'use strict';
 const ServerConfig = require('../configs/server-config');
 
+/**
+ * Admin-specific functionality
+ */
 class AdminService {
 
     constructor(playerContainer, foodService, nameService, notificationService, playerService) {
