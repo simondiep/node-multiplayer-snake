@@ -11,17 +11,18 @@ const DOWN_ARROW_KEYCODE = 40;
  */
 export default class GameView {
     constructor(backgroundImageUploadCallback, botChangeCallback, foodChangeCallback, imageUploadCallback,
-        joinGameCallback, keyDownCallback, playerColorChangeCallback, playerNameUpdatedCallback, spectateGameCallback,
-        speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
+        joinGameCallback, keyDownCallback, muteAudioCallback, playerColorChangeCallback, playerNameUpdatedCallback,
+        spectateGameCallback, speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback) {
         this.isChangingName = false;
         this.backgroundImageUploadCallback = backgroundImageUploadCallback;
         this.imageUploadCallback = imageUploadCallback;
         this.joinGameCallback = joinGameCallback;
         this.keyDownCallback = keyDownCallback;
+        this.muteAudioCallback = muteAudioCallback;
         this.playerNameUpdatedCallback = playerNameUpdatedCallback;
         this.spectateGameCallback = spectateGameCallback;
-        this._initEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
-            startLengthChangeCallback, toggleGridLinesCallback);
+        this._initEventHandling(botChangeCallback, foodChangeCallback, muteAudioCallback, playerColorChangeCallback,
+            speedChangeCallback, startLengthChangeCallback, toggleGridLinesCallback);
     }
 
     ready() {
@@ -36,6 +37,16 @@ export default class GameView {
         }
         this.killMessagesTimeout = setTimeout(DomHelper.clearKillMessagesDivText.bind(DomHelper),
             ClientConfig.TIME_TO_SHOW_KILL_MESSAGE_IN_MS);
+    }
+
+    setMuteStatus(isMuted) {
+        let text;
+        if (isMuted) {
+            text = 'Unmute';
+        } else {
+            text = 'Mute';
+        }
+        DomHelper.setToggleSoundButtonText(text);
     }
 
     showFoodAmount(foodAmount) {
@@ -196,7 +207,7 @@ export default class GameView {
         }
     }
 
-    _initEventHandling(botChangeCallback, foodChangeCallback, playerColorChangeCallback, speedChangeCallback,
+    _initEventHandling(botChangeCallback, foodChangeCallback, muteAudioCallback, playerColorChangeCallback, speedChangeCallback,
         startLengthChangeCallback, toggleGridLinesCallback) {
         // Player controls
         DomHelper.getChangeColorButton().addEventListener('click', playerColorChangeCallback);
@@ -208,6 +219,7 @@ export default class GameView {
         DomHelper.getClearUploadedBackgroundImageButton().addEventListener('click', this.backgroundImageUploadCallback);
         DomHelper.getPlayOrWatchButton().addEventListener('click', this._handlePlayOrWatchButtonClick.bind(this));
         DomHelper.getToggleGridLinesButton().addEventListener('click', toggleGridLinesCallback);
+        DomHelper.getToggleSoundButton().addEventListener('click', muteAudioCallback);
         DomHelper.getFullScreenButton().addEventListener('click', DomHelper.toggleFullScreenMode);
         window.addEventListener('keydown', this._handleKeyDown.bind(this), true);
 

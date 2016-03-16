@@ -114,6 +114,10 @@ export default class DomHelper {
         return document.getElementById('toggleGridLinesButton');
     }
 
+    static getToggleSoundButton() {
+        return document.getElementById('toggleSoundButton');
+    }
+
     static hideInvalidPlayerNameLabel() {
         document.getElementById('invalid-player-name-label').style.display = 'none';
     }
@@ -157,6 +161,10 @@ export default class DomHelper {
 
     static setPlayerStatsDivText(text) {
         document.getElementById('player-stats').innerHTML = text;
+    }
+
+    static setToggleSoundButtonText(text) {
+        this.getToggleSoundButton().textContent = text;
     }
 
     static setPlayOrWatchButtonText(text) {

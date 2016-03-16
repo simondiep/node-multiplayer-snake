@@ -1,4 +1,5 @@
 import ClientConfig from 'config/client-config';
+import AudioController from 'controller/audio-controller';
 import TextToDraw from 'model/text-to-draw';
 import CanvasFactory from 'view/canvas-factory';
 import GameView from 'view/game-view';
@@ -14,6 +15,7 @@ export default class GameController {
                                      this.imageUploadCallback.bind(this),
                                      this.joinGameCallback.bind(this),
                                      this.keyDownCallback.bind(this),
+                                     this.muteAudioCallback.bind(this),
                                      this.playerColorChangeCallback.bind(this),
                                      this.playerNameUpdatedCallback.bind(this),
                                      this.spectateGameCallback.bind(this),
@@ -21,6 +23,7 @@ export default class GameController {
                                      this.startLengthChangeCallback.bind(this),
                                      this.toggleGridLinesCallback.bind(this)
                                      );
+        this.audioController = new AudioController();
         this.players = [];
         this.food = {};
         this.textsToDraw = [];
@@ -131,6 +134,11 @@ export default class GameController {
         this.socket.emit(ClientConfig.IO.OUTGOING.KEY_DOWN, keyCode);
     }
 
+    muteAudioCallback() {
+        this.audioController.toggleMute();
+        this.gameView.setMuteStatus(this.audioController.isMuted);
+    }
+
     playerColorChangeCallback() {
         this.socket.emit(ClientConfig.IO.OUTGOING.COLOR_CHANGE);
     }
@@ -188,8 +196,9 @@ export default class GameController {
         this.gameView.showPlayerStats(gameData.playerStats);
     }
 
-    _storeTextToDraw(text, coordinate, color) {
+    _foodCollected(text, coordinate, color) {
         this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
+        this.audioController.playFoodCollectedSound();
     }
 
     _initializeSocketIoHandlers() {
@@ -197,7 +206,7 @@ export default class GameController {
         this.socket.on(ClientConfig.IO.INCOMING.BOARD_INFO, this._createBoard.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NEW_STATE, this._handleNewGameData.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NEW_BACKGROUND_IMAGE, this._handleBackgroundImage.bind(this));
-        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.FOOD_COLLECTED, this._storeTextToDraw.bind(this));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.FOOD_COLLECTED, this._foodCollected.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.GENERAL, this.gameView.showNotification);
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILL, this.gameView.showKillMessage.bind(this.gameView));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILLED_EACH_OTHER,
