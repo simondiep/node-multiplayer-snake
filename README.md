@@ -41,6 +41,7 @@ Open your web browser to `localhost:3000`
  - Spectate
  - Local storage of name and image
  - Add and remove walls by clicking
+ - Sound effects
 
 ### jspm notes
  - `npm run bundle` will bundle all of the js files together for a production environment
@@ -109,12 +110,11 @@ Open your web browser to `localhost:3000`
  - Increase game speed based on different conditions (faster if 1v1) or random
  - Choose your own color
  - Show a glowing outline when player is growing
- - Chat
+ - Text chat
  - Support resolutions lower than 1225x550
  - Smarter bots (prioritize food, don't trap themselves, have a sense for other player movements)
  - Audio
     - Background music
-    - Sound effects
     - Volume control
     - Voice chat
  - Images

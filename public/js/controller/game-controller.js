@@ -185,6 +185,15 @@ export default class GameController {
         }
     }
 
+    _handleFoodCollected(text, coordinate, color, isSwap) {
+        this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
+        if (isSwap) {
+            this.audioController.playSwapSound();
+        } else {
+            this.audioController.playFoodCollectedSound();
+        }
+    }
+
     _handleNewGameData(gameData) {
         this.players = gameData.players;
         this.food = gameData.food;
@@ -196,17 +205,13 @@ export default class GameController {
         this.gameView.showPlayerStats(gameData.playerStats);
     }
 
-    _foodCollected(text, coordinate, color) {
-        this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
-        this.audioController.playFoodCollectedSound();
-    }
 
     _initializeSocketIoHandlers() {
         this.socket.on(ClientConfig.IO.INCOMING.NEW_PLAYER_INFO, this.gameView.updatePlayerName);
         this.socket.on(ClientConfig.IO.INCOMING.BOARD_INFO, this._createBoard.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NEW_STATE, this._handleNewGameData.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NEW_BACKGROUND_IMAGE, this._handleBackgroundImage.bind(this));
-        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.FOOD_COLLECTED, this._foodCollected.bind(this));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.FOOD_COLLECTED, this._handleFoodCollected.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.GENERAL, this.gameView.showNotification);
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILL, this.gameView.showKillMessage.bind(this.gameView));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.KILLED_EACH_OTHER,
@@ -214,5 +219,9 @@ export default class GameController {
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.RAN_INTO_WALL,
             this.gameView.showRanIntoWallMessage.bind(this.gameView));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.SUICIDE, this.gameView.showSuicideMessage.bind(this.gameView));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.YOU_DIED,
+            this.audioController.playDeathSound.bind(this.audioController));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.YOU_MADE_A_KILL,
+            this.audioController.playKillSound.bind(this.audioController));
     }
 }

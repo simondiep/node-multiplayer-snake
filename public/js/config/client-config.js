@@ -22,6 +22,8 @@ export default {
                 KILLED_EACH_OTHER: 'killed each other notification',
                 RAN_INTO_WALL: 'ran into wall notification',
                 SUICIDE: 'suicide notification',
+                YOU_DIED: 'you died',
+                YOU_MADE_A_KILL: 'you made a kill',
             },
         },
         OUTGOING: {

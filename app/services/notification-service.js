@@ -44,10 +44,24 @@ class NotificationService {
         this.sockets.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.SUICIDE, victimName, victimColor);
     }
 
-    notifyPlayerFoodCollected(playerId, text, coordinate, color) {
+    notifyPlayerDied(playerId) {
         const playerSocket = this.sockets.connected[playerId];
         if (playerSocket) {
-            playerSocket.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.FOOD_COLLECTED, text, coordinate, color);
+            playerSocket.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.YOU_DIED);
+        }
+    }
+
+    notifyPlayerMadeAKill(playerId) {
+        const playerSocket = this.sockets.connected[playerId];
+        if (playerSocket) {
+            playerSocket.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.YOU_MADE_A_KILL);
+        }
+    }
+
+    notifyPlayerFoodCollected(playerId, text, coordinate, color, isSwap) {
+        const playerSocket = this.sockets.connected[playerId];
+        if (playerSocket) {
+            playerSocket.emit(ServerConfig.IO.OUTGOING.NOTIFICATION.FOOD_COLLECTED, text, coordinate, color, isSwap);
         }
     }
 }
