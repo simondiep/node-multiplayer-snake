@@ -35,7 +35,7 @@ Open your web browser to `localhost:3000`
  - Player statistics including kills/deaths/score
  - Steal player scores and length by killing them
  - Game notifications
-    - Kill announcements
+ - Kill announcements
  - Bots
  - Random, safe spawns
  - Spectate
@@ -97,7 +97,7 @@ Open your web browser to `localhost:3000`
  - Unit test mocking frameworks for ES6 classes
  - Performance testing tools
  - Lightweight unit testing frameworks, such as [Tape](https://github.com/substack/tape)
- - ES7
+ - ECMAScript 7
  
 ### Potential Features To Implement
  - Spin buttons for admin controls
@@ -112,10 +112,12 @@ Open your web browser to `localhost:3000`
  - Support resolutions lower than 1225x550
  - Support mobile
  - Smarter bots (prioritize food, don't trap themselves, have a sense for other player movements)
+ - Leave a message for the killer
  - Audio
     - Background music
     - Volume control
     - Voice chat
+    - DOTA/CS kill-streak sounds
  - Images
     - Food image
     - Support animated gifs (snake and food)
@@ -125,7 +127,8 @@ Open your web browser to `localhost:3000`
     - Global high score
     - Custom sort stat board
     - More stats (max length)
- - Power-ups
+ - Power-ups or Perks
+    - very long
     - individual speed (2 or more steps for a player)
     - invulnerable
     - width increase
@@ -133,6 +136,7 @@ Open your web browser to `localhost:3000`
     - be able to draw on canvas
     - choice of power-up to start with
     - random power up on kill
+    - activatable skills such as swap
  - Game Modes
     - head to head with preselected spawn points
     - fog of war
@@ -140,3 +144,5 @@ Open your web browser to `localhost:3000`
     - elimination
     - maze
     - diagonal movement
+    - defined win conditions
+    - pictionary
