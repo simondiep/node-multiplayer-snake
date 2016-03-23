@@ -25,19 +25,21 @@ Open your web browser to `localhost:3000`
 
 ### Game Features
  - Quick join and play (no sign-ups)
- - Change colors
- - Change names
- - Change game speed
- - Change amount of food
- - Change player starting length
+ - Player settings
+   - Change colors
+   - Change names
+ - Admin controls
+   - Change game speed
+   - Change amount of food
+   - Change player starting length
+   - Add or remove bots
  - Different food types
  - Upload your own snake image and background image
  - Player statistics including kills/deaths/score
  - Steal player scores and length by killing them
  - Game notifications
  - Kill announcements
- - Bots
- - Random, safe spawns
+ - Randomized spawns
  - Spectate
  - Local storage of name and image
  - Add and remove walls by clicking
@@ -75,19 +77,21 @@ Open your web browser to `localhost:3000`
  - [uglify and minify](https://www.npmjs.com/package/uglify-js2) - does jspm provide this?
    - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
  - input type=number to replace buttons
- - animate scrolling 
+ - animate/smooth out the scrolling to top and bottom of page
  - sprite-maker (convert all images into one)
  - high level jsdoc
  - convert innerHtml to templates (handlebars or mustache)
  - e.keyCode and other more reused values should be cached (stored in a local variable) to increase performance
    - such as 'click'
  - DomHelper extract all strings into an Object
+ - an easy way to create new banner images as the game adds features
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Longer-term Tech Debt
  - Chai does not support --use_strict mode, yet.  Replace chai or wait for support.
     - This means "use strict"; is needed in all node modules, even though it is redundant
- - Switch to SASS when Windows makes it easier to install [node-gyp dependencies](https://github.com/nodejs/node-gyp/issues/629)
+ - Switch to SASS when Windows makes it easier to install [node-gyp dependencies](https://github.com/nodejs/node-gyp/issues/629).
+   - [PR still open](https://github.com/nodejs/node-gyp/pull/867) as of March 22, 2016.
 
 ### Technologies to look into
  - webpack vs jspm [Comparison](https://webpack.github.io/docs/comparison.html)
