@@ -118,6 +118,10 @@ export default class DomHelper {
         return document.getElementById('toggleSoundButton');
     }
 
+    static getVolumeSlider() {
+        return document.getElementById('volumeSlider');
+    }
+
     static hideInvalidPlayerNameLabel() {
         document.getElementById('invalid-player-name-label').style.display = 'none';
     }
