@@ -35,11 +35,13 @@
                         <legend>Player Settings</legend>
                         <label id="invalid-player-name-label">Please Enter a Valid Name (10 Characters Max)</label>
                         <ul class="text-button-list">
-                            <li><input id="volumeSlider" type="range" min="0" max="1" step="0.2" value="0.8"></input></li>
+                            <li><input id="volumeSlider" type="range" min="0" max="1" step="0.2" value="1"></input><img src="assets/volume-icon.png" class="volume-icon"></img></li>
+                            <li><button id="toggleSoundButton" class="options-text-button" title="Mute or unmute sound">Mute</button></li>
+                        </ul>
+                        <ul class="text-button-list">
                             <li><button id="changePlayerNameButton" class="options-text-button" title="Change your name">Change Name</button></li>
                             <li><button id="changePlayerColorButton" class="options-text-button" title="Change your snake's color">Change Color</button></li>
                             <li><button id="toggleGridLinesButton" class="options-text-button" title="Show or hide grid lines">Toggle GridLines</button></li>
-                            <li><button id="toggleSoundButton" class="options-text-button" title="Mute or unmute sound">Mute</button></li>
                             <li><label for="image-upload" class="image-upload-label" title="Customize your snake by uploading an image (Will be scaled down to size)">Change Snake Image<input type="file" id="image-upload" accept="image/*"/></label></li>
                             <li><button id="clearUploadedImageButton" class="options-text-button" title="Clear uploaded snake image">Clear Image</button></li>
                             <li><label for="background-image-upload" class="image-upload-label" title="Upload a background image">Change Background Image<input type="file" id="background-image-upload" accept="image/*"/></label></li>
