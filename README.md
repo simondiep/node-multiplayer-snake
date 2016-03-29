@@ -134,6 +134,7 @@ Open your web browser to `localhost:3000`
  - Power-ups or Perks
     - very long
     - individual speed (2 or more steps for a player)
+      - variant: limited turbo (press key to activate)
     - invulnerable
     - width increase
     - reverse controls
@@ -143,6 +144,8 @@ Open your web browser to `localhost:3000`
     - activatable skills such as swap
  - Game Modes
     - head to head with preselected spawn points
+      - variant: four player start at middle facing away from each other
+    - infinite length
     - fog of war
     - random walls
     - elimination
