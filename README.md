@@ -67,16 +67,14 @@ Open your web browser to `localhost:3000`
  - Additional Server-side optimization to reduce unnecessary emits to client
  - Validate sizes of base64 Strings
  - Toggle view of admin options as a menu item
- - Compress uploaded images before sending to server [pngquant](https://pngquant.org/)
- - Add a report bug menu item
  - Remove relaxed eslint checks from .eslintrc.js
  - Refactor into more testable code
  - Higher test coverage
  - Create more convenient build steps (dev vs prod)
  - Lower page load time for jspm (https://github.com/jspm/jspm-cli/issues/872)
- - [uglify and minify](https://www.npmjs.com/package/uglify-js2) - does jspm provide this?
+ - [uglify and minify](https://www.npmjs.com/package/uglify-js2)
    - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
- - input type=number to replace buttons
+ - support spinners - input type=number to replace existing admin buttons
  - animate/smooth out the scrolling to top and bottom of page
  - sprite-maker (convert all images into one)
  - high level jsdoc
@@ -84,7 +82,7 @@ Open your web browser to `localhost:3000`
  - e.keyCode and other more reused values should be cached (stored in a local variable) to increase performance
    - such as 'click'
  - DomHelper extract all strings into an Object
- - an easy way to create new banner images as the game adds features
+ - an easy way to create new banner gifs as the game adds features
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Longer-term Tech Debt
