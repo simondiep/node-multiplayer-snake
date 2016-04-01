@@ -70,7 +70,8 @@ Open your web browser to `localhost:3000`
  - Remove relaxed eslint checks from .eslintrc.js
  - Refactor into more testable code
  - Higher test coverage
- - Create more convenient build steps (dev vs prod)
+ - Create more convenient build steps (dev vs prod) that don't require unbundling on pull
+   - Ignore bundle that gets placed into public/js/config.js
  - Lower page load time for jspm (https://github.com/jspm/jspm-cli/issues/872)
  - [uglify and minify](https://www.npmjs.com/package/uglify-js2)
    - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
