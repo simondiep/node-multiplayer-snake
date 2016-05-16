@@ -85,7 +85,7 @@ Open your web browser to `localhost:3000`
  - DomHelper extract all strings into an Object
  - an easy way to create new banner gifs as the game adds features
  - optimize data sent to each client, to only what's necessary, and not the entire game state
-   - don't clear the entire canvas after each turn
+   - don't clear the entire canvas after each turn (look into canvas alternatives/ WebGL such as PixiJS)
    - smarter client code that can render snakes moving in a single direction without needed server state
    - smarter server code to send change events
  - clean up class constructors that take a lot of params, and instead pass in a single object
