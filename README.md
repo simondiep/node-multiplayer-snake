@@ -95,6 +95,7 @@ Open your web browser to `localhost:3000`
 
 ### Longer-term Tech Debt
  - Redo front-end with React
+   - Front-end testing with Jest
  - Update to Node 6
  - Chai does not support --use_strict mode, yet.  Replace chai or wait for support.
     - This means "use strict"; is needed in all node modules, even though it is redundant
