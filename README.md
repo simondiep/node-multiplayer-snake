@@ -8,7 +8,7 @@ Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
 ### Getting Started
 
-Install the latest [Node.js](http://nodejs.org) 5.60 Stable
+Install the latest [Node.js](http://nodejs.org) 6 Stable
 
 `git clone https://github.com/simondiep/node-multiplayer-snake.git`
 

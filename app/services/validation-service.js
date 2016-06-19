@@ -5,6 +5,7 @@ const ServerConfig = require('../configs/server-config');
 /**
  * Regex for a proper data uri
  */
+// eslint-disable-next-line no-useless-escape
 const DATA_URI_REGEX = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i; // eslint-disable-line max-len
 
 /**

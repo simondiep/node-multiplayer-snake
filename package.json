@@ -17,21 +17,23 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^2.2.0",
-    "eslint-config-airbnb": "^6.0.2",
-    "eslint-plugin-react": "^4.1.0",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.4.5",
-    "socket.io-client": "^1.4.5",
+    "eslint": "^2.13.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-jsx-a11y": "^1.5.3",
+    "eslint-plugin-react": "^5.2.2",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "socket.io-client": "^1.4.6",
     "supertest": "^1.2.0"
   },
   "dependencies": {
-    "express": "^4.13.4",
-    "jspm": "^0.16.30",
+    "express": "^4.14.0",
+    "jspm": "^0.16.39",
     "less-middleware": "^2.1.0",
     "serve-favicon": "^2.3.0",
-    "socket.io": "^1.4.5",
-    "validator": "^5.1.0"
+    "socket.io": "^1.4.6",
+    "validator": "^5.4.0"
   },
   "license": "MIT",
   "jspm": {
@@ -39,12 +41,12 @@
       "baseURL": "public/js"
     },
     "dependencies": {
-      "socket.io-client": "npm:socket.io-client@^1.4.5"
+      "socket.io-client": "npm:socket.io-client"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
+      "babel": "npm:babel-core",
+      "babel-runtime": "npm:babel-runtime",
+      "core-js": "npm:core-js"
     }
   }
 }
