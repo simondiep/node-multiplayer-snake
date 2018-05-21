@@ -1,5 +1,5 @@
-import ClientConfig from 'config/client-config';
-import DomHelper from 'view/dom-helper';
+import ClientConfig from '../config/client-config.js';
+import DomHelper from './dom-helper.js';
 
 const ENTER_KEYCODE = 13;
 const SPACE_BAR_KEYCODE = 32;

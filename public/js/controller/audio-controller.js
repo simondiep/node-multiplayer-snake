@@ -1,4 +1,4 @@
-import DomHelper from 'view/dom-helper';
+import DomHelper from '../view/dom-helper.js';
 /**
  * Controls all audio logic
  */

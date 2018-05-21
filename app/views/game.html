@@ -86,10 +86,8 @@
                 </div> 
             </div>            
         </div>
-        <script src="js/jspm_packages/system.js"></script>
-        <script src="js/config.js"></script>
-        <script>
-            System.import('main.js');
-        </script>
+        <!-- socket.io client is exposed by the server.  This sets a global variable io -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/main.js" type="module"></script>
     </body>
 </html>

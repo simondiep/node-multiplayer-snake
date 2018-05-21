@@ -7,13 +7,10 @@
     "url": "https://github.com/simondiep/node-multiplayer-snake.git"
   },
   "scripts": {
-    "postinstall": "jspm install && npm run bundle",
     "start": "node app.js",
     "pretest": "eslint .",
     "test": "mocha",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
-    "bundle": "jspm bundle main --inject",
-    "unbundle": "jspm unbundle"
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -29,24 +26,10 @@
   },
   "dependencies": {
     "express": "^4.14.0",
-    "jspm": "^0.16.39",
     "less-middleware": "^2.1.0",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.6",
     "validator": "^5.4.0"
   },
-  "license": "MIT",
-  "jspm": {
-    "directories": {
-      "baseURL": "public/js"
-    },
-    "dependencies": {
-      "socket.io-client": "npm:socket.io-client"
-    },
-    "devDependencies": {
-      "babel": "npm:babel-core",
-      "babel-runtime": "npm:babel-runtime",
-      "core-js": "npm:core-js"
-    }
-  }
+  "license": "MIT"
 }

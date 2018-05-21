@@ -3,20 +3,19 @@
 [![Build Status](https://travis-ci.org/simondiep/node-multiplayer-snake.svg?branch=master)](https://travis-ci.org/simondiep/node-multiplayer-snake)
 [![Dependency Status](https://david-dm.org/simondiep/node-multiplayer-snake/status.svg?style=flat)](https://david-dm.org/simondiep/node-multiplayer-snake)  
 
-A multiplayer snake game built on NodeJs, Express, socket.io, JavaScript ES6, and jspm.  No unnecessary libraries.  
+A multiplayer snake game built on NodeJs, Express, socket.io, and JavaScript ES6.  No unnecessary libraries.
+
 Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
 ### Getting Started
 
-Install the latest [Node.js](http://nodejs.org) 6 Stable
+Install the latest [Node.js](http://nodejs.org) 8 Stable
 
 `git clone https://github.com/simondiep/node-multiplayer-snake.git`
 
 `cd node-multiplayer-snake`
 
 `npm install`
-
-`npm run unbundle` This puts you into development mode, where hot deployments are possible.
 
 `npm start`
 
@@ -45,13 +44,6 @@ Open your web browser to `localhost:3000`
  - Add and remove walls by clicking
  - Sound effects
 
-### jspm notes
- - `npm run bundle` will bundle all of the js files together for a production environment
-   - This updates `public/js/config.js` with an injected entry to load build.js
-     - Don't check in the bundle changes to `public/js/config.js`
-   - Any changes to javascript files after this will not be read, unless you bundle again or unbundle
- - Transpiling ES6 to ES5 is done on application load
- 
 ### Contributing
 
 1. Fork the code base
@@ -72,9 +64,6 @@ Open your web browser to `localhost:3000`
  - Higher test coverage
  - Create more convenient build steps (dev vs prod) that don't require unbundling on pull
    - Ignore bundle that gets placed into public/js/config.js
- - Lower page load time for jspm (https://github.com/jspm/jspm-cli/issues/872)
- - [uglify and minify](https://www.npmjs.com/package/uglify-js2)
-   - Check environment variable and only run postinstall if prod ("postinstall": "jspm install && npm run build",)
  - support spinners - input type=number to replace existing admin buttons
  - animate/smooth out the scrolling to top and bottom of page
  - sprite-maker (convert all images into one)
@@ -94,16 +83,12 @@ Open your web browser to `localhost:3000`
  - [Issues](https://github.com/simondiep/node-multiplayer-snake/issues)
 
 ### Longer-term Tech Debt
- - Redo front-end with React
-   - Front-end testing with Jest
- - Update to Node 6
  - Chai does not support --use_strict mode, yet.  Replace chai or wait for support.
     - This means "use strict"; is needed in all node modules, even though it is redundant
  - Switch to SASS when Windows makes it easier to install [node-gyp dependencies](https://github.com/nodejs/node-gyp/issues/629).
    - [PR still open](https://github.com/nodejs/node-gyp/pull/867) as of March 22, 2016.
 
 ### Technologies to look into
- - webpack vs jspm [Comparison](https://webpack.github.io/docs/comparison.html)
  - Replace console.log with logging framework
     - https://www.loggly.com/ultimate-guide/node-logging-basics/
     - https://strongloop.com/strongblog/compare-node-js-logging-winston-bunyan/
